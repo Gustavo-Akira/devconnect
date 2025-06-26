@@ -44,7 +44,7 @@ public class Address {
 
     private void validate() throws BusinessException {
         if(Arrays.stream(ALLOWED_COUNTRIES).noneMatch(allowedCountry->allowedCountry.equals(country))){
-            throw new BusinessException();
+            throw new BusinessException("Your Country is not in the accepted countries "+ Arrays.toString(ALLOWED_COUNTRIES));
         }
     }
 }

@@ -1,5 +1,7 @@
 package br.com.gustavoakira.devconnect.application.domain;
 
+import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+
 public class Project {
     private Long id;
     private String name;
@@ -19,5 +21,9 @@ public class Project {
         this.repoUrl = repoUrl;
     }
 
-
+    private void validate() throws BusinessException {
+        if(!repoUrl.startsWith("https://github.com")){
+            throw new BusinessException("The repo link have to be in github or similars");
+        }
+    }
 }
