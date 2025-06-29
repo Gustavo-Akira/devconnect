@@ -8,14 +8,20 @@ public class User {
     private String name;
     private Password password;
     private String email;
+    private Boolean isActive;
 
 
 
-    public User(String name, String password,String email) throws BusinessException {
+    public User(String name, String password,String email, Boolean isActive) throws BusinessException {
         this.name = name;
         this.password = new Password(password);
         this.email = email;
+        this.isActive = isActive == null || isActive;
         validate();
+    }
+
+    public Boolean isActive() {
+        return isActive;
     }
 
     public void rename(String name) throws BusinessException {
@@ -23,8 +29,8 @@ public class User {
         this.name = name;
     }
 
-    public User(Long id, String name, String password, String email) throws BusinessException {
-        this(name,password,email);
+    public User(Long id, String name, String password, String email, Boolean isActive) throws BusinessException {
+        this(name,password,email,isActive);
         this.id = id;
     }
 

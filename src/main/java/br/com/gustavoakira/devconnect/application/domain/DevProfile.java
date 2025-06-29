@@ -11,8 +11,8 @@ public class DevProfile extends User{
     private String githubLink;
     private String linkedinLink;
 
-    public DevProfile(String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink) throws BusinessException {
-        super(name,password,email);
+    public DevProfile(String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, Boolean isActive) throws BusinessException {
+        super(name,password,email,isActive);
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
@@ -20,8 +20,8 @@ public class DevProfile extends User{
         validate();
     }
 
-    public DevProfile(Long id, String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink) throws BusinessException {
-        this(name,email,password,bio,address,githubLink,linkedinLink);
+    public DevProfile(Long id, String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, Boolean isActive) throws BusinessException {
+        this(name,email,password,bio,address,githubLink,linkedinLink,isActive);
         setId(id);
     }
 
