@@ -43,8 +43,8 @@ src/
 │   ├── services/            # Use case implementations
 │   └── shared/              # Generic types like PaginatedResult
 ├── adapters/
-│   ├── controller/          # REST APIs
-│   ├── persistence/         # JPA + converters
+│   ├── inbound/          # REST APIs + consumers entry points
+│   ├── outbound/         # Persistence + publishers exit points
 │   └── config/              # Technical configs (Spring, Swagger)
 ```
 

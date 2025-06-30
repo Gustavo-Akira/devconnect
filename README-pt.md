@@ -31,7 +31,7 @@ Projetado com **Java (Spring Boot)** usando **arquitetura hexagonal**, **DDD**, 
 ---
 
 ## 📂 Estrutura
-
+```
 src/
 ├── application/
 │   ├── domain/              # Entidades e VOs puros
@@ -40,10 +40,10 @@ src/
 │   ├── services/            # Implementações dos casos de uso
 │   └── shared/              # Tipos genéricos como PaginatedResult
 ├── adapters/
-│   ├── controller/          # APIs REST
-│   ├── persistence/         # JPA + conversores
+│   ├── inbound/       # Entradas como API rest ou consumers
+│   ├── outbound/ # Saidas como camada de persistencia ou publishers
 │   └── config/              # Configs técnicas (Spring, Swagger)
-
+```
 
 ---
 
