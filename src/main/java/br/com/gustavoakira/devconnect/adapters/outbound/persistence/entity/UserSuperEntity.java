@@ -11,7 +11,7 @@ public class UserSuperEntity {
     @Id
     private Long id;
     private String name;
-    private Password password;
+    private String password;
     private String email;
     private Boolean isActive;
 }
