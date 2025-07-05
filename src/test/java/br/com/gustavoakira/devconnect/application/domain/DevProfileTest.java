@@ -20,7 +20,7 @@ public class DevProfileTest {
 
         assertEquals("João Silva", profile.getName());
         assertEquals("joao@email.com", profile.getEmail());
-        assertTrue(profile.getPassword() != null);
+        assertNotNull(profile.getPassword());
         assertEquals("https://github.com/joaosilva", profile.getGithubLink());
     }
 

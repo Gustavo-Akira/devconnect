@@ -60,7 +60,7 @@ public class DevProfile extends User{
 
 
     private void validateLinkedin(String linkedinLink) throws BusinessException {
-        if(linkedinLink == null || !linkedinLink.startsWith("https://linkedin.com/")){
+        if(linkedinLink == null || (!linkedinLink.startsWith("https://www.linkedin.com/in/") && !linkedinLink.startsWith("https://linkedin.com/in/"))){
             throw new BusinessException("Informe um linkedin válido");
         }
     }
