@@ -20,6 +20,7 @@ public class User {
         validate();
     }
 
+
     public Boolean isActive() {
         return isActive;
     }

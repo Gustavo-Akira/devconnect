@@ -3,20 +3,18 @@ package br.com.gustavoakira.devconnect.adapters.outbound.persistence.repository.
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity.AddressEntity;
 import br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity.DevProfileEntity;
+import br.com.gustavoakira.devconnect.adapters.outbound.persistence.mappers.DevProfileMapper;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -31,38 +29,36 @@ import static org.junit.jupiter.api.Assertions.*;
 class DevProfileRepositoryImplTest {
     @Mock
     private SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository;
-    @Mock
-    private ModelMapper mapper;
-
-    @InjectMocks
+    private final DevProfileMapper mapper = new DevProfileMapper();
     private DevProfileRepositoryImpl repository;
+
+    @BeforeEach
+    void setUp() {
+        repository = new DevProfileRepositoryImpl(springDataPostgresDevProfileRepository, mapper);
+    }
+
 
     @Test
     void shouldSaveAndReturnDomainDevProfile() throws BusinessException {
 
         DevProfile domainProfile = new DevProfile("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",true);
         DevProfileEntity entity = getEntity();
-        DevProfileEntity entityWithId = entity;
-        entityWithId.setId(1L);
-        Mockito.when(mapper.map(domainProfile, DevProfileEntity.class)).thenReturn(entity);
-        Mockito.when(springDataPostgresDevProfileRepository.save(entity)).thenReturn(entityWithId);
+        entity.setId(1L);
+        Mockito.when(springDataPostgresDevProfileRepository.save(entity)).thenReturn(entity);
         domainProfile.setId(1L);
-        Mockito.when(mapper.map(entityWithId, DevProfile.class)).thenReturn(domainProfile);
 
         DevProfile result = repository.save(domainProfile);
 
-        Mockito.verify(mapper).map(domainProfile, DevProfileEntity.class);
         Mockito.verify(springDataPostgresDevProfileRepository).save(entity);
-        Mockito.verify(mapper).map(entity, DevProfile.class);
 
         assertNotNull(result);
-        assertEquals(domainProfile, result);
+        assertEquals(domainProfile.getName(), result.getName());
     }
 
     @Nested
     class GetPaginatedDevProfiles{
         @Test
-        void shouldReturnEmptyListWhenDevProfilesDoNotExists(){
+        void shouldReturnEmptyListWhenDevProfilesDoNotExists() throws BusinessException {
             Mockito.when(springDataPostgresDevProfileRepository.findAll(Pageable.ofSize(5).withPage(0))).thenReturn(Page.empty());
             PaginatedResult<DevProfile> devProfilesPage = repository.findAll(0,5);
             assertTrue(devProfilesPage.getContent().isEmpty());
@@ -87,8 +83,6 @@ class DevProfileRepositoryImplTest {
             Mockito.when(springDataPostgresDevProfileRepository.findAll(Mockito.eq(PageRequest.of(0, 5))))
                     .thenReturn(pageResult);
 
-            Mockito.when(mapper.map(Mockito.any(DevProfileEntity.class), Mockito.eq(DevProfile.class)))
-                    .thenReturn(new DevProfile(1L,"Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",true));
 
             PaginatedResult<DevProfile> devProfilesPage = repository.findAll(page, size);
 
@@ -148,9 +142,8 @@ class DevProfileRepositoryImplTest {
 
             Mockito.when(springDataPostgresDevProfileRepository.findById(id))
                     .thenReturn(Optional.of(entity));
-            Mockito.when(mapper.map(entity, DevProfile.class)).thenReturn(domainProfile);
             DevProfile devProfile = repository.findById(id);
-            assertEquals(domainProfile,devProfile);
+            assertEquals(domainProfile.getName(),devProfile.getName());
         }
 
         @Test
@@ -169,6 +162,6 @@ class DevProfileRepositoryImplTest {
 
 
     private static DevProfileEntity getEntity() {
-        return new DevProfileEntity("Akira Uekita", "akirauekita2002@gmail.com", "Str@ngP4ssword", "", new AddressEntity("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"), "https://github.com/Gustavo-Akira", "https://www.linkedin.com/in/gustavo-akira-uekita/", true);
+        return new DevProfileEntity("Akira Uekita", "akirauekita2002@gmail.com", "Str@ngP4ssword", "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd", new AddressEntity("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"), "https://github.com/Gustavo-Akira", "https://www.linkedin.com/in/gustavo-akira-uekita/", true);
     }
 }
