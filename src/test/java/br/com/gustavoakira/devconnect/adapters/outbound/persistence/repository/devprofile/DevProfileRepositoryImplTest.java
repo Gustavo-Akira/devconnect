@@ -8,6 +8,7 @@ import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,10 +32,12 @@ class DevProfileRepositoryImplTest {
     private SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository;
     private final DevProfileMapper mapper = new DevProfileMapper();
     private DevProfileRepositoryImpl repository;
+    @Mock
+    private EntityManager manager;
 
     @BeforeEach
     void setUp() {
-        repository = new DevProfileRepositoryImpl(springDataPostgresDevProfileRepository, mapper);
+        repository = new DevProfileRepositoryImpl(springDataPostgresDevProfileRepository, mapper, manager);
     }
 
 

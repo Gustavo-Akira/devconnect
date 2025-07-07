@@ -1,9 +1,10 @@
-package br.com.gustavoakira.devconnect.application.ports.repository;
+package br.com.gustavoakira.devconnect.application.repository;
 
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 
 public interface IDevProfileRepository {
     DevProfile findById(Long id) throws EntityNotFoundException, BusinessException;
@@ -11,4 +12,5 @@ public interface IDevProfileRepository {
     DevProfile update(DevProfile profile) throws BusinessException;
     void deleteProfile(Long id) throws EntityNotFoundException;
     PaginatedResult<DevProfile> findAll(int page,int size) throws BusinessException;
+    PaginatedResult<DevProfile> findAllWithFilter(DevProfileFilter filter, int page, int size) throws BusinessException;
 }

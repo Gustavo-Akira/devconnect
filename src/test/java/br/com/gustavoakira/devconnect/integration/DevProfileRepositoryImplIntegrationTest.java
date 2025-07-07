@@ -5,6 +5,8 @@ import br.com.gustavoakira.devconnect.adapters.outbound.persistence.repository.d
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
+import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.shared.BasePostgresTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +100,59 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         DevProfile saved = repository.save(profile);
 
         DevProfile returnedProfile = repository.findById(saved.getId());
+        assertNotNull(returnedProfile);
+        assertEquals(returnedProfile.getName(),saved.getName());
+        assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
+    }
+
+    @Test
+    void shouldGetDevProfilePaginatedResultWhenExists() throws BusinessException, EntityNotFoundException {
+
+        DevProfile profile = new DevProfile(
+                "Akira Uekita",
+                "akirauekita2002@gmail.com",
+                "Str@ngP4ssword",
+                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
+                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
+                "https://github.com/Gustavo-Akira",
+                "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                true
+        );
+
+        DevProfile saved = repository.save(profile);
+
+        PaginatedResult<DevProfile> paginatedResult = repository.findAll(0,5);
+        assertEquals(1,paginatedResult.getTotalElements());
+        assertEquals(1, paginatedResult.getTotalPages());
+        assertEquals(5,paginatedResult.getSize());
+        DevProfile returnedProfile = paginatedResult.getContent().getFirst();
+        assertNotNull(returnedProfile);
+        assertEquals(returnedProfile.getName(),saved.getName());
+        assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
+    }
+
+    @Test
+    void shouldGetDevProfilePaginatedResultWithFilterWhenExists() throws BusinessException, EntityNotFoundException {
+
+        DevProfile profile = new DevProfile(
+                "Akira Uekita",
+                "akirauekita2002@gmail.com",
+                "Str@ngP4ssword",
+                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
+                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
+                "https://github.com/Gustavo-Akira",
+                "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                true
+        );
+
+        DevProfile saved = repository.save(profile);
+        DevProfileFilter filter = new DevProfileFilter(null, null, null);
+
+        PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
+        assertEquals(1,paginatedResult.getTotalElements());
+        assertEquals(1, paginatedResult.getTotalPages());
+        assertEquals(5,paginatedResult.getSize());
+        DevProfile returnedProfile = paginatedResult.getContent().getFirst();
         assertNotNull(returnedProfile);
         assertEquals(returnedProfile.getName(),saved.getName());
         assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
