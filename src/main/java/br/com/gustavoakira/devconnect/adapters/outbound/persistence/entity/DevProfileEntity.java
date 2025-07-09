@@ -1,12 +1,14 @@
 package br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity;
 
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -18,6 +20,11 @@ public class DevProfileEntity extends UserSuperEntity {
     private AddressEntity address;
     private String githubLink;
     private String linkedinLink;
+
+    @ElementCollection
+    @CollectionTable(name = "dev_profile_techs", joinColumns = @JoinColumn(name = "dev_profile_id"))
+    @Column(name = "tech")
+    private List<String> techStack = new ArrayList<>();
 
     public DevProfileEntity(){
         super();

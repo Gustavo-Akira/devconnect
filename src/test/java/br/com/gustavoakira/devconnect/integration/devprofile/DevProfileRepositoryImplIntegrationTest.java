@@ -1,4 +1,4 @@
-package br.com.gustavoakira.devconnect.integration;
+package br.com.gustavoakira.devconnect.integration.devprofile;
 
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.adapters.outbound.persistence.repository.devprofile.DevProfileRepositoryImpl;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,6 +38,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
                 true
         );
 
@@ -59,6 +62,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
                 true
         );
 
@@ -94,6 +98,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
                 true
         );
 
@@ -116,6 +121,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
                 true
         );
 
@@ -142,11 +148,12 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
                 true
         );
 
         DevProfile saved = repository.save(profile);
-        DevProfileFilter filter = new DevProfileFilter(null, null, null);
+        DevProfileFilter filter = new DevProfileFilter(null, null, null, new ArrayList<>());
 
         PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
         assertEquals(1,paginatedResult.getTotalElements());
@@ -168,6 +175,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
                 true
         );
 

@@ -4,24 +4,29 @@ import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessExce
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Password;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DevProfile extends User{
     private String bio;
     private Address address;
     private String githubLink;
     private String linkedinLink;
+    private List<String> stack;
 
-    public DevProfile(String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, Boolean isActive) throws BusinessException {
+    public DevProfile(String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink,List<String> stack, Boolean isActive) throws BusinessException {
         super(name,password,email,isActive);
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
+        this.stack = stack;
         validate();
     }
 
-    public DevProfile(Long id, String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, Boolean isActive) throws BusinessException {
-        this(name,email,password,bio,address,githubLink,linkedinLink,isActive);
+    public DevProfile(Long id, String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, List<String> stack, Boolean isActive) throws BusinessException {
+        this(name,email,password,bio,address,githubLink,linkedinLink,stack,isActive);
         setId(id);
     }
 
@@ -42,7 +47,9 @@ public class DevProfile extends User{
         return linkedinLink;
     }
 
-
+    public List<String> getStack() {
+        return stack;
+    }
 
     public void moveToNewAddress(Address address){
         this.address = address;

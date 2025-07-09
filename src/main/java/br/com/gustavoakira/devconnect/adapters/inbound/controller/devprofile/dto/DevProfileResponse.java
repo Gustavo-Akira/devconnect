@@ -3,6 +3,8 @@ package br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dt
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class DevProfileResponse {
     private final Long id;
@@ -12,6 +14,7 @@ public class DevProfileResponse {
     private final AddressResponse address;
     private final String githubLink;
     private final String linkedinLink;
+    private final List<String> stack;
 
 
     @Data
@@ -37,7 +40,8 @@ public class DevProfileResponse {
                         profile.getAddress().getCountry()
                 ),
                 profile.getGithubLink(),
-                profile.getLinkedinLink()
+                profile.getLinkedinLink(),
+                profile.getStack()
         );
     }
 }

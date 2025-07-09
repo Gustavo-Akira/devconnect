@@ -1,5 +1,7 @@
 package br.com.gustavoakira.devconnect.application.usecases.devprofile.command;
 
+import java.util.List;
+
 public class SaveDevProfileCommand {
     private final String name;
     private final String email;
@@ -12,10 +14,11 @@ public class SaveDevProfileCommand {
     private final String githubLink;
     private final String linkedinLink;
     private final String bio;
+    private final List<String> stack;
 
     public SaveDevProfileCommand(String name, String email, String password,
                                  String street, String city, String state,
-                                 String zipCode, String country, String githubLink, String linkedinLink, String bio) {
+                                 String zipCode, String country, String githubLink, String linkedinLink, String bio, List<String> stack) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -27,6 +30,7 @@ public class SaveDevProfileCommand {
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
         this.bio = bio;
+        this.stack = stack;
     }
 
     public String name() { return name; }
@@ -40,4 +44,5 @@ public class SaveDevProfileCommand {
     public String githubLink() { return githubLink; }
     public String linkedinLink() { return linkedinLink; }
     public String bio() { return bio; }
+    public List<String> stack() {return stack;}
 }

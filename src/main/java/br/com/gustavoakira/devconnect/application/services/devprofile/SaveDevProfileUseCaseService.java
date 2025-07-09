@@ -32,6 +32,7 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
                 address,
                 command.githubLink(),
                 command.linkedinLink(),
+                command.stack(),
                 true
         );
         return repository.save(devProfile);

@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SaveDevProfileRequest {
     @NotNull
@@ -43,8 +45,11 @@ public class SaveDevProfileRequest {
     @NotNull
     @NotEmpty
     private final String bio;
+    @NotEmpty
+    @NotNull
+    private final List<String> stack;
 
     public SaveDevProfileCommand toCommand(){
-        return new SaveDevProfileCommand(name, email, password, street, city, state, zipCode, country, githubLink, linkedinLink, bio);
+        return new SaveDevProfileCommand(name, email, password, street, city, state, zipCode, country, githubLink, linkedinLink, bio,stack);
     }
 }

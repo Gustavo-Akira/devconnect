@@ -52,6 +52,7 @@ public class DevProfileMapper {
                     address,
                     entity.getGithubLink(),
                     entity.getLinkedinLink(),
+                    entity.getTechStack(),
                     entity.getIsActive()
             );
         } catch (Exception e) {
