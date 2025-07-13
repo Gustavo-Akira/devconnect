@@ -4,18 +4,17 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.SaveDevProfileRequest;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.DevProfileUseCases;
-import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.SaveDevProfileCommand;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/dev-profiles/")
@@ -27,5 +26,39 @@ public class DevProfileController {
     public ResponseEntity<DevProfileResponse> saveDevProfile(@RequestBody @Valid SaveDevProfileRequest request) throws BusinessException {
         DevProfile profile = cases.saveDevProfileUseCase().execute(request.toCommand());
         return ResponseEntity.created(URI.create("/v1/dev-profiles/"+profile.getId())).body(DevProfileResponse.fromDomain(profile));
+    }
+
+    @GetMapping
+    public ResponseEntity<PaginatedResult<DevProfileResponse>> findAll(
+            @RequestParam(defaultValue = "0") Integer number,
+            @RequestParam(defaultValue = "5") Integer size,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String tech,
+            @RequestParam(required = false) List<String> stack
+    ) throws BusinessException {
+        PaginatedResult<DevProfile> profiles;
+
+        boolean hasFilters = (name != null && !name.isBlank()) ||
+                (city != null && !city.isBlank()) ||
+                (stack != null && !stack.isEmpty());
+
+        if (hasFilters) {
+            DevProfileFilter filter = new DevProfileFilter(name, city, stack);
+            profiles = cases.findAllDevProfileWithFilterUseCase().execute(filter, number, size);
+        } else {
+            profiles = cases.findAllDevProfileUseCase().execute(new DevProfileFindAllQuery(number, size));
+        }
+
+        return ResponseEntity.ok(toResponse(profiles));
+    }
+
+    private PaginatedResult<DevProfileResponse> toResponse(PaginatedResult<DevProfile> domain) {
+        return new PaginatedResult<>(
+                domain.getContent().stream().map(DevProfileResponse::fromDomain).toList(),
+                domain.getPage(),
+                domain.getSize(),
+                domain.getTotalElements()
+        );
     }
 }

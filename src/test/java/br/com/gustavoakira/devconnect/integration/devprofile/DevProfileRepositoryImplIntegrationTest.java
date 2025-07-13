@@ -153,7 +153,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         );
 
         DevProfile saved = repository.save(profile);
-        DevProfileFilter filter = new DevProfileFilter(null, null, null, new ArrayList<>());
+        DevProfileFilter filter = new DevProfileFilter(null, null, new ArrayList<>());
 
         PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
         assertEquals(1,paginatedResult.getTotalElements());

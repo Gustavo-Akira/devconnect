@@ -9,10 +9,7 @@ import br.com.gustavoakira.devconnect.application.repository.IDevProfileReposito
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -94,8 +91,9 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
             predicates.add(cb.equal(cb.lower(root.get("address").get("city")), filter.city().toLowerCase()));
         }
 
-        if (filter.tech() != null && !filter.tech().isBlank()) {
-            predicates.add(cb.like(cb.lower(root.get("techStack")), "%" + filter.tech().toLowerCase() + "%"));
+        if (filter.stack() != null && !filter.stack().isEmpty()) {
+            Join<DevProfile, String> techJoin = root.join("techStack");
+            predicates.add(techJoin.in(filter.stack()));
         }
 
         query.where(cb.and(predicates.toArray(new Predicate[0])));

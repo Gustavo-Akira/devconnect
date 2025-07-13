@@ -6,13 +6,11 @@ public class DevProfileFilter {
 
     private final String name;
     private final String city;
-    private final String tech;
     private final List<String> stack;
 
-    public DevProfileFilter(String name, String city, String tech, List<String> stack) {
+    public DevProfileFilter(String name, String city, List<String> stack) {
         this.name = name;
         this.city = city;
-        this.tech = tech;
         this.stack = stack;
     }
 
@@ -24,8 +22,7 @@ public class DevProfileFilter {
         return city;
     }
 
-    public String tech() {
-        return tech;
+    public List<String> stack() {
+        return stack;
     }
-
 }
