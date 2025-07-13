@@ -2,12 +2,15 @@ package br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile;
 
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.DevProfileResponse;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.SaveDevProfileRequest;
+import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.UpdateDevProfileRequest;
+import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.DevProfileUseCases;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,17 @@ public class DevProfileController {
     public ResponseEntity<DevProfileResponse> saveDevProfile(@RequestBody @Valid SaveDevProfileRequest request) throws BusinessException {
         DevProfile profile = cases.saveDevProfileUseCase().execute(request.toCommand());
         return ResponseEntity.created(URI.create("/v1/dev-profiles/"+profile.getId())).body(DevProfileResponse.fromDomain(profile));
+    }
+
+    @PutMapping
+    public ResponseEntity<DevProfileResponse> updateDevProfile(@RequestBody @Valid UpdateDevProfileRequest request) throws BusinessException, EntityNotFoundException {
+        return ResponseEntity.ok().body(DevProfileResponse.fromDomain(cases.updateDevProfileUseCase().execute(request.toCommand())));
+    }
+
+    @GetMapping("/${id}")
+    public ResponseEntity<DevProfileResponse> getDevProfile(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
+        DevProfile profile=cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));
+        return ResponseEntity.ok(DevProfileResponse.fromDomain(profile));
     }
 
     @GetMapping

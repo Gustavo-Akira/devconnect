@@ -17,6 +17,6 @@ public class FindDevProfileByIdUseCaseImpl implements FindDevProfileByIdUseCase 
 
     @Override
     public DevProfile execute(FindDevProfileByIdQuery query) throws EntityNotFoundException, BusinessException {
-        return repository.findById(query.getId());
+        return repository.findById(query.id());
     }
 }

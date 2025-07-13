@@ -15,6 +15,6 @@ public class FindAllDevProfileUseCaseImpl implements FindAllDevProfileUseCase {
     private IDevProfileRepository repository;
     @Override
     public PaginatedResult<DevProfile> execute(DevProfileFindAllQuery query) throws BusinessException {
-        return repository.findAll(query.getPage(),query.getSize());
+        return repository.findAll(query.page(),query.size());
     }
 }

@@ -15,6 +15,6 @@ public class DeleteDevProfileUseCaseImpl implements DeleteDevProfileUseCase {
 
     @Override
     public void execute(DeleteDevProfileCommand command) throws EntityNotFoundException {
-       repository.deleteProfile(command.getId());
+       repository.deleteProfile(command.id());
     }
 }
