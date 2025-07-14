@@ -30,21 +30,21 @@ public class DevProfileEntity extends UserSuperEntity {
         super();
     }
 
-    public DevProfileEntity(Long id,String name,String email,String password,String bio, AddressEntity address, String githubLink, String linkedinLink, Boolean isActive) {
+    public DevProfileEntity(Long id,String name,String email,String password,String bio, AddressEntity address, String githubLink, String linkedinLink,List<String> techStack, Boolean isActive) {
         super(id,name,password,email,isActive);
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
-
+        this.techStack = techStack;
     }
 
-    public DevProfileEntity(String name,String email,String password,String bio, AddressEntity address, String githubLink, String linkedinLink, Boolean isActive) {
+    public DevProfileEntity(String name,String email,String password,String bio, AddressEntity address, String githubLink, String linkedinLink, List<String> techStack, Boolean isActive) {
         super(null,name,password,email,isActive);
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
-
+        this.techStack = techStack;
     }
 }

@@ -165,6 +165,6 @@ class DevProfileRepositoryImplTest {
 
 
     private static DevProfileEntity getEntity() {
-        return new DevProfileEntity("Akira Uekita", "akirauekita2002@gmail.com", "Str@ngP4ssword", "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd", new AddressEntity("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"), "https://github.com/Gustavo-Akira", "https://www.linkedin.com/in/gustavo-akira-uekita/", true);
+        return new DevProfileEntity("Akira Uekita", "akirauekita2002@gmail.com", "Str@ngP4ssword", "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd", new AddressEntity("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"), "https://github.com/Gustavo-Akira", "https://www.linkedin.com/in/gustavo-akira-uekita/", new ArrayList<>(),true);
     }
 }

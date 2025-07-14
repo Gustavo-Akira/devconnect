@@ -81,6 +81,28 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
         CriteriaQuery<DevProfileEntity> query = cb.createQuery(DevProfileEntity.class);
         Root<DevProfileEntity> root = query.from(DevProfileEntity.class);
 
+        List<Predicate> predicates = buildPredicates(filter, cb, root);
+        query.where(cb.and(predicates.toArray(new Predicate[0])));
+
+        var typedQuery = manager.createQuery(query)
+                .setFirstResult(page * size)
+                .setMaxResults(size);
+
+        List<DevProfileEntity> results = typedQuery.getResultList();
+        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        Root<DevProfileEntity> countRoot = countQuery.from(DevProfileEntity.class);
+        List<Predicate> countPredicates = buildPredicates(filter, cb, countRoot);
+        countQuery.select(cb.count(countRoot)).where(cb.and(countPredicates.toArray(new Predicate[0])));
+        long totalElements = manager.createQuery(countQuery).getSingleResult();
+        List<DevProfile> content = new ArrayList<>();
+        for (DevProfileEntity entity : results) {
+            content.add(mapper.toDomain(entity));
+        }
+        return new PaginatedResult<>(content, page, size, totalElements);
+    }
+
+
+    private List<Predicate> buildPredicates(DevProfileFilter filter, CriteriaBuilder cb, Root<DevProfileEntity> root) {
         List<Predicate> predicates = new ArrayList<>();
 
         if (filter.name() != null && !filter.name().isBlank()) {
@@ -92,27 +114,10 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
         }
 
         if (filter.stack() != null && !filter.stack().isEmpty()) {
-            Join<DevProfile, String> techJoin = root.join("techStack");
+            Join<DevProfileEntity, String> techJoin = root.join("techStack");
             predicates.add(techJoin.in(filter.stack()));
         }
 
-        query.where(cb.and(predicates.toArray(new Predicate[0])));
-
-        var typedQuery = manager.createQuery(query)
-                .setFirstResult(page * size)
-                .setMaxResults(size);
-
-        List<DevProfileEntity> results = typedQuery.getResultList();
-
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<DevProfileEntity> countRoot = countQuery.from(DevProfileEntity.class);
-        countQuery.select(cb.count(countRoot)).where(cb.and(predicates.toArray(new Predicate[0])));
-        long totalElements = manager.createQuery(countQuery).getSingleResult();
-        List<DevProfile> content = new ArrayList<>();
-        for (DevProfileEntity entity : results) {
-            content.add(mapper.toDomain(entity));
-        }
-        return new PaginatedResult<>(content, page, size, totalElements);
+        return predicates;
     }
-
 }

@@ -2,9 +2,7 @@ package br.com.gustavoakira.devconnect.application.domain;
 
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
-import br.com.gustavoakira.devconnect.application.domain.value_object.Password;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

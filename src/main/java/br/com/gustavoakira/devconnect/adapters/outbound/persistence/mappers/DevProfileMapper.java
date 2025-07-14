@@ -26,6 +26,7 @@ public class DevProfileMapper {
                 addressEntity,
                 domain.getGithubLink(),
                 domain.getLinkedinLink(),
+                domain.getStack(),
                 domain.isActive()
         );
     }
@@ -39,8 +40,6 @@ public class DevProfileMapper {
 
         Password password = stringToPassword(entity.getPassword());
 
-        // Use construtor alternativo que não lança exceção
-        // ou envolva em try/catch se usar o construtor que lança exceção
         DevProfile devProfile;
         try {
             devProfile = new DevProfile(
