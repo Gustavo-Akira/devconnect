@@ -8,6 +8,7 @@ import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.DevProfileUseCases;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.DeleteDevProfileCommand;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
@@ -36,6 +37,11 @@ public class DevProfileController {
         return ResponseEntity.ok().body(DevProfileResponse.fromDomain(cases.updateDevProfileUseCase().execute(request.toCommand())));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDevProfile(@PathVariable Long id) throws EntityNotFoundException {
+        cases.deleteDevProfileUseCase().execute(new DeleteDevProfileCommand(id));
+        return ResponseEntity.noContent().build();
+    }
     @GetMapping("/{id}")
     public ResponseEntity<DevProfileResponse> getDevProfile(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
         DevProfile profile=cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));

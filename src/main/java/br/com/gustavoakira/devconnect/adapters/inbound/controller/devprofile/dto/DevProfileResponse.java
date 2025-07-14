@@ -15,6 +15,7 @@ public class DevProfileResponse {
     private final String githubLink;
     private final String linkedinLink;
     private final List<String> stack;
+    private final Boolean isActive;
 
 
     @Data
@@ -41,7 +42,8 @@ public class DevProfileResponse {
                 ),
                 profile.getGithubLink(),
                 profile.getLinkedinLink(),
-                profile.getStack()
+                profile.getStack(),
+                profile.isActive()
         );
     }
 }
