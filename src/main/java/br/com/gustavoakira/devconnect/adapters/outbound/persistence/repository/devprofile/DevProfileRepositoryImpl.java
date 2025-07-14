@@ -78,8 +78,8 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
     @Override
     public PaginatedResult<DevProfile> findAllWithFilter(DevProfileFilter filter, int page, int size) throws BusinessException {
         CriteriaBuilder cb = manager.getCriteriaBuilder();
-        CriteriaQuery<DevProfile> query = cb.createQuery(DevProfile.class);
-        Root<DevProfile> root = query.from(DevProfile.class);
+        CriteriaQuery<DevProfileEntity> query = cb.createQuery(DevProfileEntity.class);
+        Root<DevProfileEntity> root = query.from(DevProfileEntity.class);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -102,15 +102,17 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
                 .setFirstResult(page * size)
                 .setMaxResults(size);
 
-        List<DevProfile> results = typedQuery.getResultList();
+        List<DevProfileEntity> results = typedQuery.getResultList();
 
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<DevProfile> countRoot = countQuery.from(DevProfile.class);
+        Root<DevProfileEntity> countRoot = countQuery.from(DevProfileEntity.class);
         countQuery.select(cb.count(countRoot)).where(cb.and(predicates.toArray(new Predicate[0])));
         long totalElements = manager.createQuery(countQuery).getSingleResult();
-        int totalPages = (int) Math.ceil((double) totalElements / size);
-
-        return new PaginatedResult<>(results, page, totalPages, totalElements);
+        List<DevProfile> content = new ArrayList<>();
+        for (DevProfileEntity entity : results) {
+            content.add(mapper.toDomain(entity));
+        }
+        return new PaginatedResult<>(content, page, size, totalElements);
     }
 
 }

@@ -1,8 +1,8 @@
 db:
   config:
-    username: postgres
-    password: 123456
-    url: jdbc:postgresql://localhost:5432/ms-user
+    username: devuser
+    password: devpass
+    url: jdbc:postgresql://localhost:5432/devconnect
 spring:
   jpa:
     hibernate:

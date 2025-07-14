@@ -36,7 +36,7 @@ public class DevProfileController {
         return ResponseEntity.ok().body(DevProfileResponse.fromDomain(cases.updateDevProfileUseCase().execute(request.toCommand())));
     }
 
-    @GetMapping("/${id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DevProfileResponse> getDevProfile(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
         DevProfile profile=cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));
         return ResponseEntity.ok(DevProfileResponse.fromDomain(profile));

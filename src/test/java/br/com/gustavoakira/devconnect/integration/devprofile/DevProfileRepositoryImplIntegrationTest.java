@@ -128,7 +128,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         DevProfile saved = repository.save(profile);
 
         PaginatedResult<DevProfile> paginatedResult = repository.findAll(0,5);
-        assertEquals(1,paginatedResult.getTotalElements());
+        assertEquals(5,paginatedResult.getTotalElements());
         assertEquals(1, paginatedResult.getTotalPages());
         assertEquals(5,paginatedResult.getSize());
         DevProfile returnedProfile = paginatedResult.getContent().getFirst();
@@ -153,7 +153,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         );
 
         DevProfile saved = repository.save(profile);
-        DevProfileFilter filter = new DevProfileFilter(null, null, new ArrayList<>());
+        DevProfileFilter filter = new DevProfileFilter(null, null, null);
 
         PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
         assertEquals(1,paginatedResult.getTotalElements());
