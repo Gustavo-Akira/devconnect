@@ -75,7 +75,6 @@ public class DevProfileMapper {
         );
     }
 
-    // Address -> AddressEntity
     public AddressEntity toEntity(Address address) {
         if (address == null) {
             return null;
@@ -89,7 +88,6 @@ public class DevProfileMapper {
         return entity;
     }
 
-    // Password -> String
     private String passwordToString(Password password) {
         if (password == null) {
             return null;
@@ -97,7 +95,6 @@ public class DevProfileMapper {
         return password.getValue();
     }
 
-    // String -> Password
     private Password stringToPassword(String passwordString) throws BusinessException {
         if (passwordString == null) {
             return null;
