@@ -1,6 +1,6 @@
 ## 📌 Description
 
-<!-- Explique brevemente o que foi feito, por que, e quais impactos -->
+<!-- Brief description of what changed -->
 
 ## 🧪 Realized Tests
 
