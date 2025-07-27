@@ -1,6 +1,7 @@
 package br.com.gustavoakira.devconnect.application.services.auth;
 
 import br.com.gustavoakira.devconnect.adapters.config.JwtProvider;
+import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.repository.IDevProfileRepository;
@@ -24,15 +25,14 @@ public class TokenGrantUseCaseImpl implements TokenGrantUseCase {
     }
 
     @Override
-    public TokenGrantResponse execute(TokenGrantCommand command) throws BusinessException {
+    public TokenGrantResponse execute(TokenGrantCommand command) throws BusinessException, EntityNotFoundException {
         if (!"password".equalsIgnoreCase(command.grantType())) {
-            throw new BusinessException("Unsupported grant_type");
+            throw new BusinessException("Unsupported grant_type "+command.grantType());
         }
 
-        DevProfile profile = repository.findByEmail(command.username())
-                .orElseThrow(() -> new BusinessException("Invalid credentials"));
+        DevProfile profile = repository.findByEmail(command.username());
 
-        if (!encoder.matches(command.password(), profile.getPassword().getHashed())) {
+        if (!encoder.matches(command.password(), profile.getPassword().getValue())) {
             throw new BusinessException("Invalid credentials");
         }
         long expiresIn = 2 * 60 * 60L;

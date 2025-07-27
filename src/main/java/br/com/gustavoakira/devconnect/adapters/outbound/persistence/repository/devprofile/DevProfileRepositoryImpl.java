@@ -101,6 +101,11 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
         return new PaginatedResult<>(content, page, size, totalElements);
     }
 
+    @Override
+    public DevProfile findByEmail(String email) throws BusinessException, EntityNotFoundException {
+        return mapper.toDomain(springDataPostgresDevProfileRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Invalid Credentials")));
+    }
+
 
     private List<Predicate> buildPredicates(DevProfileFilter filter, CriteriaBuilder cb, Root<DevProfileEntity> root) {
         List<Predicate> predicates = new ArrayList<>();

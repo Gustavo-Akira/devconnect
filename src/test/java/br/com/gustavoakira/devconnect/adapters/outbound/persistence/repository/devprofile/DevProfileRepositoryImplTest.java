@@ -163,6 +163,38 @@ class DevProfileRepositoryImplTest {
         }
     }
 
+    @Nested
+    class FindDevProfileByEmail{
+        @Test
+        void shouldReturnDevProfileWhenProfileExists() throws EntityNotFoundException, BusinessException {
+            Long id = 1L;
+            DevProfileEntity entity = getEntity();
+            String email = "akirauekita2002@gmail.com";
+            entity.setId(id);
+            entity.setIsActive(true);
+            DevProfile domainProfile = new DevProfile(1L,"Akira Uekita",email,"Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
+
+
+            Mockito.when(springDataPostgresDevProfileRepository.findByEmail(email))
+                    .thenReturn(Optional.of(entity));
+            DevProfile devProfile = repository.findByEmail(email);
+            assertEquals(domainProfile.getName(),devProfile.getName());
+        }
+
+        @Test
+        void shouldThrowEntityNotFoundExceptionWhenDevProfileDoesNotExist() {
+            String email = "akirauekita22@gmail.com";
+
+            Mockito.when(springDataPostgresDevProfileRepository.findByEmail(email))
+                    .thenReturn(Optional.empty());
+
+            EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.findByEmail(email));
+            assertEquals("Invalid Credentials", exception.getMessage());
+
+            Mockito.verify(springDataPostgresDevProfileRepository).findByEmail(Mockito.any());
+        }
+    }
+
 
     private static DevProfileEntity getEntity() {
         return new DevProfileEntity("Akira Uekita", "akirauekita2002@gmail.com", "Str@ngP4ssword", "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd", new AddressEntity("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"), "https://github.com/Gustavo-Akira", "https://www.linkedin.com/in/gustavo-akira-uekita/", new ArrayList<>(),true);

@@ -95,7 +95,7 @@ public class DevProfileMapper {
         return password.getValue();
     }
 
-    private Password stringToPassword(String passwordString) throws BusinessException {
+    private Password stringToPassword(String passwordString) {
         if (passwordString == null) {
             return null;
         }
