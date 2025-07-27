@@ -56,7 +56,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldUpdateAndReturnDomainDevProfile() throws BusinessException {
         DevProfile profile = new DevProfile(
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
+                "akirauekita2003@gmail.com",
                 "Str@ngP4ssword",
                 "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
@@ -92,7 +92,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
         DevProfile profile = new DevProfile(
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
+                "akirauekita2004@gmail.com",
                 "Str@ngP4ssword",
                 "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
@@ -115,7 +115,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
         DevProfile profile = new DevProfile(
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
+                "akirauekita2005@gmail.com",
                 "Str@ngP4ssword",
                 "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
@@ -142,7 +142,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
         DevProfile profile = new DevProfile(
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
+                "akirauekita2006@gmail.com",
                 "Str@ngP4ssword",
                 "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
@@ -169,7 +169,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldSoftDeleteAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
         DevProfile profile = new DevProfile(
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
+                "akirauekita2007@gmail.com",
                 "Str@ngP4ssword",
                 "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
@@ -191,5 +191,32 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         repository.deleteProfile(saved.getId());
         saved = repository.findById(saved.getId());
         assertFalse(saved.isActive());
+    }
+
+    @Test
+    void shouldFindByEmailAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
+        DevProfile profile = new DevProfile(
+                "Akira Uekita",
+                "akirauekita2008@gmail.com",
+                "Str@ngP4ssword",
+                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
+                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
+                "https://github.com/Gustavo-Akira",
+                "https://www.linkedin.com/in/gustavo-akira-uekita/",
+                new ArrayList<>(),
+                true
+        );
+
+        DevProfile saved = repository.save(profile);
+
+        assertNotNull(saved);
+        assertNotNull(saved.getId());
+        assertEquals(profile.getEmail(), saved.getEmail());
+        assertEquals(profile.getName(), saved.getName());
+        assertTrue(saved.isActive());
+        assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
+
+        DevProfile findEmailProfile =  repository.findByEmail(saved.getEmail());
+        assertEquals(saved.getId(),findEmailProfile.getId());
     }
 }

@@ -13,4 +13,5 @@ public interface IDevProfileRepository {
     void deleteProfile(Long id) throws EntityNotFoundException;
     PaginatedResult<DevProfile> findAll(int page,int size) throws BusinessException;
     PaginatedResult<DevProfile> findAllWithFilter(DevProfileFilter filter, int page, int size) throws BusinessException;
+    DevProfile findByEmail(String email) throws BusinessException,EntityNotFoundException;
 }
