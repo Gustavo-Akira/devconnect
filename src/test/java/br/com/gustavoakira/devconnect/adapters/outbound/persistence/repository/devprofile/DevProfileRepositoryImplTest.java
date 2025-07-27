@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,12 @@ class DevProfileRepositoryImplTest {
     private DevProfileRepositoryImpl repository;
     @Mock
     private EntityManager manager;
+    @Mock
+    private PasswordEncoder encoder;
 
     @BeforeEach
     void setUp() {
-        repository = new DevProfileRepositoryImpl(springDataPostgresDevProfileRepository, mapper, manager);
+        repository = new DevProfileRepositoryImpl(springDataPostgresDevProfileRepository, mapper, manager, encoder);
     }
 
 
@@ -47,6 +50,7 @@ class DevProfileRepositoryImplTest {
         DevProfile domainProfile = new DevProfile("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
         DevProfileEntity entity = getEntity();
         entity.setId(1L);
+        Mockito.when(encoder.encode(domainProfile.getPassword().getValue())).thenReturn(domainProfile.getPassword().getValue());
         Mockito.when(springDataPostgresDevProfileRepository.save(entity)).thenReturn(entity);
         domainProfile.setId(1L);
 

@@ -21,7 +21,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/dev-profiles/")
+@RequestMapping("/v1/dev-profiles")
 public class DevProfileController {
     @Autowired
     private DevProfileUseCases cases;
