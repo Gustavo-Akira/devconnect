@@ -12,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
     private final SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository;
 
     private final EntityManager manager;
+    private final PasswordEncoder encoder;
 
-    public DevProfileRepositoryImpl(SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository, DevProfileMapper mapper, EntityManager manager) {
+    public DevProfileRepositoryImpl(SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository, DevProfileMapper mapper, EntityManager manager, PasswordEncoder encoder) {
         this.springDataPostgresDevProfileRepository = springDataPostgresDevProfileRepository;
         this.mapper = mapper;
         this.manager = manager;
+        this.encoder = encoder;
     }
 
 
@@ -41,6 +44,7 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
     @Override
     public DevProfile save(DevProfile profile) throws BusinessException {
         DevProfileEntity entity = mapper.toEntity(profile);
+        entity.setPassword(encoder.encode(profile.getPassword().getValue()));
         return mapper.toDomain(springDataPostgresDevProfileRepository.save(entity));
     }
 

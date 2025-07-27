@@ -3,3 +3,5 @@ spring:
     name: devconnect
 server:
   port: 8083
+jwt:
+  secret: sua_chave_super_secreta_de_32+_caracteres
