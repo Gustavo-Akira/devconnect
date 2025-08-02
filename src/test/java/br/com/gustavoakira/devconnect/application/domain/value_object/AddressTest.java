@@ -13,7 +13,7 @@ class AddressTest {
     }
     @Test
     void shouldThrownBusinessExceptionWithInvalidCountry(){
-       BusinessException exception = assertThrows(BusinessException.class,()->new Address("Rua B", "Cidade Z", "Estado W", "IN", "98765-432"));
+       final BusinessException exception = assertThrows(BusinessException.class,()->new Address("Rua B", "Cidade Z", "Estado W", "IN", "98765-432"));
        assertTrue(exception.getMessage().contains("Your Country is not in the accepted countries"));
     }
 }

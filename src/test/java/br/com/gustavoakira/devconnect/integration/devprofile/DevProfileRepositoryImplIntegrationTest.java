@@ -30,7 +30,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldSaveAndReturnDomainDevProfile() throws BusinessException {
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2002@gmail.com",
                 "Str@ngP4ssword",
@@ -42,7 +42,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 true
         );
 
-        DevProfile saved = repository.save(profile);
+        final DevProfile saved = repository.save(profile);
 
         assertNotNull(saved);
         assertNotNull(saved.getId());
@@ -54,7 +54,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldUpdateAndReturnDomainDevProfile() throws BusinessException {
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2003@gmail.com",
                 "Str@ngP4ssword",
@@ -66,7 +66,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 true
         );
 
-        DevProfile saved = repository.save(profile);
+        final DevProfile saved = repository.save(profile);
 
         assertNotNull(saved);
         assertNotNull(saved.getId());
@@ -77,7 +77,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
         profile.setId(saved.getId());
         profile.rename("Mudei o Nome");
-        DevProfile updated = repository.update(profile);
+        final DevProfile updated = repository.update(profile);
 
         assertNotNull(updated);
         assertEquals(saved.getId(), updated.getId());
@@ -90,7 +90,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldGetDevProfileWhenExists() throws BusinessException, EntityNotFoundException {
 
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2004@gmail.com",
                 "Str@ngP4ssword",
@@ -102,9 +102,9 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 true
         );
 
-        DevProfile saved = repository.save(profile);
+        final DevProfile saved = repository.save(profile);
 
-        DevProfile returnedProfile = repository.findById(saved.getId());
+        final DevProfile returnedProfile = repository.findById(saved.getId());
         assertNotNull(returnedProfile);
         assertEquals(returnedProfile.getName(),saved.getName());
         assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
@@ -113,7 +113,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldGetDevProfilePaginatedResultWhenExists() throws BusinessException, EntityNotFoundException {
 
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2005@gmail.com",
                 "Str@ngP4ssword",
@@ -125,13 +125,15 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 true
         );
 
-        DevProfile saved = repository.save(profile);
+        final DevProfile saved = repository.save(profile);
 
-        PaginatedResult<DevProfile> paginatedResult = repository.findAll(0,5);
+        final PaginatedResult<DevProfile> paginatedResult = repository.findAll(0,5);
         assertEquals(6,paginatedResult.getTotalElements());
         assertEquals(2, paginatedResult.getTotalPages());
         assertEquals(5,paginatedResult.getSize());
-        DevProfile returnedProfile = paginatedResult.getContent().getFirst();
+
+        final DevProfile returnedProfile = paginatedResult.getContent().getFirst();
+
         assertNotNull(returnedProfile);
         assertEquals(returnedProfile.getName(),saved.getName());
         assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
@@ -140,7 +142,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldGetDevProfilePaginatedResultWithFilterWhenExists() throws BusinessException, EntityNotFoundException {
 
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2006@gmail.com",
                 "Str@ngP4ssword",
@@ -152,14 +154,16 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 true
         );
 
-        DevProfile saved = repository.save(profile);
-        DevProfileFilter filter = new DevProfileFilter(null, null, null);
+        final DevProfile saved = repository.save(profile);
+        final DevProfileFilter filter = new DevProfileFilter(null, null, null);
 
-        PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
+        final PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
         assertEquals(1,paginatedResult.getTotalElements());
         assertEquals(1, paginatedResult.getTotalPages());
         assertEquals(5,paginatedResult.getSize());
-        DevProfile returnedProfile = paginatedResult.getContent().getFirst();
+
+        final DevProfile returnedProfile = paginatedResult.getContent().getFirst();
+
         assertNotNull(returnedProfile);
         assertEquals(returnedProfile.getName(),saved.getName());
         assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
@@ -167,7 +171,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldSoftDeleteAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2007@gmail.com",
                 "Str@ngP4ssword",
@@ -195,7 +199,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldFindByEmailAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
-        DevProfile profile = new DevProfile(
+        final DevProfile profile = new DevProfile(
                 "Akira Uekita",
                 "akirauekita2008@gmail.com",
                 "Str@ngP4ssword",
@@ -207,7 +211,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 true
         );
 
-        DevProfile saved = repository.save(profile);
+        final DevProfile saved = repository.save(profile);
 
         assertNotNull(saved);
         assertNotNull(saved.getId());
@@ -216,7 +220,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         assertTrue(saved.isActive());
         assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
 
-        DevProfile findEmailProfile =  repository.findByEmail(saved.getEmail());
+        final DevProfile findEmailProfile =  repository.findByEmail(saved.getEmail());
         assertEquals(saved.getId(),findEmailProfile.getId());
     }
 }

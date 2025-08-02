@@ -45,9 +45,9 @@ public class AuthControllerTest {
 
     @Test
     void shouldReturnTokenResponseWhenLoginIsSuccessful() throws Exception {
-        TokenRequest tokenRequest = new TokenRequest("password","user@example.com", "password123");
+        final TokenRequest tokenRequest = new TokenRequest("password","user@example.com", "password123");
 
-        TokenGrantResponse tokenGrantResponse = new TokenGrantResponse("fake-jwt-token", 3600L);
+        final TokenGrantResponse tokenGrantResponse = new TokenGrantResponse("fake-jwt-token", 3600L);
         Mockito.when(tokenGrantUseCase.execute(any())).thenReturn(tokenGrantResponse);
 
         mockMvc.perform(post("/v1/auth/login")

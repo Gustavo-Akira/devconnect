@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.5.3'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'jacoco'
+	id 'checkstyle'
 }
 
 group = 'br.com.gustavoakira'
@@ -26,6 +27,11 @@ repositories {
 
 jacoco {
 	toolVersion = "0.8.13"
+}
+checkstyle {
+	toolVersion = '10.15.0'
+	configFile = file('config/checkstyle/checkstyle.xml')
+	ignoreFailures = false
 }
 
 dependencies {
@@ -55,6 +61,15 @@ tasks.named('test') {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
 }
+
+tasks.withType(Checkstyle) {
+	reports {
+		xml.required = false
+		html.required = true
+		html.destination = layout.buildDirectory.dir("reports/checkstyle.html").get().asFile
+	}
+}
+
 jacocoTestReport {
 	dependsOn test
 	reports {
@@ -82,3 +97,5 @@ jacocoTestCoverageVerification {
 		}
 	}
 }
+
+check.dependsOn jacocoTestCoverageVerification

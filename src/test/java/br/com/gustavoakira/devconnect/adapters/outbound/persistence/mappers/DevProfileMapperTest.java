@@ -24,10 +24,10 @@ class DevProfileMapperTest {
 
     @Test
     void testToEntity_withValidDomain_shouldMapCorrectly() throws BusinessException {
-        Address address = new Address("Rua A", "São Paulo", "SP", "BR", "12345-678");
-        Password password = new Password("encoded-password");
+        final Address address = new Address("Rua A", "São Paulo", "SP", "BR", "12345-678");
+        final Password password = new Password("encoded-password");
 
-        DevProfile domain = new DevProfile(
+        final DevProfile domain = new DevProfile(
                 1L,
                 "Gustavo Akira",
                 "gustavo@example.com",
@@ -40,7 +40,7 @@ class DevProfileMapperTest {
                 true
         );
 
-        DevProfileEntity entity = mapper.toEntity(domain);
+        final DevProfileEntity entity = mapper.toEntity(domain);
 
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(1L);
@@ -58,14 +58,14 @@ class DevProfileMapperTest {
 
     @Test
     void testToDomain_withValidEntity_shouldMapCorrectly() throws BusinessException {
-        AddressEntity addressEntity = new AddressEntity();
+        final AddressEntity addressEntity = new AddressEntity();
         addressEntity.setStreet("Rua B");
         addressEntity.setCity("Rio de Janeiro");
         addressEntity.setState("RJ");
         addressEntity.setCountry("BR");
         addressEntity.setZipCode("87654-321");
 
-        DevProfileEntity entity = new DevProfileEntity(
+        final DevProfileEntity entity = new DevProfileEntity(
                 2L,
                 "Akira Uekita",
                 "akira@example.com",
@@ -78,7 +78,7 @@ class DevProfileMapperTest {
                 true
         );
 
-        DevProfile domain = mapper.toDomain(entity);
+        final DevProfile domain = mapper.toDomain(entity);
 
         assertThat(domain).isNotNull();
         assertThat(domain.getId()).isEqualTo(2L);
@@ -102,25 +102,25 @@ class DevProfileMapperTest {
     }
     @Test
     void toEntity_shouldReturnNull_whenDomainIsNull() {
-        DevProfileEntity result = mapper.toEntity((DevProfile) null);
+        final DevProfileEntity result = mapper.toEntity((DevProfile) null);
         assertThat(result).isNull();
     }
 
     @Test
     void toDomain_shouldReturnNull_whenEntityIsNull() throws Exception {
-        DevProfile result = mapper.toDomain((DevProfileEntity) null);
+        final DevProfile result = mapper.toDomain((DevProfileEntity) null);
         assertThat(result).isNull();
     }
 
     @Test
     void toEntity_shouldReturnNull_whenAddressIsNull() {
-        AddressEntity result = mapper.toEntity((Address) null);
+        final AddressEntity result = mapper.toEntity((Address) null);
         assertThat(result).isNull();
     }
 
     @Test
     void toDomain_shouldReturnNull_whenAddressEntityIsNull() throws Exception {
-        Address result = mapper.toDomain((AddressEntity) null);
+        final Address result = mapper.toDomain((AddressEntity) null);
         assertThat(result).isNull();
     }
 }

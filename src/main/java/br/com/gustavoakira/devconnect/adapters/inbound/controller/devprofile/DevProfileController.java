@@ -28,7 +28,7 @@ public class DevProfileController {
 
     @PostMapping
     public ResponseEntity<DevProfileResponse> saveDevProfile(@RequestBody @Valid SaveDevProfileRequest request) throws BusinessException {
-        DevProfile profile = cases.saveDevProfileUseCase().execute(request.toCommand());
+        final DevProfile profile = cases.saveDevProfileUseCase().execute(request.toCommand());
         return ResponseEntity.created(URI.create("/v1/dev-profiles/"+profile.getId())).body(DevProfileResponse.fromDomain(profile));
     }
 
@@ -44,7 +44,7 @@ public class DevProfileController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<DevProfileResponse> getDevProfile(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
-        DevProfile profile=cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));
+        final DevProfile profile=cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));
         return ResponseEntity.ok(DevProfileResponse.fromDomain(profile));
     }
 
@@ -57,14 +57,14 @@ public class DevProfileController {
             @RequestParam(required = false) String tech,
             @RequestParam(required = false) List<String> stack
     ) throws BusinessException {
-        PaginatedResult<DevProfile> profiles;
+        final PaginatedResult<DevProfile> profiles;
 
-        boolean hasFilters = (name != null && !name.isBlank()) ||
+        final boolean hasFilters = (name != null && !name.isBlank()) ||
                 (city != null && !city.isBlank()) ||
                 (stack != null && !stack.isEmpty());
 
         if (hasFilters) {
-            DevProfileFilter filter = new DevProfileFilter(name, city, stack);
+            final DevProfileFilter filter = new DevProfileFilter(name, city, stack);
             profiles = cases.findAllDevProfileWithFilterUseCase().execute(filter, number, size);
         } else {
             profiles = cases.findAllDevProfileUseCase().execute(new DevProfileFindAllQuery(number, size));

@@ -17,14 +17,14 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
 
     @Override
     public DevProfile execute(SaveDevProfileCommand command) throws BusinessException {
-        Address address = new Address(
+        final Address address = new Address(
                 command.street(),
                 command.city(),
                 command.state(),
                 command.country(),
                 command.zipCode()
         );
-        DevProfile devProfile = new DevProfile(
+        final DevProfile devProfile = new DevProfile(
                 command.name(),
                 command.email(),
                 command.password(),
