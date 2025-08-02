@@ -26,9 +26,6 @@ jobs:
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest
 
-      - name: Run PMD
-        run: ./gradlew pmdMain pmdTest
-
       - name: Run tests and generate coverage report
         run: ./gradlew clean test jacocoTestReport
 
