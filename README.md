@@ -29,6 +29,8 @@ Designed with **Java (Spring Boot)** using **hexagonal architecture**, **DDD**, 
 - PostgreSQL
 - Gradle
 - JUnit 5
+- Jacoco
+- diff-coverage
 
 ---
 

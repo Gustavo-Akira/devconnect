@@ -27,6 +27,8 @@ Projetado com **Java (Spring Boot)** usando **arquitetura hexagonal**, **DDD**, 
 - PostgresSQL
 - Gradle
 - JUnit 5
+- Jacoco
+- diff-coverage
 
 ---
 
