@@ -1,6 +1,7 @@
 package br.com.gustavoakira.devconnect.application.usecases.devprofile.filters;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DevProfileFilter {
 
@@ -24,5 +25,18 @@ public class DevProfileFilter {
 
     public List<String> stack() {
         return stack;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DevProfileFilter filter = (DevProfileFilter) o;
+        return Objects.equals(name, filter.name) && Objects.equals(city, filter.city) && Objects.equals(stack, filter.stack);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, city, stack);
     }
 }

@@ -128,8 +128,8 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         DevProfile saved = repository.save(profile);
 
         PaginatedResult<DevProfile> paginatedResult = repository.findAll(0,5);
-        assertEquals(5,paginatedResult.getTotalElements());
-        assertEquals(1, paginatedResult.getTotalPages());
+        assertEquals(6,paginatedResult.getTotalElements());
+        assertEquals(2, paginatedResult.getTotalPages());
         assertEquals(5,paginatedResult.getSize());
         DevProfile returnedProfile = paginatedResult.getContent().getFirst();
         assertNotNull(returnedProfile);

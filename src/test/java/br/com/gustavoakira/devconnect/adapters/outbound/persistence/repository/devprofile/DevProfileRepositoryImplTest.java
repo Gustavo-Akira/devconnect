@@ -8,11 +8,15 @@ import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
+import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,16 +31,39 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 class DevProfileRepositoryImplTest {
     @Mock
     private SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository;
     private final DevProfileMapper mapper = new DevProfileMapper();
+    @InjectMocks
     private DevProfileRepositoryImpl repository;
     @Mock
     private EntityManager manager;
     @Mock
     private PasswordEncoder encoder;
+
+    @Mock
+    private CriteriaBuilder cb;
+
+    @Mock
+    private CriteriaQuery<DevProfileEntity> query;
+
+    @Mock
+    private CriteriaQuery<Long> countQuery;
+
+    @Mock
+    private Root<DevProfileEntity> root;
+
+    @Mock
+    private Root<DevProfileEntity> countRoot;
+
+    @Mock
+    private TypedQuery<DevProfileEntity> typedQuery;
+
+    @Mock
+    private TypedQuery<Long> countTypedQuery;
 
     @BeforeEach
     void setUp() {
@@ -196,6 +223,82 @@ class DevProfileRepositoryImplTest {
             assertEquals("Invalid Credentials", exception.getMessage());
 
             Mockito.verify(springDataPostgresDevProfileRepository).findByEmail(Mockito.any());
+        }
+    }
+
+    @Nested
+    class FindAllWithFilterTest {
+
+        @Test
+        void shouldReturnPaginatedResultWithFilter() throws BusinessException {
+            DevProfileFilter filter = new DevProfileFilter("gustavo", "são paulo", List.of("java"));
+            DevProfileEntity entity = getEntity();
+
+            Mockito.when(manager.getCriteriaBuilder()).thenReturn(cb);
+            Mockito.when(cb.createQuery(DevProfileEntity.class)).thenReturn(query);
+            Mockito.when(cb.createQuery(Long.class)).thenReturn(countQuery);
+            Mockito.when(query.from(DevProfileEntity.class)).thenReturn(root);
+            Mockito.when(countQuery.from(DevProfileEntity.class)).thenReturn(countRoot);
+            Mockito.when(manager.createQuery(query)).thenReturn(typedQuery);
+            Mockito.when(manager.createQuery(countQuery)).thenReturn(countTypedQuery);
+            Mockito.when(typedQuery.setFirstResult(Mockito.anyInt())).thenReturn(typedQuery);
+            Mockito.when(typedQuery.setMaxResults(Mockito.anyInt())).thenReturn(typedQuery);
+            Mockito.when(typedQuery.getResultList()).thenReturn(List.of(entity));
+            Mockito.when(countTypedQuery.getSingleResult()).thenReturn(1L);
+
+            Predicate namePredicate = Mockito.mock(Predicate.class);
+            Predicate cityPredicate = Mockito.mock(Predicate.class);
+            Predicate stackPredicate = Mockito.mock(Predicate.class);
+            Predicate combinedPredicate = Mockito.mock(Predicate.class);
+            Expression countExpr = Mockito.mock(Expression.class);
+
+            Path namePath = Mockito.mock(Path.class);
+            Expression nameLower = Mockito.mock(Expression.class);
+            Mockito.when(root.get("name")).thenReturn(namePath);
+            Mockito.when(cb.lower(namePath)).thenReturn(nameLower);
+            Mockito.when(cb.like(nameLower, "%gustavo%")).thenReturn(namePredicate);
+
+            Path addressPath = Mockito.mock(Path.class);
+            Path cityPath = Mockito.mock(Path.class);
+            Expression cityLower = Mockito.mock(Expression.class);
+            Mockito.when(root.get("address")).thenReturn(addressPath);
+            Mockito.when(addressPath.get("city")).thenReturn(cityPath);
+            Mockito.when(cb.lower(cityPath)).thenReturn(cityLower);
+            Mockito.when(cb.equal(cityLower, "são paulo")).thenReturn(cityPredicate);
+
+            Join techJoin = Mockito.mock(Join.class);
+            Mockito.when(root.join("techStack")).thenReturn(techJoin);
+            Mockito.when(techJoin.in(filter.stack())).thenReturn(stackPredicate);
+
+            Path countNamePath = Mockito.mock(Path.class);
+            Expression countNameLower = Mockito.mock(Expression.class);
+            Mockito.when(countRoot.get("name")).thenReturn(countNamePath);
+            Mockito.when(cb.lower(countNamePath)).thenReturn(countNameLower);
+            Mockito.when(cb.like(countNameLower, "%gustavo%")).thenReturn(namePredicate);
+
+            Path countAddressPath = Mockito.mock(Path.class);
+            Path countCityPath = Mockito.mock(Path.class);
+            Expression countCityLower = Mockito.mock(Expression.class);
+            Mockito.when(countRoot.get("address")).thenReturn(countAddressPath);
+            Mockito.when(countAddressPath.get("city")).thenReturn(countCityPath);
+            Mockito.when(cb.lower(countCityPath)).thenReturn(countCityLower);
+            Mockito.when(cb.equal(countCityLower, "são paulo")).thenReturn(cityPredicate);
+
+            Join countTechJoin = Mockito.mock(Join.class);
+            Mockito.when(countRoot.join("techStack")).thenReturn(countTechJoin);
+            Mockito.when(countTechJoin.in(filter.stack())).thenReturn(stackPredicate);
+
+            Mockito.when(cb.and(Mockito.any(Predicate[].class))).thenReturn(combinedPredicate);
+            Mockito.when(cb.count(countRoot)).thenReturn(countExpr);
+
+            Mockito.when(countQuery.select(Mockito.any())).thenReturn(countQuery);
+            PaginatedResult<DevProfile> result = repository.findAllWithFilter(filter, 0, 10);
+
+            assertNotNull(result);
+            assertEquals(1, result.getContent().size());
+            assertEquals(0, result.getPage());
+            assertEquals(10, result.getSize());
+            assertEquals(1L, result.getTotalElements());
         }
     }
 

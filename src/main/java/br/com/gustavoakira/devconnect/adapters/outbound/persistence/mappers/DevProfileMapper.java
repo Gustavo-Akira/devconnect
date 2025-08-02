@@ -1,7 +1,7 @@
 package br.com.gustavoakira.devconnect.adapters.outbound.persistence.mappers;
 
 import br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity.AddressEntity;
-import br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity.DevProfileEntity;
+import br.com.  gustavoakira.devconnect.adapters.outbound.persistence.entity.DevProfileEntity;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
