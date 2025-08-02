@@ -2,3 +2,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+jwt:
+  secret: sua_chave_super_secreta_de_32+_caracteres

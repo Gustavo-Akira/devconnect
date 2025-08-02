@@ -1,0 +1,37 @@
+name: Quality Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-check-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # necessário para diff-cover comparar com main
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 24
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Run tests and generate coverage report
+        run: ./gradlew clean test jacocoTestReport
+
+      - name: Install diff-cover
+        run: pip install diff-cover
+
+      - name: Check coverage on changed lines (must be >= 80%)
+        run: |
+          git fetch origin main
+          diff-cover --fail-under=80 \
+            build/reports/jacoco/test/jacocoTestReport.xml \
+            --compare-branch=origin/main
