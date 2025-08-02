@@ -84,7 +84,7 @@ class DevProfileControllerTest {
     class Create{
         @Test
         void shouldCreateDevProfile() throws Exception {
-            SaveDevProfileRequest request = new SaveDevProfileRequest(
+            final SaveDevProfileRequest request = new SaveDevProfileRequest(
                     "Gustavo Akira",
                     "gustavo@email.com",
                     "123456",
@@ -99,7 +99,7 @@ class DevProfileControllerTest {
                     List.of("Java", "Spring Boot")
             );
 
-            DevProfile savedProfile = createMockDevProfile();
+            final DevProfile savedProfile = createMockDevProfile();
 
             Mockito.when(saveUseCase.execute(any())).thenReturn(savedProfile);
 
@@ -116,7 +116,7 @@ class DevProfileControllerTest {
     class UpdateDevProfile{
         @Test
         void shouldUpdateDevProfile() throws Exception {
-            UpdateDevProfileRequest request = new UpdateDevProfileRequest(1L, "Gustavo Akira",
+            final UpdateDevProfileRequest request = new UpdateDevProfileRequest(1L, "Gustavo Akira",
                     "gustavo@email.com",
                     "123456",
                     "Rua Teste",
@@ -129,7 +129,7 @@ class DevProfileControllerTest {
                     "Sou desenvolvedor Java",
                     List.of("Java", "Spring Boot"));
 
-            DevProfile updatedProfile = createMockDevProfile();
+            final DevProfile updatedProfile = createMockDevProfile();
 
             Mockito.when(updateDevProfileUseCase.execute(any())).thenReturn(updatedProfile);
 
@@ -157,7 +157,7 @@ class DevProfileControllerTest {
     class GetDevProfileById{
         @Test
         void shouldReturnDevProfileById() throws Exception {
-            DevProfile profile = createMockDevProfile();
+            final DevProfile profile = createMockDevProfile();
 
             Mockito.when(findDevProfileByIdUseCase.execute(new FindDevProfileByIdQuery(1L))).thenReturn(profile);
 
@@ -173,8 +173,8 @@ class DevProfileControllerTest {
     class GetAllWithFilters{
         @Test
         void shouldReturnPaginatedListWithFilters() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter("Gustavo","SP", Collections.singletonList("java"))), eq(0), eq(5)))
@@ -189,8 +189,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyCity() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter(null,"SP", null)), eq(0), eq(5)))
@@ -204,8 +204,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFilterOnlyCityAndOtherEmpty() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter("","SP", Collections.emptyList())), eq(0), eq(5)))
@@ -219,8 +219,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyName() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter("Gustavo",null, null)), eq(0), eq(5)))
@@ -234,8 +234,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFilterOnlyNameAndOtherEmpty() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter("Gustavo","", Collections.emptyList())), eq(0), eq(5)))
@@ -249,8 +249,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyStack() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter(null,null, Collections.singletonList("java"))), eq(0), eq(5)))
@@ -264,8 +264,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyStackAndOthersEmpty() throws Exception {
-            DevProfile profile =createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile =createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileWithFilterUseCase
                             .execute(eq(new DevProfileFilter("","", Collections.singletonList("java"))), eq(0), eq(5)))
@@ -283,8 +283,8 @@ class DevProfileControllerTest {
     class GetAllWithoutFilters{
         @Test
         void shouldReturnPaginatedListWithoutFilters() throws Exception {
-            DevProfile profile = createMockDevProfile();
-            PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
+            final DevProfile profile = createMockDevProfile();
+            final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
             Mockito.when(findAllDevProfileUseCase
                             .execute(Mockito.any(DevProfileFindAllQuery.class)))

@@ -30,13 +30,13 @@ public class TokenGrantUseCaseImpl implements TokenGrantUseCase {
             throw new BusinessException("Unsupported grant_type "+command.grantType());
         }
 
-        DevProfile profile = repository.findByEmail(command.username());
+        final DevProfile profile = repository.findByEmail(command.username());
 
         if (!encoder.matches(command.password(), profile.getPassword().getValue())) {
             throw new BusinessException("Invalid credentials");
         }
-        long expiresIn = 2 * 60 * 60L;
-        String token = jwtProvider.generateToken(profile,expiresIn);
+        final long expiresIn = 2 * 60 * 60L;
+        final String token = jwtProvider.generateToken(profile,expiresIn);
 
         return new TokenGrantResponse(token, expiresIn);
     }

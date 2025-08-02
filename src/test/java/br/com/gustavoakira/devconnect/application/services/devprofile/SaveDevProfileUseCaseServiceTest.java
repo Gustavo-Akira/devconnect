@@ -27,16 +27,16 @@ class SaveDevProfileUseCaseServiceTest {
 
     @Test
     void shouldSaveDevProfileWhenInformationIsValid() throws BusinessException {
-        SaveDevProfileCommand command = new SaveDevProfileCommand("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
+        final SaveDevProfileCommand command = new SaveDevProfileCommand("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
         Mockito.when(repository.save(Mockito.any())).thenReturn(new DevProfile("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword", "gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg", new Address("Avenida Joao","São Paulo","São Paulo","BR","04724-003") ,"https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita",new ArrayList<>(),true));
-        DevProfile profile = saveDevProfileUseCaseService.execute(command);
+        final DevProfile profile = saveDevProfileUseCaseService.execute(command);
         assertEquals("Akira Uekita",profile.getName());
     }
 
     @Test
     void shouldThrowBusinessExceptionWhenAnyInformationIsInvalid() throws BusinessException {
-        SaveDevProfileCommand command = new SaveDevProfileCommand("Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
-        BusinessException exception = assertThrows(BusinessException.class,()->saveDevProfileUseCaseService.execute(command));
+        final SaveDevProfileCommand command = new SaveDevProfileCommand("Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
+        final BusinessException exception = assertThrows(BusinessException.class,()->saveDevProfileUseCaseService.execute(command));
         assertEquals("The name cannot be with only one word",exception.getMessage());
     }
 }

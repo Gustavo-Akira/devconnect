@@ -74,14 +74,14 @@ class DevProfileRepositoryImplTest {
     @Test
     void shouldSaveAndReturnDomainDevProfile() throws BusinessException {
 
-        DevProfile domainProfile = new DevProfile("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
-        DevProfileEntity entity = getEntity();
+        final DevProfile domainProfile = new DevProfile("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
+        final DevProfileEntity entity = getEntity();
         entity.setId(1L);
         Mockito.when(encoder.encode(domainProfile.getPassword().getValue())).thenReturn(domainProfile.getPassword().getValue());
         Mockito.when(springDataPostgresDevProfileRepository.save(entity)).thenReturn(entity);
         domainProfile.setId(1L);
 
-        DevProfile result = repository.save(domainProfile);
+        final DevProfile result = repository.save(domainProfile);
 
         Mockito.verify(springDataPostgresDevProfileRepository).save(entity);
 
@@ -94,7 +94,7 @@ class DevProfileRepositoryImplTest {
         @Test
         void shouldReturnEmptyListWhenDevProfilesDoNotExists() throws BusinessException {
             Mockito.when(springDataPostgresDevProfileRepository.findAll(Pageable.ofSize(5).withPage(0))).thenReturn(Page.empty());
-            PaginatedResult<DevProfile> devProfilesPage = repository.findAll(0,5);
+            final PaginatedResult<DevProfile> devProfilesPage = repository.findAll(0,5);
             assertTrue(devProfilesPage.getContent().isEmpty());
             assertEquals(0,devProfilesPage.getTotalElements());
             assertEquals(0,devProfilesPage.getPage());
@@ -104,21 +104,21 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldReturnPaginatedResultWhenDevProfilesExists() throws BusinessException {
-            List<DevProfileEntity> entities = new ArrayList<>();
+            final List<DevProfileEntity> entities = new ArrayList<>();
             for(int i=0;i<15;i++){
                 entities.add(getEntity());
             }
-            int totalElements = 15;
-            int page = 0;
-            int size = 5;
+            final int totalElements = 15;
+            final int page = 0;
+            final int size = 5;
 
-            Page<DevProfileEntity> pageResult = new PageImpl<>(entities, PageRequest.of(page, size), totalElements);
+            final Page<DevProfileEntity> pageResult = new PageImpl<>(entities, PageRequest.of(page, size), totalElements);
 
             Mockito.when(springDataPostgresDevProfileRepository.findAll(Mockito.eq(PageRequest.of(0, 5))))
                     .thenReturn(pageResult);
 
 
-            PaginatedResult<DevProfile> devProfilesPage = repository.findAll(page, size);
+            final PaginatedResult<DevProfile> devProfilesPage = repository.findAll(page, size);
 
             assertFalse(devProfilesPage.getContent().isEmpty());
             assertEquals(totalElements, devProfilesPage.getTotalElements());
@@ -134,8 +134,8 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldSoftDeleteDevProfileWhenProfileExists() throws EntityNotFoundException {
-            Long id = 1L;
-            DevProfileEntity entity = getEntity();
+            final Long id = 1L;
+            final DevProfileEntity entity = getEntity();
             entity.setId(id);
             entity.setIsActive(true);
 
@@ -150,12 +150,12 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldThrowEntityNotFoundExceptionWhenDevProfileDoesNotExist() {
-            Long id = 99L;
+            final Long id = 99L;
 
             Mockito.when(springDataPostgresDevProfileRepository.findById(id))
                     .thenReturn(Optional.empty());
 
-            EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.deleteProfile(id));
+            final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.deleteProfile(id));
             assertEquals("DevProfile not found with id: " + id, exception.getMessage());
 
             Mockito.verify(springDataPostgresDevProfileRepository, Mockito.never()).save(Mockito.any());
@@ -167,27 +167,27 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldReturnDevProfileWhenProfileExists() throws EntityNotFoundException, BusinessException {
-            Long id = 1L;
-            DevProfileEntity entity = getEntity();
+            final Long id = 1L;
+            final DevProfileEntity entity = getEntity();
             entity.setId(id);
             entity.setIsActive(true);
-            DevProfile domainProfile = new DevProfile(1L,"Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
+            final DevProfile domainProfile = new DevProfile(1L,"Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
 
 
             Mockito.when(springDataPostgresDevProfileRepository.findById(id))
                     .thenReturn(Optional.of(entity));
-            DevProfile devProfile = repository.findById(id);
+            final DevProfile devProfile = repository.findById(id);
             assertEquals(domainProfile.getName(),devProfile.getName());
         }
 
         @Test
         void shouldThrowEntityNotFoundExceptionWhenDevProfileDoesNotExist() {
-            Long id = 99L;
+            final Long id = 99L;
 
             Mockito.when(springDataPostgresDevProfileRepository.findById(id))
                     .thenReturn(Optional.empty());
 
-            EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.findById(id));
+            final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.findById(id));
             assertEquals("DevProfile not found with id: " + id, exception.getMessage());
 
             Mockito.verify(springDataPostgresDevProfileRepository).findById(Mockito.any());
@@ -198,28 +198,28 @@ class DevProfileRepositoryImplTest {
     class FindDevProfileByEmail{
         @Test
         void shouldReturnDevProfileWhenProfileExists() throws EntityNotFoundException, BusinessException {
-            Long id = 1L;
-            DevProfileEntity entity = getEntity();
-            String email = "akirauekita2002@gmail.com";
+            final Long id = 1L;
+            final DevProfileEntity entity = getEntity();
+            final String email = "akirauekita2002@gmail.com";
             entity.setId(id);
             entity.setIsActive(true);
-            DevProfile domainProfile = new DevProfile(1L,"Akira Uekita",email,"Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
+            final DevProfile domainProfile = new DevProfile(1L,"Akira Uekita",email,"Str@ngP4ssword","fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",new Address("Avenida Joao Dias","2048","São Paulo","BR","04724-003"),"https://github.com/Gustavo-Akira","https://www.linkedin.com/in/gustavo-akira-uekita/",new ArrayList<>(),true);
 
 
             Mockito.when(springDataPostgresDevProfileRepository.findByEmail(email))
                     .thenReturn(Optional.of(entity));
-            DevProfile devProfile = repository.findByEmail(email);
+            final DevProfile devProfile = repository.findByEmail(email);
             assertEquals(domainProfile.getName(),devProfile.getName());
         }
 
         @Test
         void shouldThrowEntityNotFoundExceptionWhenDevProfileDoesNotExist() {
-            String email = "akirauekita22@gmail.com";
+            final String email = "akirauekita22@gmail.com";
 
             Mockito.when(springDataPostgresDevProfileRepository.findByEmail(email))
                     .thenReturn(Optional.empty());
 
-            EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.findByEmail(email));
+            final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> repository.findByEmail(email));
             assertEquals("Invalid Credentials", exception.getMessage());
 
             Mockito.verify(springDataPostgresDevProfileRepository).findByEmail(Mockito.any());
@@ -231,8 +231,8 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldReturnPaginatedResultWithFilter() throws BusinessException {
-            DevProfileFilter filter = new DevProfileFilter("gustavo", "são paulo", List.of("java"));
-            DevProfileEntity entity = getEntity();
+            final DevProfileFilter filter = new DevProfileFilter("gustavo", "são paulo", List.of("java"));
+            final DevProfileEntity entity = getEntity();
 
             Mockito.when(manager.getCriteriaBuilder()).thenReturn(cb);
             Mockito.when(cb.createQuery(DevProfileEntity.class)).thenReturn(query);
@@ -246,45 +246,45 @@ class DevProfileRepositoryImplTest {
             Mockito.when(typedQuery.getResultList()).thenReturn(List.of(entity));
             Mockito.when(countTypedQuery.getSingleResult()).thenReturn(1L);
 
-            Predicate namePredicate = Mockito.mock(Predicate.class);
-            Predicate cityPredicate = Mockito.mock(Predicate.class);
-            Predicate stackPredicate = Mockito.mock(Predicate.class);
-            Predicate combinedPredicate = Mockito.mock(Predicate.class);
-            Expression countExpr = Mockito.mock(Expression.class);
+            final Predicate namePredicate = Mockito.mock(Predicate.class);
+            final Predicate cityPredicate = Mockito.mock(Predicate.class);
+            final Predicate stackPredicate = Mockito.mock(Predicate.class);
+            final Predicate combinedPredicate = Mockito.mock(Predicate.class);
+            final Expression countExpr = Mockito.mock(Expression.class);
 
-            Path namePath = Mockito.mock(Path.class);
-            Expression nameLower = Mockito.mock(Expression.class);
+            final Path namePath = Mockito.mock(Path.class);
+            final Expression nameLower = Mockito.mock(Expression.class);
             Mockito.when(root.get("name")).thenReturn(namePath);
             Mockito.when(cb.lower(namePath)).thenReturn(nameLower);
             Mockito.when(cb.like(nameLower, "%gustavo%")).thenReturn(namePredicate);
 
-            Path addressPath = Mockito.mock(Path.class);
-            Path cityPath = Mockito.mock(Path.class);
-            Expression cityLower = Mockito.mock(Expression.class);
+            final Path addressPath = Mockito.mock(Path.class);
+            final Path cityPath = Mockito.mock(Path.class);
+            final Expression cityLower = Mockito.mock(Expression.class);
             Mockito.when(root.get("address")).thenReturn(addressPath);
             Mockito.when(addressPath.get("city")).thenReturn(cityPath);
             Mockito.when(cb.lower(cityPath)).thenReturn(cityLower);
             Mockito.when(cb.equal(cityLower, "são paulo")).thenReturn(cityPredicate);
 
-            Join techJoin = Mockito.mock(Join.class);
+            final Join techJoin = Mockito.mock(Join.class);
             Mockito.when(root.join("techStack")).thenReturn(techJoin);
             Mockito.when(techJoin.in(filter.stack())).thenReturn(stackPredicate);
 
-            Path countNamePath = Mockito.mock(Path.class);
-            Expression countNameLower = Mockito.mock(Expression.class);
+            final Path countNamePath = Mockito.mock(Path.class);
+            final Expression countNameLower = Mockito.mock(Expression.class);
             Mockito.when(countRoot.get("name")).thenReturn(countNamePath);
             Mockito.when(cb.lower(countNamePath)).thenReturn(countNameLower);
             Mockito.when(cb.like(countNameLower, "%gustavo%")).thenReturn(namePredicate);
 
-            Path countAddressPath = Mockito.mock(Path.class);
-            Path countCityPath = Mockito.mock(Path.class);
-            Expression countCityLower = Mockito.mock(Expression.class);
+            final Path countAddressPath = Mockito.mock(Path.class);
+            final Path countCityPath = Mockito.mock(Path.class);
+            final Expression countCityLower = Mockito.mock(Expression.class);
             Mockito.when(countRoot.get("address")).thenReturn(countAddressPath);
             Mockito.when(countAddressPath.get("city")).thenReturn(countCityPath);
             Mockito.when(cb.lower(countCityPath)).thenReturn(countCityLower);
             Mockito.when(cb.equal(countCityLower, "são paulo")).thenReturn(cityPredicate);
 
-            Join countTechJoin = Mockito.mock(Join.class);
+            final Join countTechJoin = Mockito.mock(Join.class);
             Mockito.when(countRoot.join("techStack")).thenReturn(countTechJoin);
             Mockito.when(countTechJoin.in(filter.stack())).thenReturn(stackPredicate);
 
@@ -292,7 +292,7 @@ class DevProfileRepositoryImplTest {
             Mockito.when(cb.count(countRoot)).thenReturn(countExpr);
 
             Mockito.when(countQuery.select(Mockito.any())).thenReturn(countQuery);
-            PaginatedResult<DevProfile> result = repository.findAllWithFilter(filter, 0, 10);
+            final PaginatedResult<DevProfile> result = repository.findAllWithFilter(filter, 0, 10);
 
             assertNotNull(result);
             assertEquals(1, result.getContent().size());

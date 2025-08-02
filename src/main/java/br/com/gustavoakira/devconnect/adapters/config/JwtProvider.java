@@ -25,8 +25,8 @@ public class JwtProvider {
     }
 
     public String generateToken(DevProfile subject, long expirationMillis) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + expirationMillis);
+        final Date now = new Date();
+        final Date expiry = new Date(now.getTime() + expirationMillis);
 
         return Jwts.builder()
                 .subject(subject.getEmail())

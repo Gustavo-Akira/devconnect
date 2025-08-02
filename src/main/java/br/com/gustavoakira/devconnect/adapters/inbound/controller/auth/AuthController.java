@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid TokenRequest request) throws BusinessException, EntityNotFoundException {
-        TokenGrantResponse tokenGrantResponse = tokenGrantUseCase.execute(request.toCommand());
+        final TokenGrantResponse tokenGrantResponse = tokenGrantUseCase.execute(request.toCommand());
         return ResponseEntity.ok(new TokenResponse(tokenGrantResponse.token(), tokenGrantResponse.expiresIn()));
     }
 }

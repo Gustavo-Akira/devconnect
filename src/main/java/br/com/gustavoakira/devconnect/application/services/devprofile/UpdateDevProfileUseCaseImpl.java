@@ -16,14 +16,14 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
     private IDevProfileRepository repository;
     @Override
     public DevProfile execute(UpdateDevProfileCommand command) throws EntityNotFoundException, BusinessException {
-        Address address = new Address(
+        final Address address = new Address(
                 command.street(),
                 command.city(),
                 command.state(),
                 command.country(),
                 command.zipCode()
         );
-        DevProfile devProfile = new DevProfile(
+        final DevProfile devProfile = new DevProfile(
                 command.id(),
                 command.name(),
                 command.email(),

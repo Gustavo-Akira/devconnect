@@ -15,7 +15,7 @@ public class DevProfileMapper {
             return null;
         }
 
-        AddressEntity addressEntity = toEntity(domain.getAddress());
+        final AddressEntity addressEntity = toEntity(domain.getAddress());
 
         return new DevProfileEntity(
                 domain.getId(),
@@ -36,11 +36,11 @@ public class DevProfileMapper {
             return null;
         }
 
-        Address address = toDomain(entity.getAddress());
+        final Address address = toDomain(entity.getAddress());
 
-        Password password = stringToPassword(entity.getPassword());
+        final Password password = stringToPassword(entity.getPassword());
 
-        DevProfile devProfile;
+        final DevProfile devProfile;
         try {
             devProfile = new DevProfile(
                     entity.getId(),
@@ -79,7 +79,7 @@ public class DevProfileMapper {
         if (address == null) {
             return null;
         }
-        AddressEntity entity = new AddressEntity();
+        final AddressEntity entity = new AddressEntity();
         entity.setStreet(address.getStreet());
         entity.setCity(address.getCity());
         entity.setState(address.getState());

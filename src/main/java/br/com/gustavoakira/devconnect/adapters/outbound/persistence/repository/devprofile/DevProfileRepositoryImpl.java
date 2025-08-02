@@ -43,7 +43,7 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
 
     @Override
     public DevProfile save(DevProfile profile) throws BusinessException {
-        DevProfileEntity entity = mapper.toEntity(profile);
+        final DevProfileEntity entity = mapper.toEntity(profile);
         entity.setPassword(encoder.encode(profile.getPassword().getValue()));
         return mapper.toDomain(springDataPostgresDevProfileRepository.save(entity));
     }
@@ -52,13 +52,13 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
 
     @Override
     public DevProfile update(DevProfile profile) throws BusinessException {
-        DevProfileEntity entity = mapper.toEntity(profile);
+        final DevProfileEntity entity = mapper.toEntity(profile);
         return mapper.toDomain(springDataPostgresDevProfileRepository.save(entity));
     }
 
     @Override
     public void deleteProfile(Long id) throws EntityNotFoundException {
-        DevProfileEntity toDelete = springDataPostgresDevProfileRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DevProfile not found with id: " + id));
+        final DevProfileEntity toDelete = springDataPostgresDevProfileRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DevProfile not found with id: " + id));
         toDelete.setIsActive(false);
         springDataPostgresDevProfileRepository.save(toDelete);
     }
@@ -66,8 +66,8 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
 
     @Override
     public PaginatedResult<DevProfile> findAll(int page, int size) throws BusinessException {
-        Page<DevProfileEntity> devProfileEntities = springDataPostgresDevProfileRepository.findAll(Pageable.ofSize(size).withPage(page));
-        List<DevProfile> content = new ArrayList<>();
+        final Page<DevProfileEntity> devProfileEntities = springDataPostgresDevProfileRepository.findAll(Pageable.ofSize(size).withPage(page));
+        final List<DevProfile> content = new ArrayList<>();
         for (DevProfileEntity entity : devProfileEntities.getContent()) {
             content.add(mapper.toDomain(entity));
         }
@@ -81,24 +81,24 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
 
     @Override
     public PaginatedResult<DevProfile> findAllWithFilter(DevProfileFilter filter, int page, int size) throws BusinessException {
-        CriteriaBuilder cb = manager.getCriteriaBuilder();
-        CriteriaQuery<DevProfileEntity> query = cb.createQuery(DevProfileEntity.class);
-        Root<DevProfileEntity> root = query.from(DevProfileEntity.class);
+        final CriteriaBuilder cb = manager.getCriteriaBuilder();
+        final CriteriaQuery<DevProfileEntity> query = cb.createQuery(DevProfileEntity.class);
+        final Root<DevProfileEntity> root = query.from(DevProfileEntity.class);
 
-        List<Predicate> predicates = buildPredicates(filter, cb, root);
+        final List<Predicate> predicates = buildPredicates(filter, cb, root);
         query.where(cb.and(predicates.toArray(new Predicate[0])));
 
-        var typedQuery = manager.createQuery(query)
+        final var typedQuery = manager.createQuery(query)
                 .setFirstResult(page * size)
                 .setMaxResults(size);
 
-        List<DevProfileEntity> results = typedQuery.getResultList();
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<DevProfileEntity> countRoot = countQuery.from(DevProfileEntity.class);
-        List<Predicate> countPredicates = buildPredicates(filter, cb, countRoot);
+        final List<DevProfileEntity> results = typedQuery.getResultList();
+        final CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
+        final Root<DevProfileEntity> countRoot = countQuery.from(DevProfileEntity.class);
+        final List<Predicate> countPredicates = buildPredicates(filter, cb, countRoot);
         countQuery.select(cb.count(countRoot)).where(cb.and(countPredicates.toArray(new Predicate[0])));
-        long totalElements = manager.createQuery(countQuery).getSingleResult();
-        List<DevProfile> content = new ArrayList<>();
+        final long totalElements = manager.createQuery(countQuery).getSingleResult();
+        final List<DevProfile> content = new ArrayList<>();
         for (DevProfileEntity entity : results) {
             content.add(mapper.toDomain(entity));
         }
@@ -112,7 +112,7 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
 
 
     private List<Predicate> buildPredicates(DevProfileFilter filter, CriteriaBuilder cb, Root<DevProfileEntity> root) {
-        List<Predicate> predicates = new ArrayList<>();
+        final List<Predicate> predicates = new ArrayList<>();
 
         if (filter.name() != null && !filter.name().isBlank()) {
             predicates.add(cb.like(cb.lower(root.get("name")), "%" + filter.name().toLowerCase() + "%"));
@@ -123,7 +123,7 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
         }
 
         if (filter.stack() != null && !filter.stack().isEmpty()) {
-            Join<DevProfileEntity, String> techJoin = root.join("techStack");
+            final Join<DevProfileEntity, String> techJoin = root.join("techStack");
             predicates.add(techJoin.in(filter.stack()));
         }
 

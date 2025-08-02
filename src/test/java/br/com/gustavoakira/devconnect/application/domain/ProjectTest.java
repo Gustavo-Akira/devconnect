@@ -13,7 +13,7 @@ class ProjectTest {
     }
     @Test
     void shouldThrownBusinessWhenDevProfileIdIsInvalid(){
-        BusinessException ex = assertThrows(BusinessException.class, () -> {
+        final BusinessException ex = assertThrows(BusinessException.class, () -> {
             new Project("Project A","","https://github.com/kira",0L);
         });
         assertTrue(ex.getMessage().contains("id"));
@@ -21,14 +21,14 @@ class ProjectTest {
 
     @Test
     void shouldThrownBusinessWhenNameIsInvalid(){
-        BusinessException ex = assertThrows(BusinessException.class, () -> {
+        final BusinessException ex = assertThrows(BusinessException.class, () -> {
             new Project("Pro","","https://github.com/kira",1L);
         });
         assertTrue(ex.getMessage().contains("name"));
     }
     @Test
     void shouldThrownBusinessWhenRepoUrlIsInvalid(){
-        BusinessException ex = assertThrows(BusinessException.class, () -> {
+        final BusinessException ex = assertThrows(BusinessException.class, () -> {
             new Project("Project A","","https://githb.com/kira",1L);
         });
         assertTrue(ex.getMessage().contains("github"));

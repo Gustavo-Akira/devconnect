@@ -29,9 +29,9 @@ public class DevProfileFilter {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DevProfileFilter filter = (DevProfileFilter) o;
+        if (this == o){ return true; }
+        if (o == null || getClass() != o.getClass()) {return false;}
+        final DevProfileFilter filter = (DevProfileFilter) o;
         return Objects.equals(name, filter.name) && Objects.equals(city, filter.city) && Objects.equals(stack, filter.stack);
     }
 

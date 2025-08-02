@@ -45,9 +45,9 @@ class TokenGrantUseCaseImplTest {
 
         @Test
         void shouldThrowBusinessExceptionWhenGrantTypeIsNotPassword() {
-            TokenRequest invalidGrantType = new TokenRequest("client_credentials", VALID_EMAIL, VALID_PASSWORD);
+            final TokenRequest invalidGrantType = new TokenRequest("client_credentials", VALID_EMAIL, VALID_PASSWORD);
 
-            BusinessException exception = assertThrows(BusinessException.class, () ->
+            final BusinessException exception = assertThrows(BusinessException.class, () ->
                     tokenGrantUseCase.execute(invalidGrantType.toCommand()));
 
             assertEquals("Unsupported grant_type client_credentials", exception.getMessage());
@@ -64,9 +64,9 @@ class TokenGrantUseCaseImplTest {
 
         @Test
         void shouldThrowEntityNotFoundExceptionWhenEmailIsNotFound() {
-            TokenRequest invalidEmail = new TokenRequest("password", "notfound@gmail.com", VALID_PASSWORD);
+            final TokenRequest invalidEmail = new TokenRequest("password", "notfound@gmail.com", VALID_PASSWORD);
 
-            EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () ->
+            final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () ->
                     tokenGrantUseCase.execute(invalidEmail.toCommand()));
 
             assertEquals("DevProfile not found", exception.getMessage());
@@ -85,9 +85,9 @@ class TokenGrantUseCaseImplTest {
         void shouldThrowBusinessExceptionWhenPasswordDoesNotMatch() {
             Mockito.when(encoder.matches("wrongPassword", "Str@ngP4ssword")).thenReturn(false);
 
-            TokenRequest wrongPasswordRequest = new TokenRequest("password", VALID_EMAIL, "wrongPassword");
+            final TokenRequest wrongPasswordRequest = new TokenRequest("password", VALID_EMAIL, "wrongPassword");
 
-            BusinessException exception = assertThrows(BusinessException.class, () ->
+            final BusinessException exception = assertThrows(BusinessException.class, () ->
                     tokenGrantUseCase.execute(wrongPasswordRequest.toCommand()));
 
             assertEquals("Invalid credentials", exception.getMessage());
@@ -106,9 +106,9 @@ class TokenGrantUseCaseImplTest {
 
         @Test
         void shouldReturnTokenWhenCredentialsAreValid() throws BusinessException, EntityNotFoundException {
-            TokenRequest validRequest = new TokenRequest("password", VALID_EMAIL, VALID_PASSWORD);
+            final TokenRequest validRequest = new TokenRequest("password", VALID_EMAIL, VALID_PASSWORD);
 
-            var response = tokenGrantUseCase.execute(validRequest.toCommand());
+            final var response = tokenGrantUseCase.execute(validRequest.toCommand());
 
             assertNotNull(response);
             assertEquals("mocked-token", response.token());
