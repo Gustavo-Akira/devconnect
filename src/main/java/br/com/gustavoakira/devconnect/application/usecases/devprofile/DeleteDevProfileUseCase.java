@@ -4,5 +4,5 @@ import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoun
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.DeleteDevProfileCommand;
 
 public interface DeleteDevProfileUseCase {
-    void execute(DeleteDevProfileCommand command) throws EntityNotFoundException;
+    void execute(DeleteDevProfileCommand command, Long loggedUserId) throws EntityNotFoundException;
 }

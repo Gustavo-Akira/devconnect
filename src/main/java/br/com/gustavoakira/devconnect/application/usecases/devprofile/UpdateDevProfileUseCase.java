@@ -6,5 +6,5 @@ import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessExce
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.UpdateDevProfileCommand;
 
 public interface UpdateDevProfileUseCase {
-    DevProfile execute(UpdateDevProfileCommand command) throws EntityNotFoundException, BusinessException;
+    DevProfile execute(UpdateDevProfileCommand command, Long loggedId) throws EntityNotFoundException, BusinessException;
 }

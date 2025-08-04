@@ -29,9 +29,9 @@ public class JwtProvider {
         final Date expiry = new Date(now.getTime() + expirationMillis);
 
         return Jwts.builder()
-                .subject(subject.getEmail())
+                .subject(subject.getId().toString())
                 .issuedAt(now)
-                .claim("id", subject.getId())
+                .claim("email", subject.getEmail())
                 .claim("name", subject.getName())
                 .expiration(expiry)
                 .signWith(key)

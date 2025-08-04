@@ -15,6 +15,8 @@ import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.Find
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -34,12 +36,12 @@ public class DevProfileController {
 
     @PutMapping
     public ResponseEntity<DevProfileResponse> updateDevProfile(@RequestBody @Valid UpdateDevProfileRequest request) throws BusinessException, EntityNotFoundException {
-        return ResponseEntity.ok().body(DevProfileResponse.fromDomain(cases.updateDevProfileUseCase().execute(request.toCommand())));
+        return ResponseEntity.ok().body(DevProfileResponse.fromDomain(cases.updateDevProfileUseCase().execute(request.toCommand(), getLoggedUserId())));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDevProfile(@PathVariable Long id) throws EntityNotFoundException {
-        cases.deleteDevProfileUseCase().execute(new DeleteDevProfileCommand(id));
+        cases.deleteDevProfileUseCase().execute(new DeleteDevProfileCommand(id),getLoggedUserId());
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/{id}")
@@ -71,6 +73,10 @@ public class DevProfileController {
         }
 
         return ResponseEntity.ok(toResponse(profiles));
+    }
+
+    private Long getLoggedUserId(){
+        return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
     }
 
     private PaginatedResult<DevProfileResponse> toResponse(PaginatedResult<DevProfile> domain) {
