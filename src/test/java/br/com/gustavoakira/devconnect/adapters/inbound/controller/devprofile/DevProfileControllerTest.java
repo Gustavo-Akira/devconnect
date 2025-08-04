@@ -9,7 +9,6 @@ import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.*;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.DeleteDevProfileCommand;
-import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.UpdateDevProfileCommand;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
@@ -24,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -71,7 +72,8 @@ class DevProfileControllerTest {
     @BeforeEach
     void setup() throws BusinessException {
         MockitoAnnotations.openMocks(this);
-
+        final var auth = new UsernamePasswordAuthenticationToken("1", null, List.of());
+        SecurityContextHolder.getContext().setAuthentication(auth);
         Mockito.when(useCases.saveDevProfileUseCase()).thenReturn(saveUseCase);
         Mockito.when(useCases.updateDevProfileUseCase()).thenReturn(updateDevProfileUseCase);
         Mockito.when(useCases.deleteDevProfileUseCase()).thenReturn(deleteDevProfileUseCase);
@@ -131,7 +133,7 @@ class DevProfileControllerTest {
 
             final DevProfile updatedProfile = createMockDevProfile();
 
-            Mockito.when(updateDevProfileUseCase.execute(any())).thenReturn(updatedProfile);
+            Mockito.when(updateDevProfileUseCase.execute(any(),any())).thenReturn(updatedProfile);
 
             mockMvc.perform(put("/v1/dev-profiles")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +151,7 @@ class DevProfileControllerTest {
             mockMvc.perform(delete("/v1/dev-profiles/1"))
                     .andExpect(status().isNoContent());
 
-            Mockito.verify(deleteDevProfileUseCase).execute(new DeleteDevProfileCommand(1L));
+            Mockito.verify(deleteDevProfileUseCase).execute(new DeleteDevProfileCommand(1L),1L);
         }
     }
 
