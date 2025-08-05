@@ -1,5 +1,4 @@
-package br.com.gustavoakira.devconnect.adapters.outbound.persistence.repository.devprofile;
-
+package br.com.gustavoakira.devconnect.adapters.outbound.persistence.repository.project;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity.ProjectEntity;
 import br.com.gustavoakira.devconnect.application.domain.Project;
