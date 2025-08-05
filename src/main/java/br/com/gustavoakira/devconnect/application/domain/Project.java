@@ -38,6 +38,10 @@ public class Project {
         return description;
     }
 
+    public String getRepoUrl() {
+        return repoUrl;
+    }
+
     private void validate() throws BusinessException {
         if(name.strip().length() < 5){
             throw new BusinessException("The project name have to be more than 5 characters");
