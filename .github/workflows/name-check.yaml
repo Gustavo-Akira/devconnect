@@ -1,0 +1,25 @@
+name: Validate Commit Messages
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  validate-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate PR commits
+        uses: amannn/action-semantic-pull-request@v5
+        with:
+          types: |
+            feat
+            fix
+            chore
+            docs
+            style
+            refactor
+            test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
