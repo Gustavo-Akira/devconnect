@@ -20,10 +20,10 @@ jobs:
             "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" \
             | jq '[.[] | .additions + .deletions] | add')
 
-          echo "Total de alterações: $CHANGES"
+          echo "Lines changed: $CHANGES"
 
           MAX_CHANGES=100
           if [ "$CHANGES" -gt "$MAX_CHANGES" ]; then
-            echo "❌ PR muito grande! ($CHANGES alterações, limite $MAX_CHANGES)"
+            echo "❌ PR too big! ($CHANGES changes, limit $MAX_CHANGES)"
             exit 1
           fi
