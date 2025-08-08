@@ -1,0 +1,29 @@
+name: Validate PR Size
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+
+jobs:
+  check-pr-size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+
+          CHANGES=$(curl -s \
+            -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" \
+            | jq '[.[] | .additions + .deletions] | add')
+
+          echo "Lines changed: $CHANGES"
+
+          MAX_CHANGES=100
+          if [ "$CHANGES" -gt "$MAX_CHANGES" ]; then
+            echo "❌ PR too big! ($CHANGES changes, limit $MAX_CHANGES)"
+            exit 1
+          fi
