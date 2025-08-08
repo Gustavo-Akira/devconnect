@@ -8,25 +8,22 @@ jobs:
   check-pr-size:
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR changes
-        uses: actions-ecosystem/action-get-diff@v1
-        id: diff
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: '**/*'
-
-      - name: Get PR diff stats
-        id: pr-stats
+      - name: Get PR changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          added=$(echo "${{ steps.diff.outputs.added_files }}" | wc -l)
-          modified=$(echo "${{ steps.diff.outputs.modified_files }}" | wc -l)
-          removed=$(echo "${{ steps.diff.outputs.removed_files }}" | wc -l)
-          total=$((added + modified + removed))
-          echo "total_changes=$total" >> $GITHUB_OUTPUT
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
 
-      - name: Fail if PR is too large
-        if: steps.pr-stats.outputs.total_changes > 500
-        run: |
-          echo "❌ PR muito grande! (${ {steps.pr-stats.outputs.total_changes} } mudanças)"
-          echo "Considere dividir em PRs menores."
-          exit 1
+          CHANGES=$(curl -s \
+            -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" \
+            | jq '[.[] | .additions + .deletions] | add')
+
+          echo "Total de alterações: $CHANGES"
+
+          MAX_CHANGES=100
+          if [ "$CHANGES" -gt "$MAX_CHANGES" ]; then
+            echo "❌ PR muito grande! ($CHANGES alterações, limite $MAX_CHANGES)"
+            exit 1
+          fi
