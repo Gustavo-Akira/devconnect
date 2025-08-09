@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY ./build/libs/devconnect-*.jar app.jar
 
-EXPOSE 8083
+EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV SPRING_PROFILES_ACTIVE=docker
+
+ENTRYPOINT ["java", "-jar", "app.jar","--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]

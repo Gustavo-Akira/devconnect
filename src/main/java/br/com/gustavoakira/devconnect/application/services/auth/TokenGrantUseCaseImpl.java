@@ -35,7 +35,7 @@ public class TokenGrantUseCaseImpl implements TokenGrantUseCase {
         if (!encoder.matches(command.password(), profile.getPassword().getValue())) {
             throw new BusinessException("Invalid credentials");
         }
-        final long expiresIn = 2 * 60 * 60L;
+        final long expiresIn = 2 * 60 * 60L * 1000;
         final String token = jwtProvider.generateToken(profile,expiresIn);
 
         return new TokenGrantResponse(token, expiresIn);
