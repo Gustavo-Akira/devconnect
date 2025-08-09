@@ -1,0 +1,91 @@
+package br.com.gustavoakira.devconnect.adapters.inbound.controller.project;
+
+import br.com.gustavoakira.devconnect.adapters.config.JwtProvider;
+import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.DevProfileController;
+import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.CreateProjectRequest;
+import br.com.gustavoakira.devconnect.application.domain.Project;
+import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.usecases.project.ProjectUseCases;
+import br.com.gustavoakira.devconnect.application.usecases.project.SaveProjectUseCase;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+@WebMvcTest(controllers = ProjectController.class,excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@ExtendWith(MockitoExtension.class)
+class ProjectControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Mock
+    private SaveProjectUseCase saveProjectUseCase;
+
+    @MockitoBean
+    private ProjectUseCases useCases;
+
+    @BeforeEach
+    void setup(){
+        final var auth = new UsernamePasswordAuthenticationToken("1", null, List.of());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        Mockito.when(useCases.getSaveProjectUseCase()).thenReturn(saveProjectUseCase);
+    }
+
+    @Nested
+    class SaveProjectEndpoint{
+        @Test
+        void shouldSaveProjectAndReturn201HttpStatusCode() throws Exception {
+            final String projectName = "akira";
+            final String projectDescription = "description";
+            final String projectUrl = "https://github.com";
+            Mockito.when(saveProjectUseCase.execute(Mockito.any())).thenReturn(new Project(1L,projectName,projectDescription,projectUrl,1L));
+            final CreateProjectRequest request = new CreateProjectRequest(
+                    projectName,
+                    projectDescription,
+                    projectUrl
+            );
+
+            mockMvc.perform(post("/v1/projects")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isCreated())
+                    .andExpect(header().string("Location", containsString("/v1/projects/1")))
+                    .andExpect(jsonPath("$.id", is(1)))
+                    .andExpect(jsonPath("$.name", is(projectName)))
+                    .andExpect(jsonPath("$.description", is(projectDescription)))
+                    .andExpect(jsonPath("$.devProfileId", is(1)))
+                    .andExpect(jsonPath("$.repoUrl", is(projectUrl)));
+        }
+    }
+}
