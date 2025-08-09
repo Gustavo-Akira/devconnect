@@ -1,0 +1,9 @@
+db:
+  config:
+    username: devuser
+    password: devpass
+    url: jdbc:postgresql://postgres:5432/devconnect
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
