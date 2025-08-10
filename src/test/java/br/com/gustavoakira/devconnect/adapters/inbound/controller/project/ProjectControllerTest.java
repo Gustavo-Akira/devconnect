@@ -7,10 +7,7 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.Up
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
-import br.com.gustavoakira.devconnect.application.usecases.project.FindProjectByIdUseCase;
-import br.com.gustavoakira.devconnect.application.usecases.project.ProjectUseCases;
-import br.com.gustavoakira.devconnect.application.usecases.project.SaveProjectUseCase;
-import br.com.gustavoakira.devconnect.application.usecases.project.UpdateProjectUseCase;
+import br.com.gustavoakira.devconnect.application.usecases.project.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -62,6 +59,9 @@ class ProjectControllerTest {
     @Mock
     private UpdateProjectUseCase updateProjectUseCase;
 
+    @Mock
+    private DeleteProjectUseCase deleteProjectUseCase;
+
     @MockitoBean
     private ProjectUseCases useCases;
 
@@ -72,6 +72,7 @@ class ProjectControllerTest {
         Mockito.when(useCases.getSaveProjectUseCase()).thenReturn(saveProjectUseCase);
         Mockito.when(useCases.getFindProjectByIdUseCase()).thenReturn(findProjectByIdUseCase);
         Mockito.when(useCases.getUpdateProjectUseCase()).thenReturn(updateProjectUseCase);
+        Mockito.when(useCases.getDeleteProjectUseCase()).thenReturn(deleteProjectUseCase);
     }
 
     @Nested
@@ -144,6 +145,16 @@ class ProjectControllerTest {
                     .andExpect(jsonPath("$.description", is(projectDescription)))
                     .andExpect(jsonPath("$.devProfileId", is(1)))
                     .andExpect(jsonPath("$.repoUrl", is(projectUrl)));
+        }
+    }
+
+    @Nested
+    class DeleteProject{
+        @Test
+        void shouldDeleteWithSuccessAndReturn204HttpStatusCode() throws Exception {
+            Mockito.doNothing().when(deleteProjectUseCase).execute(1L);
+            mockMvc.perform(delete("/v1/projects/1"))
+                    .andExpect(status().isNoContent());
         }
     }
 }

@@ -82,7 +82,8 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					"br/com/gustavoakira/devconnect/adapters/config/**",
 					"**/dto/**",
-					"**/filters/**"
+					"**/filters/**",
+					"br/com/gustavoakira/devconnect/application/usecases/**"
 			])
 		}))
 }

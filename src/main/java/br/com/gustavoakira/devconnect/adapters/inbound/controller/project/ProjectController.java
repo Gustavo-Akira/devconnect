@@ -36,6 +36,12 @@ public class ProjectController {
         return ResponseEntity.ok(useCases.getUpdateProjectUseCase().execute(request.toDomain(getLoggedUserId())));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id) throws EntityNotFoundException {
+        useCases.getDeleteProjectUseCase().execute(id);
+        return ResponseEntity.noContent().build();
+    }
+
     private Long getLoggedUserId(){
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
     }
