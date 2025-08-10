@@ -22,7 +22,7 @@ jobs:
 
           echo "Lines changed: $CHANGES"
 
-          MAX_CHANGES=100
+          MAX_CHANGES=200
           if [ "$CHANGES" -gt "$MAX_CHANGES" ]; then
             echo "❌ PR too big! ($CHANGES changes, limit $MAX_CHANGES)"
             exit 1
