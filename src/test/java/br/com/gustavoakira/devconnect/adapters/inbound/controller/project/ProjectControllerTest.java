@@ -67,6 +67,9 @@ class ProjectControllerTest {
     @Mock
     private FindAllByDevProfileUseCase findAllByDevProfileUseCase;
 
+    @Mock
+    private FindAllUseCase findAllUseCase;
+
     @MockitoBean
     private ProjectUseCases useCases;
 
@@ -79,6 +82,7 @@ class ProjectControllerTest {
         Mockito.when(useCases.getUpdateProjectUseCase()).thenReturn(updateProjectUseCase);
         Mockito.when(useCases.getDeleteProjectUseCase()).thenReturn(deleteProjectUseCase);
         Mockito.when(useCases.getFindAllByDevProfileUseCase()).thenReturn(findAllByDevProfileUseCase);
+        Mockito.when(useCases.getFindAllUseCase()).thenReturn(findAllUseCase);
     }
 
     @Nested
@@ -178,15 +182,31 @@ class ProjectControllerTest {
             mockMvc.perform(get("/v1/projects/dev-profile/1"))
                     .andExpect(status().is2xxSuccessful());
         }
-
-        private PaginatedResult<Project> getMockedProjectPaginatedResult(int page, int size) throws BusinessException {
-            return new PaginatedResult<>(
-                    Collections.singletonList(new Project(1L, "akira","asdfdsffdsadsaf","https://github.com/gustavo-Akira/devconnect",1L)),
-                    size,
-                    page,
-                    1
-            );
-        }
-
     }
+
+    @Nested
+    class  FindAllProjects{
+        @Test
+        void shouldFindAllWithSentParam() throws Exception {
+            Mockito.when(findAllUseCase.execute(1,1)).thenReturn(getMockedProjectPaginatedResult(1,1));
+            mockMvc.perform(get("/v1/projects?page=1&size=1"))
+                    .andExpect(status().is2xxSuccessful());
+        }
+        @Test
+        void shouldFindAllWithDefaultParamWhenNotSend() throws Exception {
+            Mockito.when(findAllUseCase.execute(5,0)).thenReturn(getMockedProjectPaginatedResult(0,5));
+            mockMvc.perform(get("/v1/projects"))
+                    .andExpect(status().is2xxSuccessful());
+        }
+    }
+
+    private PaginatedResult<Project> getMockedProjectPaginatedResult(int page, int size) throws BusinessException {
+        return new PaginatedResult<>(
+                Collections.singletonList(new Project(1L, "akira","asdfdsffdsadsaf","https://github.com/gustavo-Akira/devconnect",1L)),
+                size,
+                page,
+                1
+        );
+    }
+
 }
