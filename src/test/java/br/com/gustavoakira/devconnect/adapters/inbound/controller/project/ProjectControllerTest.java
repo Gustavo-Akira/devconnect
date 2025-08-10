@@ -7,6 +7,7 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.Up
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.project.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -62,6 +64,9 @@ class ProjectControllerTest {
     @Mock
     private DeleteProjectUseCase deleteProjectUseCase;
 
+    @Mock
+    private FindAllByDevProfileUseCase findAllByDevProfileUseCase;
+
     @MockitoBean
     private ProjectUseCases useCases;
 
@@ -73,6 +78,7 @@ class ProjectControllerTest {
         Mockito.when(useCases.getFindProjectByIdUseCase()).thenReturn(findProjectByIdUseCase);
         Mockito.when(useCases.getUpdateProjectUseCase()).thenReturn(updateProjectUseCase);
         Mockito.when(useCases.getDeleteProjectUseCase()).thenReturn(deleteProjectUseCase);
+        Mockito.when(useCases.getFindAllByDevProfileUseCase()).thenReturn(findAllByDevProfileUseCase);
     }
 
     @Nested
@@ -156,5 +162,31 @@ class ProjectControllerTest {
             mockMvc.perform(delete("/v1/projects/1"))
                     .andExpect(status().isNoContent());
         }
+    }
+
+    @Nested
+    class  FindAllProjectByDevProfile{
+        @Test
+        void shouldFindAllWithSentParam() throws Exception {
+            Mockito.when(findAllByDevProfileUseCase.execute(1L,1,1)).thenReturn(getMockedProjectPaginatedResult(1,1));
+            mockMvc.perform(get("/v1/projects/dev-profile/1?page=1&size=1"))
+                    .andExpect(status().is2xxSuccessful());
+        }
+        @Test
+        void shouldFindAllWithDefaultParamWhenNotSend() throws Exception {
+            Mockito.when(findAllByDevProfileUseCase.execute(1L,5,0)).thenReturn(getMockedProjectPaginatedResult(0,5));
+            mockMvc.perform(get("/v1/projects/dev-profile/1"))
+                    .andExpect(status().is2xxSuccessful());
+        }
+
+        private PaginatedResult<Project> getMockedProjectPaginatedResult(int page, int size) throws BusinessException {
+            return new PaginatedResult<>(
+                    Collections.singletonList(new Project(1L, "akira","asdfdsffdsadsaf","https://github.com/gustavo-Akira/devconnect",1L)),
+                    size,
+                    page,
+                    1
+            );
+        }
+
     }
 }
