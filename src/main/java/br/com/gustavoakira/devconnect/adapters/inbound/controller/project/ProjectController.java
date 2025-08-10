@@ -48,6 +48,11 @@ public class ProjectController {
         return ResponseEntity.ok(useCases.getFindAllByDevProfileUseCase().execute(devId,size,page));
     }
 
+    @GetMapping()
+    public ResponseEntity<PaginatedResult<Project>> getProjects(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException {
+        return ResponseEntity.ok(useCases.getFindAllUseCase().execute(size,page));
+    }
+
     private Long getLoggedUserId(){
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
     }
