@@ -2,6 +2,8 @@ package br.com.gustavoakira.devconnect.application.domain;
 
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 
+import java.util.Objects;
+
 public class Project {
     private Long id;
     private String name;
@@ -52,5 +54,18 @@ public class Project {
         if(devProfileId <= 0){
             throw new BusinessException("Dev profile id have to be 1 or more");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){ return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
+        final Project project = (Project) o;
+        return Objects.equals(id, project.id) && Objects.equals(name, project.name) && Objects.equals(description, project.description) && Objects.equals(repoUrl, project.repoUrl) && Objects.equals(devProfileId, project.devProfileId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, repoUrl, devProfileId);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.gustavoakira.devconnect.adapters.inbound.controller.project;
 
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.CreateProjectRequest;
+import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.UpdateProjectRequest;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
@@ -28,6 +29,11 @@ public class ProjectController {
     @GetMapping("/{id}")
     public ResponseEntity<Project> getProjectById(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
         return ResponseEntity.ok(useCases.getFindProjectByIdUseCase().execute(id));
+    }
+
+    @PutMapping
+    public ResponseEntity<Project> updateProject(@RequestBody @Valid UpdateProjectRequest request) throws BusinessException, EntityNotFoundException {
+        return ResponseEntity.ok(useCases.getUpdateProjectUseCase().execute(request.toDomain(getLoggedUserId())));
     }
 
     private Long getLoggedUserId(){
