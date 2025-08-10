@@ -5,9 +5,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectUseCases {
     private final SaveProjectUseCase saveProjectUseCase;
+    private final FindProjectByIdUseCase findProjectByIdUseCase;
 
-    public ProjectUseCases(SaveProjectUseCase saveDevProfileUseCase) {
+    public ProjectUseCases(SaveProjectUseCase saveDevProfileUseCase, FindProjectByIdUseCase findProjectByIdUseCase) {
         this.saveProjectUseCase = saveDevProfileUseCase;
+        this.findProjectByIdUseCase = findProjectByIdUseCase;
+    }
+
+    public FindProjectByIdUseCase getFindProjectByIdUseCase() {
+        return findProjectByIdUseCase;
     }
 
     public SaveProjectUseCase getSaveProjectUseCase() {
