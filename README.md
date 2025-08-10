@@ -17,7 +17,7 @@ Designed with **Java (Spring Boot)** using **hexagonal architecture**, **DDD**, 
 
 - ✅ **Isolated domain** (no technical dependencies)
 - ✅ **Rich Value Objects** (`Password`, `Address`)
-- ✅ Separated layers: `application`, `adapters`, `infrastructure`
+- ✅ Separated layers: `application`, `adapters`
 
 ---
 
@@ -53,14 +53,23 @@ src/
 ---
 
 ## 🔧 Running Locally
-
-Prerequisites:
+To run this application locally you have two options: 
+- Without Docker
+- With Docker 
+### Without Docker
+If you want to run without Docker you have to have:
 - Java 24
-- Docker
-- PostgreSQL running on port `5432` (running outside Docker)
+- PostgreSQL running on port `5432`
+- Kafka
+And run on the root of the project this command: 
 
 ```bash
 ./gradlew bootRun
+```
+### With Docker (OnGoing)
+But if you have docker just run:
+```bash
+docker compose run
 ```
 
 ---

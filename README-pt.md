@@ -15,7 +15,7 @@ Projetado com **Java (Spring Boot)** usando **arquitetura hexagonal**, **DDD**, 
 
 - ✅ **Domínio isolado** (sem dependências técnicas)
 - ✅ **Value Objects ricos** (Password, Address)
-- ✅ Camadas separadas: application, adapters, infrastructure
+- ✅ Camadas separadas: application, adapters 
 
 ---
 
@@ -49,17 +49,25 @@ src/
 
 ---
 
-## 🔧 Como rodar localmente
-
-Pré-requisitos:
+## 🔧 Rodando Projeto Localmente
+Para rodar localmente o projeto se tem duas opções:
+- Sem Docker
+- Com Docker
+### Sem Docker
+Se voce quiser rodar esse projeto sem docker, precisa ter instalado:
 - Java 24
-- Docker
-- PostgreSQL rodando na porta 5432 (rodando sem docker)
+- PostgreSQL running on port `5432`
+- Kafka
+ E executar esse comando na raiz do projeto:
 
-bash
+```bash
 ./gradlew bootRun
-
-
+```
+### Com Docker (Em desenvolvimento)
+Agora para rodar com docker só executar esse comando na raiz do projeto:
+```bash
+docker compose run
+```
 ---
 
 ## 📄 Decisões Técnicas
