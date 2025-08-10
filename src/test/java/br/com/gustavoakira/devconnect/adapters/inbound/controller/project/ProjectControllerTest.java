@@ -3,8 +3,10 @@ package br.com.gustavoakira.devconnect.adapters.inbound.controller.project;
 import br.com.gustavoakira.devconnect.adapters.config.JwtProvider;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.DevProfileController;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.CreateProjectRequest;
+import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.usecases.project.FindProjectByIdUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.project.ProjectUseCases;
 import br.com.gustavoakira.devconnect.application.usecases.project.SaveProjectUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,6 +35,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -52,6 +55,9 @@ class ProjectControllerTest {
     @Mock
     private SaveProjectUseCase saveProjectUseCase;
 
+    @Mock
+    private FindProjectByIdUseCase findProjectByIdUseCase;
+
     @MockitoBean
     private ProjectUseCases useCases;
 
@@ -60,6 +66,7 @@ class ProjectControllerTest {
         final var auth = new UsernamePasswordAuthenticationToken("1", null, List.of());
         SecurityContextHolder.getContext().setAuthentication(auth);
         Mockito.when(useCases.getSaveProjectUseCase()).thenReturn(saveProjectUseCase);
+        Mockito.when(useCases.getFindProjectByIdUseCase()).thenReturn(findProjectByIdUseCase);
     }
 
     @Nested
@@ -81,6 +88,23 @@ class ProjectControllerTest {
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isCreated())
                     .andExpect(header().string("Location", containsString("/v1/projects/1")))
+                    .andExpect(jsonPath("$.id", is(1)))
+                    .andExpect(jsonPath("$.name", is(projectName)))
+                    .andExpect(jsonPath("$.description", is(projectDescription)))
+                    .andExpect(jsonPath("$.devProfileId", is(1)))
+                    .andExpect(jsonPath("$.repoUrl", is(projectUrl)));
+        }
+    }
+    @Nested
+    class FindById{
+        @Test
+        void shouldReturn200HttpStatusWhenProjectExists() throws Exception {
+            final String projectName = "akira";
+            final String projectDescription = "description";
+            final String projectUrl = "https://github.com";
+            Mockito.when(findProjectByIdUseCase.execute(1L)).thenReturn(new Project(1L,projectName,projectDescription,projectUrl,1L));
+            mockMvc.perform(get("/v1/projects/1"))
+                    .andExpect(status().is2xxSuccessful())
                     .andExpect(jsonPath("$.id", is(1)))
                     .andExpect(jsonPath("$.name", is(projectName)))
                     .andExpect(jsonPath("$.description", is(projectDescription)))
