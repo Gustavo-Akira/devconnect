@@ -8,12 +8,14 @@ public class ProjectUseCases {
     private final FindProjectByIdUseCase findProjectByIdUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
     private final DeleteProjectUseCase deleteProjectUseCase;
+    private final FindAllByDevProfileUseCase findAllByDevProfileUseCase;
 
-    public ProjectUseCases(SaveProjectUseCase saveDevProfileUseCase, FindProjectByIdUseCase findProjectByIdUseCase, UpdateProjectUseCase updateProjectUseCase, DeleteProjectUseCase deleteProjectUseCase) {
+    public ProjectUseCases(SaveProjectUseCase saveDevProfileUseCase, FindProjectByIdUseCase findProjectByIdUseCase, UpdateProjectUseCase updateProjectUseCase, DeleteProjectUseCase deleteProjectUseCase, FindAllByDevProfileUseCase findAllByDevProfileUseCase) {
         this.saveProjectUseCase = saveDevProfileUseCase;
         this.findProjectByIdUseCase = findProjectByIdUseCase;
         this.updateProjectUseCase = updateProjectUseCase;
         this.deleteProjectUseCase = deleteProjectUseCase;
+        this.findAllByDevProfileUseCase = findAllByDevProfileUseCase;
     }
 
     public FindProjectByIdUseCase getFindProjectByIdUseCase() {
@@ -30,5 +32,9 @@ public class ProjectUseCases {
 
     public DeleteProjectUseCase getDeleteProjectUseCase() {
         return deleteProjectUseCase;
+    }
+
+    public FindAllByDevProfileUseCase getFindAllByDevProfileUseCase() {
+        return findAllByDevProfileUseCase;
     }
 }

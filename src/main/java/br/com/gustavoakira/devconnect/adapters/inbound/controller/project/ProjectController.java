@@ -5,6 +5,7 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.Up
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.project.ProjectUseCases;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) throws EntityNotFoundException {
         useCases.getDeleteProjectUseCase().execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/dev-profile/{devId}")
+    public ResponseEntity<PaginatedResult<Project>> getProjectByDevProfile(@PathVariable Long devId, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException {
+        return ResponseEntity.ok(useCases.getFindAllByDevProfileUseCase().execute(devId,size,page));
     }
 
     private Long getLoggedUserId(){
