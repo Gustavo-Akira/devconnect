@@ -55,7 +55,11 @@ src/
 ## 🔧 Running Locally
 To run this application locally you have two options: 
 - Without Docker
-- With Docker 
+- With Docker
+
+But first of all you have to:
+- Clone the repository
+
 ### Without Docker
 If you want to run without Docker you have to have:
 - Java 24
@@ -66,10 +70,10 @@ And run on the root of the project this command:
 ```bash
 ./gradlew bootRun
 ```
-### With Docker (OnGoing)
+### With Docker 
 But if you have docker just run:
 ```bash
-docker compose run
+docker compose run -d
 ```
 
 ---

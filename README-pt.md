@@ -63,10 +63,10 @@ Se voce quiser rodar esse projeto sem docker, precisa ter instalado:
 ```bash
 ./gradlew bootRun
 ```
-### Com Docker (Em desenvolvimento)
+### Com Docker
 Agora para rodar com docker só executar esse comando na raiz do projeto:
 ```bash
-docker compose run
+docker compose run -d
 ```
 ---
 
