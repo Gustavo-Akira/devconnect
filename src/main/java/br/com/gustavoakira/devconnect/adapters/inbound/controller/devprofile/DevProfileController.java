@@ -50,6 +50,11 @@ public class DevProfileController {
         return ResponseEntity.ok(DevProfileResponse.fromDomain(profile));
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<DevProfileResponse> getProfile() throws BusinessException, EntityNotFoundException {
+        return ResponseEntity.ok(DevProfileResponse.fromDomain(cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(getLoggedUserId()))));
+    }
+
     @GetMapping
     public ResponseEntity<PaginatedResult<DevProfileResponse>> findAll(
             @RequestParam(defaultValue = "0") Integer number,

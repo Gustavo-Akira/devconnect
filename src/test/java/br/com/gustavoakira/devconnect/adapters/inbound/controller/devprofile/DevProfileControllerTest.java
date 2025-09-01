@@ -3,6 +3,7 @@ package br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile;
 import br.com.gustavoakira.devconnect.adapters.config.JwtProvider;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.SaveDevProfileRequest;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.UpdateDevProfileRequest;
+import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
@@ -296,6 +297,20 @@ class DevProfileControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.content[0].name", is("Gustavo Akira")))
                     .andExpect(jsonPath("$.totalElements", is(1)));
+        }
+    }
+
+    @Nested
+    class GetProfile{
+        @Test
+        void shouldGetProfileWhenLogged() throws Exception {
+            final DevProfile profile = createMockDevProfile();
+
+            Mockito.when(useCases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(profile.getId()))).thenReturn(profile);
+            mockMvc.perform(get("/v1/dev-profiles/profile"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id", is(1)))
+                    .andExpect(jsonPath("$.name", is("Gustavo Akira")));
         }
     }
 
