@@ -54,7 +54,6 @@ public class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tokenRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.access_token").value("fake-jwt-token"))
-                .andExpect(jsonPath("$.expires_in").value(3600));
+                .andExpect(cookie().exists("jwt"));
     }
 }
