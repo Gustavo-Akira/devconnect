@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "2f08cb1e-fe24-47f7-9d4a-95a6ff5a128e",
+		"name": "DevConnect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12357489"
+	},
+	"item": [
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Create dev",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\":\"Gustavo Akira Uekita\",\r\n   \"email\":\"akirauekita2@gmail.com\",\r\n   \"password\":\"Kadeira2.0\",\r\n   \"street\":\"Rua Maria Antonieta Mello Freire Conceição 271\",\r\n   \"city\":\"Mogi das Cruzes\",\r\n   \"state\":\"SP\",\r\n   \"zipCode\":\"08730230\",\r\n   \"country\":\"BR\",\r\n   \"githubLink\":\"https://github.com/gustavo-akira\",\r\n   \"linkedinLink\":\"https://www.linkedin.com/in/gustavo-akira\",\r\n   \"bio\":\"Desenvolvedor apaixonado por arquitetura limpa, DDD e boas práticas.\",\r\n   \"stack\":[\r\n      \"Java\",\r\n      \"Javascript\"\r\n   ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"id\":1,\r\n   \"name\":\"Gustavo Akira Uekita\",\r\n   \"email\":\"akirauekita2@gmail.com\",\r\n   \"password\":\"Kadeira2.0\",\r\n   \"street\":\"Rua Maria Antonieta Mello Freire Conceição 271\",\r\n   \"city\":\"Mogi das Cruzes\",\r\n   \"state\":\"SP\",\r\n   \"zipCode\":\"08730230\",\r\n   \"country\":\"BR\",\r\n   \"githubLink\":\"https://github.com/gustavo-akira\",\r\n   \"linkedinLink\":\"https://www.linkedin.com/in/gustavo-akira\",\r\n   \"bio\":\"Desenvolvedor apaixonado por arquitetura limpa, DDD e boas práticas.\",\r\n   \"stack\":[\r\n      \"Java\",\r\n      \"Javascript\"\r\n   ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles/5",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Request related to profile like create or get the logged profile info."
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grantType\":\"password\",\r\n    \"password\":\"StrongP@ssw0rd\",\r\n    \"username\":\"gustavo2004.akira@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/v1/auth/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Request related to authentication like Login"
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Create project",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"devconnect2\",\r\n    \"description\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n    \"repoUrl\":\"https://github.com/Gustavo-Akira/devconnect\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/v1/projects",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/projects/52",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"projects",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/projects/52",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"projects",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update project",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":52,\r\n    \"name\":\"devconnect3\",\r\n    \"description\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n    \"repoUrl\":\"https://github.com/Gustavo-Akira/devconnect\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/v1/projects",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"projects"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Requests for project resource like create, read, update and delete."
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "localhost:8080",
+			"type": "default"
+		}
+	]
+}
