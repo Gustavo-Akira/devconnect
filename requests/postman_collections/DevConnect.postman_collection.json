@@ -37,7 +37,7 @@
 					"response": []
 				},
 				{
-					"name": "my profile",
+					"name": "My profile",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -56,7 +56,7 @@
 					"response": []
 				},
 				{
-					"name": "get profile",
+					"name": "Get profile",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -116,6 +116,74 @@
 								"v1",
 								"dev-profiles",
 								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all with filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles?number=0&size=5&name=akira&city=São Paulo&stack=Java",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles"
+							],
+							"query": [
+								{
+									"key": "number",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "name",
+									"value": "akira"
+								},
+								{
+									"key": "city",
+									"value": "São Paulo"
+								},
+								{
+									"key": "stack",
+									"value": "Java"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/dev-profiles?number=1&size=5",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"dev-profiles"
+							],
+							"query": [
+								{
+									"key": "number",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
 							]
 						}
 					},
@@ -251,6 +319,64 @@
 							"path": [
 								"v1",
 								"projects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get projects by devprofile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/projects/dev-profile/1?size=5&page=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"projects",
+								"dev-profile",
+								"1"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/v1/projects?size=5&page=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"v1",
+								"projects"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								}
 							]
 						}
 					},
