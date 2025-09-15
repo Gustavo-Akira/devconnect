@@ -22,7 +22,7 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
         if(!Objects.equals(command.id(), loggedId)){
             throw new ForbiddenException("Unauthorized action");
         }
-        DevProfile devProfile = repository.findById(command.id());
+        final DevProfile devProfile = repository.findById(command.id());
         final Address address = new Address(
                 command.street(),
                 command.city(),
