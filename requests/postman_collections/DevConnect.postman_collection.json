@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"name\":\"Gustavo Akira Uekita\",\r\n   \"email\":\"akirauekita2@gmail.com\",\r\n   \"password\":\"Kadeira2.0\",\r\n   \"street\":\"Rua Maria Antonieta Mello Freire Conceição 271\",\r\n   \"city\":\"Mogi das Cruzes\",\r\n   \"state\":\"SP\",\r\n   \"zipCode\":\"08730230\",\r\n   \"country\":\"BR\",\r\n   \"githubLink\":\"https://github.com/gustavo-akira\",\r\n   \"linkedinLink\":\"https://www.linkedin.com/in/gustavo-akira\",\r\n   \"bio\":\"Desenvolvedor apaixonado por arquitetura limpa, DDD e boas práticas.\",\r\n   \"stack\":[\r\n      \"Java\",\r\n      \"Javascript\"\r\n   ]\r\n}",
+							"raw": "{\r\n   \"name\":\"Gustavo Akira Uekita\",\r\n   \"email\":\"akirauekita2@gmail.com\",\r\n   \"password\":\"Kadeira2.0\",\r\n   \"street\":\"Rua Maria Antonieta 275\",\r\n   \"city\":\"Mogi das Cruzes\",\r\n   \"state\":\"SP\",\r\n   \"zipCode\":\"08730230\",\r\n   \"country\":\"BR\",\r\n   \"githubLink\":\"https://github.com/gustavo-akira\",\r\n   \"linkedinLink\":\"https://www.linkedin.com/in/gustavo-akira\",\r\n   \"bio\":\"Desenvolvedor apaixonado por arquitetura limpa, DDD e boas práticas.\",\r\n   \"stack\":[\r\n      \"Java\",\r\n      \"Javascript\"\r\n   ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,7 +81,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"id\":1,\r\n   \"name\":\"Gustavo Akira Uekita\",\r\n   \"email\":\"akirauekita2@gmail.com\",\r\n   \"password\":\"Kadeira2.0\",\r\n   \"street\":\"Rua Maria Antonieta Mello Freire Conceição 271\",\r\n   \"city\":\"Mogi das Cruzes\",\r\n   \"state\":\"SP\",\r\n   \"zipCode\":\"08730230\",\r\n   \"country\":\"BR\",\r\n   \"githubLink\":\"https://github.com/gustavo-akira\",\r\n   \"linkedinLink\":\"https://www.linkedin.com/in/gustavo-akira\",\r\n   \"bio\":\"Desenvolvedor apaixonado por arquitetura limpa, DDD e boas práticas.\",\r\n   \"stack\":[\r\n      \"Java\",\r\n      \"Javascript\"\r\n   ]\r\n}",
+							"raw": "{\r\n   \"id\":1,\r\n   \"name\":\"Gustavo Akira Uekita\",\r\n   \"email\":\"gustavo2004.akira@example.com\",\r\n   \"street\":\"Rua Mello Freire Conceição 272\",\r\n   \"city\":\"Mogi das Cruzes\",\r\n   \"state\":\"SP\",\r\n   \"zipCode\":\"08730230\",\r\n   \"country\":\"BR\",\r\n   \"githubLink\":\"https://github.com/gustavo-akira\",\r\n   \"linkedinLink\":\"https://www.linkedin.com/in/gustavo-akira\",\r\n   \"bio\":\"Desenvolvedor apaixonado por arquitetura limpa, DDD e boas práticas.\",\r\n   \"stack\":[\r\n      \"Java\",\r\n      \"Javascript\"\r\n   ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -89,14 +89,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/v1/dev-profiles/",
+							"raw": "{{baseURL}}/v1/dev-profiles",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"v1",
-								"dev-profiles",
-								""
+								"dev-profiles"
 							]
 						}
 					},
