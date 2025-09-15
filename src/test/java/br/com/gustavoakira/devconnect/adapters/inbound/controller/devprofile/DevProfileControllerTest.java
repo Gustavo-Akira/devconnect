@@ -121,7 +121,6 @@ class DevProfileControllerTest {
         void shouldUpdateDevProfile() throws Exception {
             final UpdateDevProfileRequest request = new UpdateDevProfileRequest(1L, "Gustavo Akira",
                     "gustavo@email.com",
-                    "123456",
                     "Rua Teste",
                     "São Paulo",
                     "SP",
