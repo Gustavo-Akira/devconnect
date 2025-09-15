@@ -22,6 +22,7 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
         if(!Objects.equals(command.id(), loggedId)){
             throw new ForbiddenException("Unauthorized action");
         }
+        DevProfile devProfile = repository.findById(command.id());
         final Address address = new Address(
                 command.street(),
                 command.city(),
@@ -29,11 +30,11 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
                 command.country(),
                 command.zipCode()
         );
-        final DevProfile devProfile = new DevProfile(
+        final DevProfile updatedDevProfile = new DevProfile(
                 command.id(),
                 command.name(),
                 command.email(),
-                command.password(),
+                devProfile.getPassword().getValue(),
                 command.bio(),
                 address,
                 command.githubLink(),
@@ -41,6 +42,6 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
                 command.stack(),
                 true
         );
-        return repository.update(devProfile);
+        return repository.update(updatedDevProfile);
     }
 }
