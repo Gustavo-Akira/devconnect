@@ -22,8 +22,8 @@ public class FindProjectByIdUseCaseImpl implements FindProjectByIdUseCase {
 
     @Override
     public ProjectResponse execute(Long id) throws BusinessException, EntityNotFoundException {
-        Project project = repository.findProjectById(id);
-        DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
+        final Project project = repository.findProjectById(id);
+        final DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
         return new ProjectResponse(project,profile);
     }
 }

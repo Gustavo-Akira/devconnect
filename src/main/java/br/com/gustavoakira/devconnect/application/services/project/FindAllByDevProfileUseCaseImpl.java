@@ -26,10 +26,10 @@ public class FindAllByDevProfileUseCaseImpl implements FindAllByDevProfileUseCas
     @Override
     public PaginatedResult<ProjectResponse> execute(Long devProfileId, int size, int page) throws BusinessException {
 
-        PaginatedResult<Project> projectPaginatedResult =  repository.findAllProjectByDevId(devProfileId,page,size);
-        List<ProjectResponse> responseList = projectPaginatedResult.getContent().stream().map(project -> {
+        final PaginatedResult<Project> projectPaginatedResult =  repository.findAllProjectByDevId(devProfileId,page,size);
+        final List<ProjectResponse> responseList = projectPaginatedResult.getContent().stream().map(project -> {
             try {
-                DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
+                final DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
                 return new ProjectResponse(project,profile);
             } catch (EntityNotFoundException | BusinessException e) {
                 throw new RuntimeException(e);

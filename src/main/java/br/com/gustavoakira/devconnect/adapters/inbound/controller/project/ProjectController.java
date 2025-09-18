@@ -48,15 +48,15 @@ public class ProjectController {
 
     @GetMapping("/dev-profile/{devId}")
     public ResponseEntity<PaginatedResult<ProjectResponseDTO>> getProjectByDevProfile(@PathVariable Long devId, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException {
-        PaginatedResult<ProjectResponse> paginatedResult = useCases.getFindAllByDevProfileUseCase().execute(devId,size,page);
-        List<ProjectResponseDTO> projectResponseDTOS = paginatedResult.getContent().stream().map(ProjectResponseDTO::new).toList();
+        final PaginatedResult<ProjectResponse> paginatedResult = useCases.getFindAllByDevProfileUseCase().execute(devId,size,page);
+        final List<ProjectResponseDTO> projectResponseDTOS = paginatedResult.getContent().stream().map(ProjectResponseDTO::new).toList();
         return ResponseEntity.ok(new PaginatedResult<>(projectResponseDTOS,paginatedResult.getPage(),paginatedResult.getSize(),paginatedResult.getTotalElements()));
     }
 
     @GetMapping()
     public ResponseEntity<PaginatedResult<ProjectResponseDTO>> getProjects(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException {
-        PaginatedResult<ProjectResponse> paginatedResult = useCases.getFindAllUseCase().execute(size,page);
-        List<ProjectResponseDTO> projectResponseDTOS = paginatedResult.getContent().stream().map(ProjectResponseDTO::new).toList();
+        final PaginatedResult<ProjectResponse> paginatedResult = useCases.getFindAllUseCase().execute(size,page);
+        final List<ProjectResponseDTO> projectResponseDTOS = paginatedResult.getContent().stream().map(ProjectResponseDTO::new).toList();
         return ResponseEntity.ok(new PaginatedResult<>(projectResponseDTOS,paginatedResult.getPage(),paginatedResult.getSize(),paginatedResult.getTotalElements()));
     }
 

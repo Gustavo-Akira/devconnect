@@ -25,10 +25,10 @@ public class FindAllUseCaseImpl implements FindAllUseCase {
 
     @Override
     public PaginatedResult<ProjectResponse> execute(int size, int page) throws BusinessException {
-        PaginatedResult<Project> projectPaginatedResult = repository.findAllProject(page,size);
-        List<ProjectResponse> responseList = projectPaginatedResult.getContent().stream().map(project -> {
+        final PaginatedResult<Project> projectPaginatedResult = repository.findAllProject(page,size);
+        final List<ProjectResponse> responseList = projectPaginatedResult.getContent().stream().map(project -> {
             try {
-                DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
+                final DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
                 return new ProjectResponse(project,profile);
             } catch (EntityNotFoundException | BusinessException e) {
                 throw new RuntimeException(e);

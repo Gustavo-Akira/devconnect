@@ -53,7 +53,7 @@ class FindAllByDevProfileUseCaseImplTest {
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
 
-            DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+            final DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
             Mockito.when(repository.findAllProjectByDevId(1L, 0,5)).thenReturn(new PaginatedResult<>(List.of(new Project(1L,"sfdsasfdfds","dsasdfdsadsf","akira",1L)),0,1,1));
             Mockito.when(devProfileRepository.findById(1L)).thenReturn(profile);
         }

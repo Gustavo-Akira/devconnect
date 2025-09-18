@@ -37,7 +37,7 @@ class FindProjectByIdUseCaseImplTest {
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
             Mockito.when(repository.findProjectById(1L)).thenReturn(new Project(1L,"akira","dsadsfsdfafads","https://github.com/",2L));
-            DevProfile profile = new DevProfile(2L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+            final DevProfile profile = new DevProfile(2L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
             Mockito.when(devProfileRepository.findById(2L)).thenReturn(profile);
         }
 
