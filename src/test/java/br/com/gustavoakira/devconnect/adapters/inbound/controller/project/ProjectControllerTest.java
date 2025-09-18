@@ -5,10 +5,13 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.Dev
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.CreateProjectRequest;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.UpdateProjectRequest;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
+import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.project.*;
+import br.com.gustavoakira.devconnect.application.usecases.project.response.ProjectResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -30,6 +33,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -107,7 +111,6 @@ class ProjectControllerTest {
                     .andExpect(jsonPath("$.id", is(1)))
                     .andExpect(jsonPath("$.name", is(projectName)))
                     .andExpect(jsonPath("$.description", is(projectDescription)))
-                    .andExpect(jsonPath("$.devProfileId", is(1)))
                     .andExpect(jsonPath("$.repoUrl", is(projectUrl)));
         }
     }
@@ -118,13 +121,12 @@ class ProjectControllerTest {
             final String projectName = "akira";
             final String projectDescription = "description";
             final String projectUrl = "https://github.com";
-            Mockito.when(findProjectByIdUseCase.execute(1L)).thenReturn(new Project(1L,projectName,projectDescription,projectUrl,1L));
+            Mockito.when(findProjectByIdUseCase.execute(1L)).thenReturn(getMockProjectResponse());
             mockMvc.perform(get("/v1/projects/1"))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(jsonPath("$.id", is(1)))
                     .andExpect(jsonPath("$.name", is(projectName)))
                     .andExpect(jsonPath("$.description", is(projectDescription)))
-                    .andExpect(jsonPath("$.devProfileId", is(1)))
                     .andExpect(jsonPath("$.repoUrl", is(projectUrl)));
         }
     }
@@ -153,7 +155,6 @@ class ProjectControllerTest {
                     .andExpect(jsonPath("$.id", is(1)))
                     .andExpect(jsonPath("$.name", is(projectName)))
                     .andExpect(jsonPath("$.description", is(projectDescription)))
-                    .andExpect(jsonPath("$.devProfileId", is(1)))
                     .andExpect(jsonPath("$.repoUrl", is(projectUrl)));
         }
     }
@@ -200,9 +201,13 @@ class ProjectControllerTest {
         }
     }
 
-    private PaginatedResult<Project> getMockedProjectPaginatedResult(int page, int size) throws BusinessException {
+    private  ProjectResponse getMockProjectResponse() throws BusinessException {
+        return new ProjectResponse(new Project(1L,"akira","description","https://github.com",1L),new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true));
+    }
+
+    private PaginatedResult<ProjectResponse> getMockedProjectPaginatedResult(int page, int size) throws BusinessException {
         return new PaginatedResult<>(
-                Collections.singletonList(new Project(1L, "akira","asdfdsffdsadsaf","https://github.com/gustavo-Akira/devconnect",1L)),
+                Collections.singletonList(getMockProjectResponse()),
                 size,
                 page,
                 1

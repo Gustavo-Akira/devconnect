@@ -1,9 +1,13 @@
 package br.com.gustavoakira.devconnect.application.services.project;
 
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
+import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
+import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
+import br.com.gustavoakira.devconnect.application.repository.IDevProfileRepository;
 import br.com.gustavoakira.devconnect.application.repository.IProjectRepository;
+import br.com.gustavoakira.devconnect.application.usecases.project.response.ProjectResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,12 +17,17 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class FindProjectByIdUseCaseImplTest {
     @Mock
     private IProjectRepository repository;
+
+    @Mock
+    private IDevProfileRepository devProfileRepository;
 
     @InjectMocks
     private FindProjectByIdUseCaseImpl useCase;
@@ -28,13 +37,14 @@ class FindProjectByIdUseCaseImplTest {
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
             Mockito.when(repository.findProjectById(1L)).thenReturn(new Project(1L,"akira","dsadsfsdfafads","https://github.com/",2L));
+            DevProfile profile = new DevProfile(2L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+            Mockito.when(devProfileRepository.findById(2L)).thenReturn(profile);
         }
 
         @Test
         void shouldReturnProjectWhenProjectExistAndIsValid() throws BusinessException, EntityNotFoundException {
-            final Project project = useCase.execute(1L);
+            final ProjectResponse project = useCase.execute(1L);
             assertEquals(1L, project.getId());
-            assertEquals(2L,project.getDevProfileId());
             assertEquals("akira",project.getName());
             assertEquals("dsadsfsdfafads",project.getDescription());
             assertEquals("https://github.com/",project.getRepoUrl());
