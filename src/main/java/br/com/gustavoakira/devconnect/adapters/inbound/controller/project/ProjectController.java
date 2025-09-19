@@ -1,12 +1,14 @@
 package br.com.gustavoakira.devconnect.adapters.inbound.controller.project;
 
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.CreateProjectRequest;
+import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.ProjectResponseDTO;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.project.dto.UpdateProjectRequest;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.Project;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.project.ProjectUseCases;
+import br.com.gustavoakira.devconnect.application.usecases.project.response.ProjectResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/projects")
@@ -28,8 +31,8 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Project> getProjectById(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
-        return ResponseEntity.ok(useCases.getFindProjectByIdUseCase().execute(id));
+    public ResponseEntity<ProjectResponseDTO> getProjectById(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
+        return ResponseEntity.ok(new ProjectResponseDTO(useCases.getFindProjectByIdUseCase().execute(id)));
     }
 
     @PutMapping
@@ -44,13 +47,17 @@ public class ProjectController {
     }
 
     @GetMapping("/dev-profile/{devId}")
-    public ResponseEntity<PaginatedResult<Project>> getProjectByDevProfile(@PathVariable Long devId, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException {
-        return ResponseEntity.ok(useCases.getFindAllByDevProfileUseCase().execute(devId,size,page));
+    public ResponseEntity<PaginatedResult<ProjectResponseDTO>> getProjectByDevProfile(@PathVariable Long devId, @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException, EntityNotFoundException {
+        final PaginatedResult<ProjectResponse> paginatedResult = useCases.getFindAllByDevProfileUseCase().execute(devId,size,page);
+        final List<ProjectResponseDTO> projectResponseDTOS = paginatedResult.getContent().stream().map(ProjectResponseDTO::new).toList();
+        return ResponseEntity.ok(new PaginatedResult<>(projectResponseDTOS,paginatedResult.getPage(),paginatedResult.getSize(),paginatedResult.getTotalElements()));
     }
 
     @GetMapping()
-    public ResponseEntity<PaginatedResult<Project>> getProjects(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException {
-        return ResponseEntity.ok(useCases.getFindAllUseCase().execute(size,page));
+    public ResponseEntity<PaginatedResult<ProjectResponseDTO>> getProjects(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) throws BusinessException, EntityNotFoundException {
+        final PaginatedResult<ProjectResponse> paginatedResult = useCases.getFindAllUseCase().execute(size,page);
+        final List<ProjectResponseDTO> projectResponseDTOS = paginatedResult.getContent().stream().map(ProjectResponseDTO::new).toList();
+        return ResponseEntity.ok(new PaginatedResult<>(projectResponseDTOS,paginatedResult.getPage(),paginatedResult.getSize(),paginatedResult.getTotalElements()));
     }
 
     private Long getLoggedUserId(){
