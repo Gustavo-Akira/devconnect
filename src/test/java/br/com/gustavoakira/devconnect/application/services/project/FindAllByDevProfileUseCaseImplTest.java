@@ -63,6 +63,20 @@ class FindAllByDevProfileUseCaseImplTest {
             assertDoesNotThrow(()->useCase.execute(1L,5,0));
         }
     }
+    @Nested
+    class OwnerIsNotValid{
+        @BeforeEach
+        void setup() throws BusinessException, EntityNotFoundException {
+
+            Mockito.when(repository.findAllProjectByDevId(1L, 0,5)).thenReturn(new PaginatedResult<>(List.of(new Project(1L,"sfdsasfdfds","dsasdfdsadsf","https://github.com",1L)),0,1,1));
+            Mockito.when(devProfileRepository.findById(1L)).thenThrow(BusinessException.class);
+        }
+
+        @Test
+        void shouldReturnPaginatedResultWithProjects(){
+            assertThrows(BusinessException.class,()->useCase.execute(1L,5,0));
+        }
+    }
 
     @Nested
     class AnyOrAllProjectInvalid{

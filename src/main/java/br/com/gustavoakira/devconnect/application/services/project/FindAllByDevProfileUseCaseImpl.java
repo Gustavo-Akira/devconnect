@@ -12,6 +12,7 @@ import br.com.gustavoakira.devconnect.application.usecases.project.response.Proj
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,17 +25,14 @@ public class FindAllByDevProfileUseCaseImpl implements FindAllByDevProfileUseCas
     private IDevProfileRepository devProfileRepository;
 
     @Override
-    public PaginatedResult<ProjectResponse> execute(Long devProfileId, int size, int page) throws BusinessException {
+    public PaginatedResult<ProjectResponse> execute(Long devProfileId, int size, int page) throws BusinessException, EntityNotFoundException {
 
         final PaginatedResult<Project> projectPaginatedResult =  repository.findAllProjectByDevId(devProfileId,page,size);
-        final List<ProjectResponse> responseList = projectPaginatedResult.getContent().stream().map(project -> {
-            try {
-                final DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
-                return new ProjectResponse(project,profile);
-            } catch (EntityNotFoundException | BusinessException e) {
-                throw new RuntimeException(e);
-            }
-        }).toList();
+        final List<ProjectResponse> responseList = new ArrayList<>();
+        for(Project project: projectPaginatedResult.getContent()){
+            final DevProfile profile = devProfileRepository.findById(project.getDevProfileId());
+            responseList.add(new ProjectResponse(project,profile));
+        }
         return new PaginatedResult<>(responseList,projectPaginatedResult.getPage(),projectPaginatedResult.getSize(),projectPaginatedResult.getTotalElements());
     }
 }
