@@ -54,6 +54,8 @@ public class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tokenRequest)))
                 .andExpect(status().isOk())
-                .andExpect(cookie().exists("jwt"));
+                .andExpect(cookie().exists("jwt"))
+                .andExpect(jsonPath("expiresIn").exists())
+                .andExpect(jsonPath("token").exists());
     }
 }
