@@ -23,9 +23,9 @@ public class AuthController {
     private TokenGrantUseCase tokenGrantUseCase;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody @Valid TokenRequest request) throws BusinessException, EntityNotFoundException {
+    public ResponseEntity<TokenGrantResponse> login(@RequestBody @Valid TokenRequest request) throws BusinessException, EntityNotFoundException {
         final TokenGrantResponse tokenGrantResponse = tokenGrantUseCase.execute(request.toCommand());
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,makeAuthCookieWithHttpOnly(tokenGrantResponse).toString()).build();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,makeAuthCookieWithHttpOnly(tokenGrantResponse).toString()).body(tokenGrantResponse);
     }
 
     private ResponseCookie makeAuthCookieWithHttpOnly(TokenGrantResponse tokenGrantResponse){
