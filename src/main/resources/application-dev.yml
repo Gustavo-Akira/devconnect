@@ -7,3 +7,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+app:
+  kafka:
+    server: localhost:9092
+    client_id: devconnect-service
+    acks: all
+    retries: 3
+    lag: 0
