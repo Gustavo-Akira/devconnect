@@ -5,3 +5,8 @@ server:
   port: 8080
 jwt:
   secret: sua_chave_super_secreta_de_32+_caracteres
+app:
+  kafka:
+    batch_size: 16384
+    buffer_size: 33554432
+    ack: all

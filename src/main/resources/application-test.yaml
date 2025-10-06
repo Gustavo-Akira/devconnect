@@ -4,3 +4,10 @@ spring:
       ddl-auto: update
 jwt:
   secret: sua_chave_super_secreta_de_32+_caracteres
+app:
+  kafka:
+    server: localhost:9092
+    client_id: devconnect-service
+    acks: all
+    retries: 3
+    lag: 0
