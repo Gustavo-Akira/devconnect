@@ -10,3 +10,10 @@ app:
     batch_size: 16384
     buffer_size: 33554432
     ack: all
+    topics:
+      - name: dev-profile.created.v1
+        partitions: 3
+        replicas: 1
+        retention-ms: 604800000
+        cleanup-policy: delete
+        create-dlt: true
