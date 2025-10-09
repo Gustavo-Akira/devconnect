@@ -19,6 +19,14 @@ public class TopicProperties {
         this.topics = topics;
     }
 
+    public String getTopicName(String logicalName) {
+        return topics.stream()
+                .map(TopicDef::getName)
+                .filter(name -> name.contains(logicalName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Topic not found: " + logicalName));
+    }
+
     public static class TopicDef {
         private String name;
         private Integer partitions = 3;

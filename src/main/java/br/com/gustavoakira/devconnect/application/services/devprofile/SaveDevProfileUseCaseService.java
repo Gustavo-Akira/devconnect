@@ -3,6 +3,7 @@ package br.com.gustavoakira.devconnect.application.services.devprofile;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
+import br.com.gustavoakira.devconnect.application.publishers.CreateDevProfileEventPublisher;
 import br.com.gustavoakira.devconnect.application.repository.IDevProfileRepository;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.SaveDevProfileUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.SaveDevProfileCommand;
@@ -12,8 +13,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
 
-    @Autowired
-    private IDevProfileRepository repository;
+
+    private final IDevProfileRepository repository;
+    private final CreateDevProfileEventPublisher publisher;
+
+    public SaveDevProfileUseCaseService(IDevProfileRepository repository, CreateDevProfileEventPublisher publisher) {
+        this.repository = repository;
+        this.publisher = publisher;
+    }
 
     @Override
     public DevProfile execute(SaveDevProfileCommand command) throws BusinessException {
@@ -35,6 +42,8 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
                 command.stack(),
                 true
         );
-        return repository.save(devProfile);
+        final DevProfile saved = repository.save(devProfile);
+        publisher.sendMessage(saved);
+        return saved;
     }
 }
