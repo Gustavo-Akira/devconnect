@@ -71,7 +71,12 @@ And run on the root of the project this command:
 ./gradlew bootRun
 ```
 ### With Docker 
-But if you have docker just run:
+But if you have docker:
+First you run the infra with this command if you aren't already running the infra:
+```bash
+ docker compose -f docker-compose-infra.yml up -d 
+```
+After this run this command to run the app:
 ```bash
 docker compose run -d
 ```
