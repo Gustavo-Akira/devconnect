@@ -64,7 +64,12 @@ Se voce quiser rodar esse projeto sem docker, precisa ter instalado:
 ./gradlew bootRun
 ```
 ### Com Docker
-Agora para rodar com docker só executar esse comando na raiz do projeto:
+Agora para rodar com docker :
+Se não estiver rodando a infra por favor fazer run dela antes:
+```bash
+ docker compose -f docker-compose-infra.yml up -d 
+```
+
 ```bash
 docker compose run -d
 ```
