@@ -10,6 +10,7 @@ import br.com.gustavoakira.devconnect.application.usecases.auth.TokenGrantUseCas
 import br.com.gustavoakira.devconnect.application.usecases.auth.response.TokenGrantResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -18,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -57,5 +59,15 @@ public class AuthControllerTest {
                 .andExpect(cookie().exists("jwt"))
                 .andExpect(jsonPath("expiresIn").exists())
                 .andExpect(jsonPath("token").exists());
+    }
+
+    @Test
+    void shouldReturnLogoutWithSuccessWhenLogout() throws Exception {
+        mockMvc.perform(post("/v1/auth/logout")
+                .cookie(new Cookie("jwt","teste")))
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists("jwt"))
+                .andExpect(cookie().maxAge("jwt",0))
+        ;
     }
 }

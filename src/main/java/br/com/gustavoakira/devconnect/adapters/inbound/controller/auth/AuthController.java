@@ -28,6 +28,19 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,makeAuthCookieWithHttpOnly(tokenGrantResponse).toString()).body(tokenGrantResponse);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(){
+        final ResponseCookie cookie = ResponseCookie.from("jwt","")
+                .maxAge(0)
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("Strict")
+                .build();
+
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString()).build();
+    }
+
     private ResponseCookie makeAuthCookieWithHttpOnly(TokenGrantResponse tokenGrantResponse){
         return ResponseCookie.from("jwt", tokenGrantResponse.token())
                 .httpOnly(true)
