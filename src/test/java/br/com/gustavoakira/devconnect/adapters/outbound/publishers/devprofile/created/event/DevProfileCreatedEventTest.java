@@ -29,5 +29,7 @@ class DevProfileCreatedEventTest {
         assertEquals(devProfile.getAddress().getCity(), event.getCity());
         assertEquals(devProfile.getStack(), event.getStack());
         assertEquals(devProfile.getName(), event.getName());
+        assertEquals(devProfile.getAddress().getState(), event.getState());
+        assertEquals(devProfile.getAddress().getCountry(), event.getCountry());
     }
 }

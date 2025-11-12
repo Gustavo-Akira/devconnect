@@ -13,12 +13,16 @@ public class DevProfileCreatedEvent {
     private Long id;
     private String name;
     private String city;
+    private String country;
+    private String state;
     private List<String> stack = new ArrayList<>();
 
     public DevProfileCreatedEvent(DevProfile profile){
         this.id = profile.getId();
         this.name = profile.getName();
         this.city = profile.getAddress().getCity();
+        this.state = profile.getAddress().getState();
+        this.country = profile.getAddress().getCountry();
         this.stack = profile.getStack();
     }
 }
