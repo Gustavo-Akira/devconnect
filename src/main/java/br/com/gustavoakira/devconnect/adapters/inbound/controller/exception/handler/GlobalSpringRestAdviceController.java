@@ -26,7 +26,7 @@ public class GlobalSpringRestAdviceController {
     ){
         return ResponseEntity.status(404)
                 .body(
-                       createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.NOT_FOUND,exception.getMessage(),request.getPathInfo(),"ENTITY_NOT_FOUND",new ArrayList<>())
+                       createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.NOT_FOUND,exception.getMessage(),request.getRequestURI(),"ENTITY_NOT_FOUND",new ArrayList<>())
                 );
     }
 
@@ -40,7 +40,7 @@ public class GlobalSpringRestAdviceController {
         ).toList();
 
         return ResponseEntity.badRequest().body(
-                createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getPathInfo(),"VALIDATION_ERROR",details)
+                createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.BAD_REQUEST, ex.getMessage(),request.getRequestURI(),"VALIDATION_ERROR",details)
         );
     }
 
@@ -50,7 +50,7 @@ public class GlobalSpringRestAdviceController {
             HttpServletRequest request
     ){
         return ResponseEntity.badRequest().body(
-                createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getPathInfo(),"BUSINESS_VALIDATION_ERROR",new ArrayList<>())
+                createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI(),"BUSINESS_VALIDATION_ERROR",new ArrayList<>())
         );
     }
 
@@ -60,7 +60,7 @@ public class GlobalSpringRestAdviceController {
             HttpServletRequest request
     ){
         return ResponseEntity.internalServerError().body(
-          createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getPathInfo(), "INTERNAL_ERROR", new ArrayList<>())
+          createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI(), "INTERNAL_ERROR", new ArrayList<>())
         );
     }
 
@@ -70,7 +70,7 @@ public class GlobalSpringRestAdviceController {
             HttpServletRequest request
     ){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.FORBIDDEN, ex.getMessage(), request.getPathInfo(), "AUTH_ERROR", new ArrayList<>())
+                createExceptionResponseFromMessageAndCodeAndDetailList(HttpStatus.FORBIDDEN, ex.getMessage(), request.getRequestURI(), "AUTH_ERROR", new ArrayList<>())
         );
     }
 
