@@ -31,6 +31,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldSaveAndReturnDomainDevProfile() throws BusinessException {
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2002@gmail.com",
                 "Str@ngP4ssword",
@@ -55,6 +56,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldUpdateAndReturnDomainDevProfile() throws BusinessException {
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2003@gmail.com",
                 "Str@ngP4ssword",
@@ -91,6 +93,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldGetDevProfileWhenExists() throws BusinessException, EntityNotFoundException {
 
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2004@gmail.com",
                 "Str@ngP4ssword",
@@ -114,6 +117,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldGetDevProfilePaginatedResultWhenExists() throws BusinessException, EntityNotFoundException {
 
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2005@gmail.com",
                 "Str@ngP4ssword",
@@ -143,6 +147,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldGetDevProfilePaginatedResultWithFilterWhenExists() throws BusinessException, EntityNotFoundException {
 
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2006@gmail.com",
                 "Str@ngP4ssword",
@@ -172,6 +177,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldSoftDeleteAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2007@gmail.com",
                 "Str@ngP4ssword",
@@ -200,6 +206,7 @@ public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     @Test
     void shouldFindByEmailAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
         final DevProfile profile = new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2008@gmail.com",
                 "Str@ngP4ssword",

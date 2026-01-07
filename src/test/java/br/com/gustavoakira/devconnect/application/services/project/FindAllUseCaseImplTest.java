@@ -36,7 +36,7 @@ class FindAllUseCaseImplTest {
 
     @Test
     void shouldFindAllProjectWithOwner() throws BusinessException, EntityNotFoundException {
-        final DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
         Mockito.when(repository.findAllProject(0,1)).thenReturn(new PaginatedResult<>(List.of(new Project(1L,"sfdsasfdfds","dsasdfdsadsf","https://github.com",1L)),0,1,1));
         Mockito.when(devProfileRepository.findById(1L)).thenReturn(profile);
         assertDoesNotThrow(()->useCase.execute(1,0));

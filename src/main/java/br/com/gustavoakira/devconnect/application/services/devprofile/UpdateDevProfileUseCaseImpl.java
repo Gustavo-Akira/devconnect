@@ -32,6 +32,7 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
         );
         final DevProfile updatedDevProfile = new DevProfile(
                 command.id(),
+                1L,
                 command.name(),
                 command.email(),
                 devProfile.getPassword().getValue(),

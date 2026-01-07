@@ -32,6 +32,7 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
                 command.zipCode()
         );
         final DevProfile devProfile = new DevProfile(
+                1L,
                 command.name(),
                 command.email(),
                 command.password(),
