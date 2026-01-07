@@ -318,6 +318,7 @@ class DevProfileControllerTest {
     private DevProfile createMockDevProfile() throws BusinessException {
         return new DevProfile(
                 1L,
+                1L,
                 "Gustavo Akira",
                 "gustavo@email.com",
                 "123456",

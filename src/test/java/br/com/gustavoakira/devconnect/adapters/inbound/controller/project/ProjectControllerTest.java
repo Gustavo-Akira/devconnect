@@ -202,7 +202,7 @@ class ProjectControllerTest {
     }
 
     private  ProjectResponse getMockProjectResponse() throws BusinessException {
-        return new ProjectResponse(new Project(1L,"akira","description","https://github.com",1L),new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true));
+        return new ProjectResponse(new Project(1L,"akira","description","https://github.com",1L),new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true));
     }
 
     private PaginatedResult<ProjectResponse> getMockedProjectPaginatedResult(int page, int size) throws BusinessException {

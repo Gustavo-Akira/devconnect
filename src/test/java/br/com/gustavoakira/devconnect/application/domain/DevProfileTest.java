@@ -18,7 +18,7 @@ public class DevProfileTest {
 
     @Test
     void shouldCreateValidDevProfile() throws BusinessException {
-        final DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
 
         assertEquals("João Silva", profile.getName());
         assertEquals("joao@email.com", profile.getEmail());
@@ -29,7 +29,7 @@ public class DevProfileTest {
     @Test
     void shouldThrowExceptionForInvalidName() {
         final Exception ex = assertThrows(BusinessException.class, () -> {
-            new DevProfile("João", "email@email.com", "Str0ng@Pwd", "Bio válida com mais de 30 caracteres.", sampleAddress(), "https://github.com/joao", "https://linkedin.com/in/joao",new ArrayList<>(),true);
+            new DevProfile(1L,"João", "email@email.com", "Str0ng@Pwd", "Bio válida com mais de 30 caracteres.", sampleAddress(), "https://github.com/joao", "https://linkedin.com/in/joao",new ArrayList<>(),true);
         });
         assertTrue(ex.getMessage().toLowerCase().contains("name"));
     }
@@ -37,7 +37,7 @@ public class DevProfileTest {
     @Test
     void shouldThrowExceptionForInvalidGitHubLink() {
         final Exception ex = assertThrows(BusinessException.class, () -> {
-            new DevProfile("João Silva", "email@email.com", "Str0ng@Pwd", "Bio válida com mais de 30 caracteres.", sampleAddress(), "http://invalid.com/joao", "https://linkedin.com/in/joao",new ArrayList<>(),true);
+            new DevProfile(1L,"João Silva", "email@email.com", "Str0ng@Pwd", "Bio válida com mais de 30 caracteres.", sampleAddress(), "http://invalid.com/joao", "https://linkedin.com/in/joao",new ArrayList<>(),true);
         });
         assertTrue(ex.getMessage().toLowerCase().contains("github"));
     }
@@ -45,14 +45,14 @@ public class DevProfileTest {
     @Test
     void shouldThrowExceptionForInvalidLinkedinLink() {
         final Exception ex = assertThrows(BusinessException.class, () -> {
-            new DevProfile("João Silva", "email@email.com", "Str0ng@Pwd", "Bio válida com mais de 30 caracteres.", sampleAddress(), "https://github.com/joao", "linkedin.com/in/joao",new ArrayList<>(),true);
+            new DevProfile(1L,"João Silva", "email@email.com", "Str0ng@Pwd", "Bio válida com mais de 30 caracteres.", sampleAddress(), "https://github.com/joao", "linkedin.com/in/joao",new ArrayList<>(),true);
         });
         assertTrue(ex.getMessage().toLowerCase().contains("linkedin"));
     }
 
     @Test
     void shouldChangePasswordSuccessfully() throws BusinessException {
-        final DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
 
         profile.changePassword("An0ther@Pass");
         assertEquals("An0ther@Pass", profile.getPassword().getValue());
@@ -60,7 +60,7 @@ public class DevProfileTest {
 
     @Test
     void shouldMoveToNewAddressSuccessfully() throws BusinessException {
-        final DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
 
         final Address newAddress = new Address("Rua B", "Cidade Z", "Estado W", "CA", "98765-432");
         profile.moveToNewAddress(newAddress);
@@ -69,7 +69,7 @@ public class DevProfileTest {
 
     @Test
     void shouldSetTrueWhenIsActiveIsNotPassed() throws BusinessException {
-        final DevProfile profile = new DevProfile("João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),null);
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),null);
         assertTrue(profile.isActive());
     }
 }

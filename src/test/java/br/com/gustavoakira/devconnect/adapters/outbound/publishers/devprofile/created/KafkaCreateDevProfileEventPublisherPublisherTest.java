@@ -83,6 +83,7 @@ class KafkaCreateDevProfileEventPublisherPublisherTest {
 
     private static DevProfile getDevProfile() throws BusinessException {
         return new DevProfile(
+                1L,
                 "Akira Uekita",
                 "akirauekita2002@gmail.com",
                 "Str@ngP4ssword",

@@ -2,32 +2,62 @@ package br.com.gustavoakira.devconnect.application.domain;
 
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
+import br.com.gustavoakira.devconnect.application.domain.value_object.Password;
 
 import java.util.List;
 
-
+/**
+ * @deprecated DevProfile currently extends User only for migration purposes.
+ * This inheritance will be removed once all dependencies are migrated.
+ */
 public class DevProfile extends User{
     private String bio;
     private Address address;
     private String githubLink;
     private String linkedinLink;
     private List<String> stack;
+    private Long userId;
 
-    public DevProfile(String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink,List<String> stack, Boolean isActive) throws BusinessException {
+    public DevProfile(Long userId,String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink,List<String> stack, Boolean isActive) throws BusinessException {
         super(name,password,email,isActive);
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
         this.stack = stack;
+        this.userId = userId;
         validate();
     }
 
-    public DevProfile(Long id, String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, List<String> stack, Boolean isActive) throws BusinessException {
-        this(name,email,password,bio,address,githubLink,linkedinLink,stack,isActive);
-        setId(id);
+    public DevProfile(Long id, Long userId,String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, List<String> stack, Boolean isActive) throws BusinessException {
+        this(userId,name,email,password,bio,address,githubLink,linkedinLink,stack,isActive);
+        super.setId(id);
     }
 
+    @Deprecated
+    public String getEmail() {
+        return super.getEmail();
+    }
+
+    @Deprecated
+    public Password getPassword() {
+        return super.getPassword();
+    }
+
+    @Deprecated
+    public String getName(){
+        return super.getName();
+    }
+
+    @Deprecated
+    public Boolean isActive(){
+        return super.isActive();
+    }
+
+
+    public Long getUserId() {
+        return userId;
+    }
 
     public String getBio() {
         return bio;

@@ -32,7 +32,7 @@ class SaveDevProfileUseCaseServiceTest {
     @Test
     void shouldSaveDevProfileWhenInformationIsValid() throws BusinessException {
         final SaveDevProfileCommand command = new SaveDevProfileCommand("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
-        Mockito.when(repository.save(Mockito.any())).thenReturn(new DevProfile("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword", "gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg", new Address("Avenida Joao","São Paulo","São Paulo","BR","04724-003") ,"https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita",new ArrayList<>(),true));
+        Mockito.when(repository.save(Mockito.any())).thenReturn(new DevProfile(1L,"Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword", "gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg", new Address("Avenida Joao","São Paulo","São Paulo","BR","04724-003") ,"https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita",new ArrayList<>(),true));
         Mockito.doNothing().when(publisher).sendMessage(Mockito.any());
         final DevProfile profile = saveDevProfileUseCaseService.execute(command);
         assertEquals("Akira Uekita",profile.getName());

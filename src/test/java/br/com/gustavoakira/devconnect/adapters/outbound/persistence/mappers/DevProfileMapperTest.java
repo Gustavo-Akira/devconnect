@@ -29,6 +29,7 @@ class DevProfileMapperTest {
 
         final DevProfile domain = new DevProfile(
                 1L,
+                1L,
                 "Gustavo Akira",
                 "gustavo@example.com",
                 password.getValue(),
