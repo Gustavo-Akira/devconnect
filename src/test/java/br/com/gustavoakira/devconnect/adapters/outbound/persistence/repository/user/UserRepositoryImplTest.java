@@ -30,13 +30,13 @@ class UserRepositoryImplTest {
 
     @Test
     void shouldFindUserByIdSuccessfully() throws Exception {
-        var entity = mock(UserEntity.class);
-        var domainUser = mock(User.class);
+        final var entity = mock(UserEntity.class);
+        final var domainUser = mock(User.class);
 
         when(springRepository.findById(1L)).thenReturn(Optional.of(entity));
         when(entity.toDomain()).thenReturn(domainUser);
 
-        User result = userRepository.findById(1L);
+        final User result = userRepository.findById(1L);
 
         assertNotNull(result);
         assertEquals(domainUser, result);
@@ -56,7 +56,7 @@ class UserRepositoryImplTest {
 
     @Test
     void shouldPropagateBusinessExceptionWhenDomainIsInvalid() throws Exception {
-        var entity = mock(UserEntity.class);
+        final var entity = mock(UserEntity.class);
 
         when(springRepository.findById(1L)).thenReturn(Optional.of(entity));
         when(entity.toDomain()).thenThrow(new BusinessException("Invalid domain state"));
@@ -69,13 +69,13 @@ class UserRepositoryImplTest {
 
     @Test
     void shouldFindUserByEmailSuccessfully() throws Exception {
-        var entity = mock(UserEntity.class);
-        var domainUser = mock(User.class);
+        final var entity = mock(UserEntity.class);
+        final var domainUser = mock(User.class);
 
         when(springRepository.findByEmail("test@email.com")).thenReturn(Optional.of(entity));
         when(entity.toDomain()).thenReturn(domainUser);
 
-        User result = userRepository.findByEmail("test@email.com");
+        final User result = userRepository.findByEmail("test@email.com");
 
         assertNotNull(result);
         assertEquals(domainUser, result);
