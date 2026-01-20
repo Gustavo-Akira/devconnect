@@ -5,6 +5,7 @@ import br.com.gustavoakira.devconnect.application.domain.value_object.Password;
 
 public class User {
     private Long id;
+    @Deprecated
     private String name;
     private Password password;
     private String email;
@@ -24,7 +25,7 @@ public class User {
     public Boolean isActive() {
         return isActive;
     }
-
+    @Deprecated
     public void rename(String name) throws BusinessException {
         validateName(name);
         this.name = name;
@@ -63,7 +64,7 @@ public class User {
     public Password getPassword() {
         return password;
     }
-
+    @Deprecated
     public String getName() {
         return name;
     }
