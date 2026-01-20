@@ -7,4 +7,5 @@ import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessExce
 public interface IUserRepository {
     User findById(Long id) throws BusinessException, EntityNotFoundException;
     User findByEmail(String email) throws EntityNotFoundException, BusinessException;
+    User save(User user) throws BusinessException;
 }
