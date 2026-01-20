@@ -9,11 +9,12 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class UserEntity extends UserSuperEntity {
     public User toDomain() throws BusinessException {
+        System.out.println(this.getName());
         return new User(
                 this.getId(),
-                this.getPassword(),
                 this.getName(),
                 this.getPassword(),
+                this.getEmail(),
                 this.getIsActive()
         );
     }
