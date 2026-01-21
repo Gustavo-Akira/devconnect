@@ -9,7 +9,7 @@ import br.com.gustavoakira.devconnect.application.repository.IDevProfileReposito
 import br.com.gustavoakira.devconnect.application.repository.IUserRepository;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.SaveDevProfileUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.SaveDevProfileCommand;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +27,7 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
     }
 
     @Override
+    @Transactional
     public DevProfile execute(SaveDevProfileCommand command) throws BusinessException {
         final Address address = new Address(
                 command.street(),
