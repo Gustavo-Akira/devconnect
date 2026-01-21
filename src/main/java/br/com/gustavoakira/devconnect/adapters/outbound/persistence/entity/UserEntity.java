@@ -8,8 +8,21 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class UserEntity extends UserSuperEntity {
+
+    public UserEntity(){
+
+    }
+
+    public UserEntity(User user){
+        this.setId(user.getId());
+        this.setName(user.getName());
+        this.setEmail(user.getEmail());
+        this.setPassword(user.getPassword().getValue());
+        this.setIsActive(user.isActive());
+    }
+
+
     public User toDomain() throws BusinessException {
-        System.out.println(this.getName());
         return new User(
                 this.getId(),
                 this.getName(),

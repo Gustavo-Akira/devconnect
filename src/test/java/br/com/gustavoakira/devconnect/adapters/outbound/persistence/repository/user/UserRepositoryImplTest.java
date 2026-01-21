@@ -93,4 +93,34 @@ class UserRepositoryImplTest {
                 () -> userRepository.findByEmail("invalid@email.com")
         );
     }
+
+    @Test
+    void shouldSaveAndReturnUserWhenUserInfoIsValid() throws BusinessException {
+        final UserEntity entity = new UserEntity();
+        entity.setName("alora nol");
+        entity.setEmail("alora@gmail.com");
+        entity.setPassword("password");
+        entity.setIsActive(true);
+        final User domainUser =entity.toDomain();
+        when(springRepository.save(any())).thenReturn(entity);
+        final User result = userRepository.save(domainUser);
+        assertEquals(domainUser.getEmail(), result.getEmail());
+        assertEquals(domainUser.getPassword().getValue(), result.getPassword().getValue());
+        assertEquals(domainUser.isActive(), result.isActive());
+    }
+
+    @Test
+    void shouldThrowBusinessExceptionWhenUserInfoIsInvalid() throws BusinessException {
+        final UserEntity entity = new UserEntity();
+        entity.setName("alora nol");
+        entity.setEmail("alora@gmail.com");
+        entity.setPassword("password");
+        entity.setIsActive(true);
+        final User domainUser =entity.toDomain();
+        final UserEntity result = new UserEntity();
+        result.setName("akira a");
+        result.setEmail("akira ");
+        when(springRepository.save(any())).thenReturn(result);
+        assertThrows(BusinessException.class,()-> userRepository.save(domainUser));
+    }
 }
