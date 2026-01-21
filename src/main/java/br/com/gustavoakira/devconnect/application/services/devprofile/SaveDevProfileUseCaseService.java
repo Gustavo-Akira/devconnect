@@ -1,10 +1,12 @@
 package br.com.gustavoakira.devconnect.application.services.devprofile;
 
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
+import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.publishers.CreateDevProfileEventPublisher;
 import br.com.gustavoakira.devconnect.application.repository.IDevProfileRepository;
+import br.com.gustavoakira.devconnect.application.repository.IUserRepository;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.SaveDevProfileUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.SaveDevProfileCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,12 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
 
     private final IDevProfileRepository repository;
     private final CreateDevProfileEventPublisher publisher;
+    private final IUserRepository userRepository;
 
-    public SaveDevProfileUseCaseService(IDevProfileRepository repository, CreateDevProfileEventPublisher publisher) {
+    public SaveDevProfileUseCaseService(IDevProfileRepository repository, CreateDevProfileEventPublisher publisher, IUserRepository userRepository) {
         this.repository = repository;
         this.publisher = publisher;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -31,8 +35,10 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
                 command.country(),
                 command.zipCode()
         );
+        final User user = userRepository.save(new User(command.name(), command.password(), command.email(), true));
+
         final DevProfile devProfile = new DevProfile(
-                1L,
+                user.getId(),
                 command.name(),
                 command.email(),
                 command.password(),
