@@ -105,4 +105,23 @@ public class DevProfile extends User{
             throw new BusinessException("Informe um GitHub válido");
         }
     }
+
+    public void updateBio(String bio) {
+        this.bio = bio;
+    }
+
+
+    public void updateGithubLink(String link) throws BusinessException {
+        validateGithubLink(link);
+        this.githubLink = link;
+    }
+
+    public void updateLinkedinLink(String link) throws BusinessException {
+        validateLinkedin(link);
+        this.linkedinLink = link;
+    }
+
+    public void updateStack(List<String> stack) {
+        this.stack = stack;
+    }
 }

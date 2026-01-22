@@ -19,10 +19,10 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
     private IDevProfileRepository repository;
     @Override
     public DevProfile execute(UpdateDevProfileCommand command, Long loggedId) throws EntityNotFoundException, BusinessException {
-        if(!Objects.equals(command.id(), loggedId)){
+        final DevProfile devProfile = repository.findById(command.id());
+        if(!Objects.equals(devProfile.getUserId(), loggedId)){
             throw new ForbiddenException("Unauthorized action");
         }
-        final DevProfile devProfile = repository.findById(command.id());
         final Address address = new Address(
                 command.street(),
                 command.city(),
@@ -30,19 +30,12 @@ public class UpdateDevProfileUseCaseImpl implements UpdateDevProfileUseCase {
                 command.country(),
                 command.zipCode()
         );
-        final DevProfile updatedDevProfile = new DevProfile(
-                command.id(),
-                1L,
-                command.name(),
-                command.email(),
-                devProfile.getPassword().getValue(),
-                command.bio(),
-                address,
-                command.githubLink(),
-                command.linkedinLink(),
-                command.stack(),
-                true
-        );
-        return repository.update(updatedDevProfile);
+        devProfile.rename(command.name());
+        devProfile.moveToNewAddress(address);
+        devProfile.updateBio(command.bio());
+        devProfile.updateGithubLink(command.githubLink());
+        devProfile.updateLinkedinLink(command.linkedinLink());
+        devProfile.updateStack(command.stack());
+        return repository.update(devProfile);
     }
 }
