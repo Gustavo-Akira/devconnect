@@ -56,7 +56,8 @@ class UpdateDevProfileUseCaseImplTest {
         }
 
         @Test
-        void shouldThrowForbiddenExceptionWhenDeletedIdIsDifferentFromLoggedUserId() {
+        void shouldThrowForbiddenExceptionWhenDeletedIdIsDifferentFromLoggedUserId() throws BusinessException, EntityNotFoundException {
+            Mockito.when(repository.findById(Mockito.any())).thenReturn(profile);
             assertThrows(ForbiddenException.class,()->useCase.execute(getMockCommand(),2L));
         }
 

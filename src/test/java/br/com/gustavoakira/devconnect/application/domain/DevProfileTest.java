@@ -72,4 +72,44 @@ public class DevProfileTest {
         final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),null);
         assertTrue(profile.isActive());
     }
+
+    @Test
+    void shouldSetNewBioWhenUpdateBioIsCalled() throws BusinessException {
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        profile.updateBio("new Bio");
+        assertEquals("new Bio", profile.getBio());
+    }
+
+    @Test
+    void shouldSetNewGithubLinkWhenUpdateGithubLinkIsCalled() throws BusinessException {
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        profile.updateGithubLink("https://github.com/novo");
+        assertEquals("https://github.com/novo", profile.getGithubLink());
+    }
+
+    @Test
+    void shouldSetNewLinkedinLinkWhenUpdateLinkedinLinkIsCalled() throws BusinessException {
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        profile.updateLinkedinLink("https://linkedin.com/in/novo");
+        assertEquals("https://linkedin.com/in/novo", profile.getLinkedinLink());
+    }
+
+    @Test
+    void shouldThrowBusinessExceptionWhenUpdateLinkedinLinkIsCalledWithInvalidLink() throws BusinessException {
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        assertThrows(BusinessException.class,()->profile.updateLinkedinLink("https://com/in/novo"));
+    }
+
+    @Test
+    void shouldThrowBusinessExceptionWhenUpdateGithubLinkIsCalledWithInvalidLink() throws BusinessException {
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        assertThrows(BusinessException.class,()->profile.updateGithubLink("https://com/in/novo"));
+    }
+
+    @Test
+    void shouldSetNewStackWhenUpdateStackCalled() throws BusinessException {
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+        profile.updateStack(new ArrayList<>());
+        assertEquals(new ArrayList<>(), profile.getStack());
+    }
 }
