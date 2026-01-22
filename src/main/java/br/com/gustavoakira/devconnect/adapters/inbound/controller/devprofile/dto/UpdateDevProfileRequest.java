@@ -17,9 +17,6 @@ public class UpdateDevProfileRequest {
     @NotEmpty
     private final String name;
     @NotNull
-    @Email
-    private final String email;
-    @NotNull
     @NotEmpty
     private final String street;
     @NotNull
@@ -49,6 +46,6 @@ public class UpdateDevProfileRequest {
     private final List<String> stack;
 
     public UpdateDevProfileCommand toCommand(){
-        return new UpdateDevProfileCommand(id, name, email, street, city, state, zipCode, country, githubLink, linkedinLink, bio,stack);
+        return new UpdateDevProfileCommand(id, name, street, city, state, zipCode, country, githubLink, linkedinLink, bio,stack);
     }
 }
