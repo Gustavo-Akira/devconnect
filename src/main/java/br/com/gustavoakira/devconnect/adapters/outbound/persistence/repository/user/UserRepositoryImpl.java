@@ -5,15 +5,18 @@ import br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity.UserE
 import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.repository.IUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
 
     private final SpringDataPostgresUserRepository repository;
+    private final PasswordEncoder encoder;
 
-    public UserRepositoryImpl(SpringDataPostgresUserRepository repository){
+    public UserRepositoryImpl(SpringDataPostgresUserRepository repository, PasswordEncoder encoder){
         this.repository = repository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -28,6 +31,8 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public User save(User user) throws BusinessException {
-        return this.repository.save(new UserEntity(user)).toDomain();
+        final UserEntity entity = new UserEntity(user);
+        entity.setPassword(encoder.encode(user.getPassword().getValue()));
+        return this.repository.save(entity).toDomain();
     }
 }
