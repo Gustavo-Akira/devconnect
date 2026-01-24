@@ -1,6 +1,7 @@
 package br.com.gustavoakira.devconnect.adapters.config;
 
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
+import br.com.gustavoakira.devconnect.application.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +25,7 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(DevProfile subject, long expirationMillis) {
+    public String generateToken(User subject, long expirationMillis) {
         final Date now = new Date();
         final Date expiry = new Date(now.getTime() + expirationMillis);
 
