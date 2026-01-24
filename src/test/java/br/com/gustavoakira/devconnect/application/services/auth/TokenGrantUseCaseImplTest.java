@@ -4,9 +4,11 @@ import br.com.gustavoakira.devconnect.adapters.config.JwtProvider;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.auth.dto.TokenRequest;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
+import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.repository.IDevProfileRepository;
+import br.com.gustavoakira.devconnect.application.repository.IUserRepository;
 import com.github.dockerjava.api.exception.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -30,6 +32,9 @@ class TokenGrantUseCaseImplTest {
 
     @Mock
     private JwtProvider provider;
+
+    @Mock
+    private IUserRepository userRepository;
 
     @Mock
     private PasswordEncoder encoder;
@@ -57,19 +62,28 @@ class TokenGrantUseCaseImplTest {
     @Nested
     class EmailValidation {
 
-        @BeforeEach
-        void setup() throws BusinessException, EntityNotFoundException {
-            Mockito.when(repository.findByEmail("notfound@gmail.com")).thenThrow(new EntityNotFoundException("DevProfile not found"));
-        }
-
         @Test
-        void shouldThrowEntityNotFoundExceptionWhenEmailIsNotFound() {
+        void shouldThrowEntityNotFoundExceptionWhenEmailIsNotFound() throws BusinessException, EntityNotFoundException {
+            Mockito.when(userRepository.findByEmail("notfound@gmail.com")).thenThrow(new EntityNotFoundException("User not found"));
+            Mockito.when(repository.findByEmail("notfound@gmail.com")).thenThrow(new EntityNotFoundException("DevProfile not found"));
+
             final TokenRequest invalidEmail = new TokenRequest("password", "notfound@gmail.com", VALID_PASSWORD);
 
             final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () ->
                     tokenGrantUseCase.execute(invalidEmail.toCommand()));
 
             assertEquals("DevProfile not found", exception.getMessage());
+        }
+
+        @Test
+        void shouldCreateUserWhenUserNotFoundButDevProfileIsFound() throws BusinessException, EntityNotFoundException {
+            Mockito.when(userRepository.findByEmail("notfounduser@gmail.com")).thenThrow(new EntityNotFoundException("User not found"));
+            Mockito.when(repository.findByEmail("notfounduser@gmail.com")).thenReturn(mockDevProfile());
+            final TokenRequest invalidEmail = new TokenRequest("password", "notfounduser@gmail.com", VALID_PASSWORD);
+            Mockito.when(userRepository.save(Mockito.any())).thenReturn(new User(1L,"akira uekita",VALID_PASSWORD,"notfounduser@gmail.com",true));
+            Mockito.when(encoder.matches(Mockito.any(),Mockito.any())).thenReturn(true);
+            final var response =tokenGrantUseCase.execute(invalidEmail.toCommand());
+            assertNotNull(response);
         }
     }
 
@@ -78,7 +92,7 @@ class TokenGrantUseCaseImplTest {
 
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
-            Mockito.when(repository.findByEmail(VALID_EMAIL)).thenReturn(mockDevProfile());
+            Mockito.when(userRepository.findByEmail(VALID_EMAIL)).thenReturn(new User(1L,"akira uekita","Str@ngP4ssword",VALID_EMAIL,true));
         }
 
         @Test
@@ -99,7 +113,7 @@ class TokenGrantUseCaseImplTest {
 
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
-            Mockito.when(repository.findByEmail(VALID_EMAIL)).thenReturn(mockDevProfile());
+            Mockito.when(userRepository.findByEmail(VALID_EMAIL)).thenReturn(new User(1L,"akira uekita","Str@ngP4ssword",VALID_EMAIL,true));
             Mockito.when(encoder.matches(VALID_PASSWORD, "Str@ngP4ssword")).thenReturn(true);
             Mockito.when(provider.generateToken(Mockito.any(), Mockito.any(Long.class))).thenReturn("mocked-token");
         }
