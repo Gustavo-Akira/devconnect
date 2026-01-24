@@ -5,6 +5,7 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.UpdateDevProfileRequest;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
+import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.DevProfileUseCases;
@@ -12,6 +13,8 @@ import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.De
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
+import br.com.gustavoakira.devconnect.application.usecases.user.FindUserByIdUseCase;
+import br.com.gustavoakira.devconnect.application.usecases.user.query.FindUserByIdQuery;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,15 +32,21 @@ public class DevProfileController {
     @Autowired
     private DevProfileUseCases cases;
 
+    @Autowired
+    private FindUserByIdUseCase findUserByIdUseCase;
+
     @PostMapping
-    public ResponseEntity<DevProfileResponse> saveDevProfile(@RequestBody @Valid SaveDevProfileRequest request) throws BusinessException {
+    public ResponseEntity<DevProfileResponse> saveDevProfile(@RequestBody @Valid SaveDevProfileRequest request) throws BusinessException, EntityNotFoundException {
         final DevProfile profile = cases.saveDevProfileUseCase().execute(request.toCommand());
-        return ResponseEntity.created(URI.create("/v1/dev-profiles/"+profile.getId())).body(DevProfileResponse.fromDomain(profile));
+        final User user = findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId()));
+        return ResponseEntity.created(URI.create("/v1/dev-profiles/"+profile.getId())).body(DevProfileResponse.fromDomain(profile, user));
     }
 
     @PutMapping
     public ResponseEntity<DevProfileResponse> updateDevProfile(@RequestBody @Valid UpdateDevProfileRequest request) throws BusinessException, EntityNotFoundException {
-        return ResponseEntity.ok().body(DevProfileResponse.fromDomain(cases.updateDevProfileUseCase().execute(request.toCommand(), getLoggedUserId())));
+        final DevProfile profile = cases.updateDevProfileUseCase().execute(request.toCommand(), getLoggedUserId());
+        final User user = findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId()));
+        return ResponseEntity.ok().body(DevProfileResponse.fromDomain(profile, user));
     }
 
     @DeleteMapping("/{id}")
@@ -47,12 +57,15 @@ public class DevProfileController {
     @GetMapping("/{id}")
     public ResponseEntity<DevProfileResponse> getDevProfile(@PathVariable Long id) throws BusinessException, EntityNotFoundException {
         final DevProfile profile=cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));
-        return ResponseEntity.ok(DevProfileResponse.fromDomain(profile));
+        final User user = findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId()));
+        return ResponseEntity.ok(DevProfileResponse.fromDomain(profile, user));
     }
 
     @GetMapping("/profile")
     public ResponseEntity<DevProfileResponse> getProfile() throws BusinessException, EntityNotFoundException {
-        return ResponseEntity.ok(DevProfileResponse.fromDomain(cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(getLoggedUserId()))));
+        final DevProfile profile = cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(getLoggedUserId()));
+        final User user = findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId()));
+        return ResponseEntity.ok(DevProfileResponse.fromDomain(profile,user));
     }
 
     @GetMapping
@@ -63,7 +76,7 @@ public class DevProfileController {
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String tech,
             @RequestParam(required = false) List<String> stack
-    ) throws BusinessException {
+    ) throws BusinessException, EntityNotFoundException {
         final PaginatedResult<DevProfile> profiles;
 
         final boolean hasFilters = (name != null && !name.isBlank()) ||
@@ -84,9 +97,13 @@ public class DevProfileController {
         return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
     }
 
-    private PaginatedResult<DevProfileResponse> toResponse(PaginatedResult<DevProfile> domain) {
+    private PaginatedResult<DevProfileResponse> toResponse(PaginatedResult<DevProfile> domain) throws BusinessException, EntityNotFoundException {
+        final List<DevProfileResponse> profileResponses = new ArrayList<>();
+        for(DevProfile profile: domain.getContent()){
+            profileResponses.add(DevProfileResponse.fromDomain(profile,findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId()))));
+        }
         return new PaginatedResult<>(
-                domain.getContent().stream().map(DevProfileResponse::fromDomain).toList(),
+                profileResponses,
                 domain.getPage(),
                 domain.getSize(),
                 domain.getTotalElements()
