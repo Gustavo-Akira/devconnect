@@ -8,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,11 +23,14 @@ class UserRepositoryImplTest {
     @Mock
     private SpringDataPostgresUserRepository springRepository;
 
+    @Mock
+    private PasswordEncoder encoder;
+
     private UserRepositoryImpl userRepository;
 
     @BeforeEach
     void setup() {
-        userRepository = new UserRepositoryImpl(springRepository);
+        userRepository = new UserRepositoryImpl(springRepository,encoder);
     }
 
     @Test
@@ -102,6 +107,7 @@ class UserRepositoryImplTest {
         entity.setPassword("password");
         entity.setIsActive(true);
         final User domainUser =entity.toDomain();
+        Mockito.when(encoder.encode(Mockito.any())).thenReturn("asfdsfsasaf");
         when(springRepository.save(any())).thenReturn(entity);
         final User result = userRepository.save(domainUser);
         assertEquals(domainUser.getEmail(), result.getEmail());
