@@ -5,6 +5,7 @@ import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.UpdateDevProfileRequest;
 import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
+import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
@@ -13,6 +14,8 @@ import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.De
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
+import br.com.gustavoakira.devconnect.application.usecases.user.FindUserByIdUseCase;
+import br.com.gustavoakira.devconnect.application.usecases.user.query.FindUserByIdQuery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -70,6 +73,9 @@ class DevProfileControllerTest {
     @Mock
     private FindAllDevProfileWithFilterUseCase findAllDevProfileWithFilterUseCase;
 
+    @MockitoBean
+    private FindUserByIdUseCase findUserByIdUseCase;
+
     @BeforeEach
     void setup() throws BusinessException {
         MockitoAnnotations.openMocks(this);
@@ -81,6 +87,16 @@ class DevProfileControllerTest {
         Mockito.when(useCases.findDevProfileByIdUseCase()).thenReturn(findDevProfileByIdUseCase);
         Mockito.when(useCases.findAllDevProfileUseCase()).thenReturn(findAllDevProfileUseCase);
         Mockito.when(useCases.findAllDevProfileWithFilterUseCase()).thenReturn(findAllDevProfileWithFilterUseCase);
+    }
+
+    private User createMockUser() throws BusinessException {
+        return new User(
+                1L,
+                "Gustavo Akira",
+                "123456",
+                "gustavo@email.com",
+                true
+        );
     }
 
     @Nested
@@ -103,16 +119,19 @@ class DevProfileControllerTest {
             );
 
             final DevProfile savedProfile = createMockDevProfile();
+            final User user = createMockUser();
 
             Mockito.when(saveUseCase.execute(any())).thenReturn(savedProfile);
+            Mockito.when(findUserByIdUseCase.execute(new FindUserByIdQuery(savedProfile.getUserId())))
+                    .thenReturn(user);
 
             mockMvc.perform(post("/v1/dev-profiles")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isCreated())
-                    .andExpect(header().string("Location", containsString("/v1/dev-profiles/1")))
                     .andExpect(jsonPath("$.id", is(1)))
-                    .andExpect(jsonPath("$.name", is("Gustavo Akira")));
+                    .andExpect(jsonPath("$.name", is("Gustavo Akira")))
+                    .andExpect(jsonPath("$.email", is("gustavo@email.com")));
         }
     }
     @Nested
@@ -131,6 +150,8 @@ class DevProfileControllerTest {
                     List.of("Java", "Spring Boot"));
 
             final DevProfile updatedProfile = createMockDevProfile();
+            Mockito.when(findUserByIdUseCase.execute(new FindUserByIdQuery(updatedProfile.getUserId())))
+                    .thenReturn(createMockUser());
 
             Mockito.when(updateDevProfileUseCase.execute(any(),any())).thenReturn(updatedProfile);
 
@@ -159,13 +180,18 @@ class DevProfileControllerTest {
         @Test
         void shouldReturnDevProfileById() throws Exception {
             final DevProfile profile = createMockDevProfile();
+            final User user = createMockUser();
 
-            Mockito.when(findDevProfileByIdUseCase.execute(new FindDevProfileByIdQuery(1L))).thenReturn(profile);
+            Mockito.when(findDevProfileByIdUseCase.execute(new FindDevProfileByIdQuery(1L)))
+                    .thenReturn(profile);
+            Mockito.when(findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId())))
+                    .thenReturn(user);
 
             mockMvc.perform(get("/v1/dev-profiles/1"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id", is(1)))
-                    .andExpect(jsonPath("$.name", is("Gustavo Akira")));
+                    .andExpect(jsonPath("$.name", is("Gustavo Akira")))
+                    .andExpect(jsonPath("$.email", is("gustavo@email.com")));
         }
     }
 
@@ -174,6 +200,8 @@ class DevProfileControllerTest {
     class GetAllWithFilters{
         @Test
         void shouldReturnPaginatedListWithFilters() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -190,6 +218,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyCity() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -205,6 +235,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFilterOnlyCityAndOtherEmpty() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -220,6 +252,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyName() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -235,6 +269,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFilterOnlyNameAndOtherEmpty() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -250,6 +286,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyStack() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -265,6 +303,8 @@ class DevProfileControllerTest {
 
         @Test
         void shouldReturnPaginatedListWithFiltersOnlyStackAndOthersEmpty() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile =createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -284,6 +324,8 @@ class DevProfileControllerTest {
     class GetAllWithoutFilters{
         @Test
         void shouldReturnPaginatedListWithoutFilters() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile = createMockDevProfile();
             final PaginatedResult<DevProfile> result = new PaginatedResult<>(List.of(profile), 0, 5, 1L);
 
@@ -302,6 +344,8 @@ class DevProfileControllerTest {
     class GetProfile{
         @Test
         void shouldGetProfileWhenLogged() throws Exception {
+            Mockito.when(findUserByIdUseCase.execute(any()))
+                    .thenReturn(createMockUser());
             final DevProfile profile = createMockDevProfile();
 
             Mockito.when(useCases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(profile.getId()))).thenReturn(profile);

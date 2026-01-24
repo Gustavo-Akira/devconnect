@@ -1,6 +1,7 @@
 package br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto;
 
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
+import br.com.gustavoakira.devconnect.application.domain.User;
 import lombok.Data;
 
 import java.util.List;
@@ -27,11 +28,12 @@ public class DevProfileResponse {
         private final String country;
     }
 
-    public static DevProfileResponse fromDomain(DevProfile profile){
+    public static DevProfileResponse fromDomain(DevProfile profile, User user){
         return new DevProfileResponse(
                 profile.getId(),
                 profile.getName(),
-                profile.getEmail(),
+                // Transitional fallback while User and DevProfile are still coupled
+                user.getEmail() != null? user.getEmail() : profile.getEmail(),
                 profile.getBio(),
                 new AddressResponse(
                         profile.getAddress().getStreet(),
@@ -43,7 +45,8 @@ public class DevProfileResponse {
                 profile.getGithubLink(),
                 profile.getLinkedinLink(),
                 profile.getStack(),
-                profile.isActive()
+                // Transitional fallback while User and DevProfile are still coupled
+                user.isActive() != null? user.isActive() : profile.isActive()
         );
     }
 }
