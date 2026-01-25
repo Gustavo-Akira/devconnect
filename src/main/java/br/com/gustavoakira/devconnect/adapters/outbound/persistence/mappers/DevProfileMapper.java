@@ -19,15 +19,13 @@ public class DevProfileMapper {
 
         return new DevProfileEntity(
                 domain.getId(),
+                domain.getUserId(),
                 domain.getName(),
-                domain.getEmail(),
-                passwordToString(domain.getPassword()),
                 domain.getBio(),
                 addressEntity,
                 domain.getGithubLink(),
                 domain.getLinkedinLink(),
-                domain.getStack(),
-                domain.isActive()
+                domain.getStack()
         );
     }
 
@@ -44,10 +42,10 @@ public class DevProfileMapper {
         try {
             devProfile = new DevProfile(
                     entity.getId(),
-                    1L,
+                    entity.getUserId(),
                     entity.getName(),
                     entity.getEmail(),
-                    password.getValue(),
+                    password != null? password.getValue() : null,
                     entity.getBio(),
                     address,
                     entity.getGithubLink(),

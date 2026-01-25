@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Data
 public class DevProfileEntity extends UserSuperEntity {
-
+    private Long userId;
     private String bio;
     @Embedded
     private AddressEntity address;
@@ -30,18 +30,20 @@ public class DevProfileEntity extends UserSuperEntity {
         super();
     }
 
-    public DevProfileEntity(Long id,String name,String email,String password,String bio, AddressEntity address, String githubLink, String linkedinLink,List<String> techStack, Boolean isActive) {
-        super(id,name,password,email,isActive);
+    public DevProfileEntity(Long id,Long userId, String name,String bio, AddressEntity address, String githubLink, String linkedinLink,List<String> techStack) {
+        super(id,name,null,null,null);
         this.bio = bio;
+        this.userId = userId;
         this.address = address;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
         this.techStack = techStack;
     }
 
-    public DevProfileEntity(String name,String email,String password,String bio, AddressEntity address, String githubLink, String linkedinLink, List<String> techStack, Boolean isActive) {
-        super(null,name,password,email,isActive);
+    public DevProfileEntity(Long userId,String name,String bio, AddressEntity address, String githubLink, String linkedinLink, List<String> techStack) {
+        super(null,name,null,null,null);
         this.bio = bio;
+        this.userId = userId;
         this.address = address;
         this.githubLink = githubLink;
         this.linkedinLink = linkedinLink;
