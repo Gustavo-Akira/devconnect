@@ -10,16 +10,24 @@ import java.util.List;
  * @deprecated DevProfile currently extends User only for migration purposes.
  * This inheritance will be removed once all dependencies are migrated.
  */
-public class DevProfile extends User{
+public class DevProfile{
+    private Long id;
+    private Password password;
+    private String email;
+    private String name;
     private String bio;
     private Address address;
     private String githubLink;
     private String linkedinLink;
     private List<String> stack;
     private Long userId;
+    private Boolean isActive;
 
     public DevProfile(Long userId,String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink,List<String> stack, Boolean isActive) throws BusinessException {
-        super(name,password,email,isActive);
+        this.name = name;
+        this.email = email;
+        this.password = new Password(password);
+        this.isActive = isActive;
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
@@ -31,27 +39,52 @@ public class DevProfile extends User{
 
     public DevProfile(Long id, Long userId,String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, List<String> stack, Boolean isActive) throws BusinessException {
         this(userId,name,email,password,bio,address,githubLink,linkedinLink,stack,isActive);
-        super.setId(id);
+        this.id = id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Deprecated
     public String getEmail() {
-        return super.getEmail();
+        return this.email;
     }
 
     @Deprecated
     public Password getPassword() {
-        return super.getPassword();
+        return this.password;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Deprecated
+    public void changePassword(String password) throws BusinessException {
+        this.password = new Password(password);
+    }
+
+    public void rename(String name) throws BusinessException {
+        validateName(name);
+        this.name = name;
+    }
+
+
+    private void validateName(String name) throws BusinessException {
+        if(name.split("\\s+").length < 2){
+            throw new BusinessException("The name cannot be with only one word");
+        }
+    }
+
+
     public String getName(){
-        return super.getName();
+        return this.name;
     }
 
     @Deprecated
     public Boolean isActive(){
-        return super.isActive();
+        return this.isActive;
     }
 
 
@@ -88,6 +121,7 @@ public class DevProfile extends User{
 
 
     private void validate() throws BusinessException {
+        validateName(name);
         validateGithubLink(githubLink);
         validateLinkedin(linkedinLink);
     }

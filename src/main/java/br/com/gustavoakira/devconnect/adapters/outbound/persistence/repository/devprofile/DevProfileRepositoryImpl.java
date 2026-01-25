@@ -26,13 +26,11 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
     private final SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository;
 
     private final EntityManager manager;
-    private final PasswordEncoder encoder;
 
-    public DevProfileRepositoryImpl(SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository, DevProfileMapper mapper, EntityManager manager, PasswordEncoder encoder) {
+    public DevProfileRepositoryImpl(SpringDataPostgresDevProfileRepository springDataPostgresDevProfileRepository, DevProfileMapper mapper, EntityManager manager) {
         this.springDataPostgresDevProfileRepository = springDataPostgresDevProfileRepository;
         this.mapper = mapper;
         this.manager = manager;
-        this.encoder = encoder;
     }
 
 
@@ -44,7 +42,6 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
     @Override
     public DevProfile save(DevProfile profile) throws BusinessException {
         final DevProfileEntity entity = mapper.toEntity(profile);
-        entity.setPassword(encoder.encode(profile.getPassword().getValue()));
         return mapper.toDomain(springDataPostgresDevProfileRepository.save(entity));
     }
 

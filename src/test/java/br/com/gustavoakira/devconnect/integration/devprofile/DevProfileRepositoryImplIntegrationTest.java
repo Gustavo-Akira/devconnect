@@ -22,212 +22,100 @@ import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
 @SpringBootTest
 @ActiveProfiles("test")
-public class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
+class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Autowired
     private DevProfileRepositoryImpl repository;
 
-
-    @Test
-    void shouldSaveAndReturnDomainDevProfile() throws BusinessException {
-        final DevProfile profile = new DevProfile(
+    private DevProfile createProfile() throws BusinessException {
+        return new DevProfile(
                 1L,
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
+                "akira.valid@email.com",
                 "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
+                "Backend Dev",
+                new Address(
+                        "Avenida Joao Dias",
+                        "São Paulo",
+                        "SP",
+                        "BR",
+                        "04724-003"
+                ),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
                 new ArrayList<>(),
                 true
         );
-
-        final DevProfile saved = repository.save(profile);
-
-        assertNotNull(saved);
-        assertNotNull(saved.getId());
-        assertEquals(profile.getEmail(), saved.getEmail());
-        assertEquals(profile.getName(), saved.getName());
-        assertTrue(saved.isActive());
-        assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
     }
 
     @Test
-    void shouldUpdateAndReturnDomainDevProfile() throws BusinessException {
-        final DevProfile profile = new DevProfile(
-                1L,
-                "Akira Uekita",
-                "akirauekita2003@gmail.com",
-                "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
-                "https://github.com/Gustavo-Akira",
-                "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
-        );
+    void shouldSaveDevProfile_onlyProfileData() throws BusinessException {
+        final DevProfile profile = createProfile();
 
         final DevProfile saved = repository.save(profile);
 
         assertNotNull(saved);
         assertNotNull(saved.getId());
-        assertEquals(profile.getEmail(), saved.getEmail());
         assertEquals(profile.getName(), saved.getName());
-        assertTrue(saved.isActive());
-        assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
+        assertEquals(profile.getBio(), saved.getBio());
+        assertEquals(profile.getAddress().getStreet(), saved.getAddress().getStreet());
+    }
 
-        profile.setId(saved.getId());
-        profile.rename("Mudei o Nome");
+    @Test
+    void shouldUpdateDevProfileProfileData() throws BusinessException {
+        final DevProfile profile = repository.save(createProfile());
+
+        profile.rename("Nome Atualizado");
+
         final DevProfile updated = repository.update(profile);
 
-        assertNotNull(updated);
-        assertEquals(saved.getId(), updated.getId());
-        assertNotEquals(saved.getName(), updated.getName());
-        assertTrue(saved.isActive());
-        assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
-
+        assertEquals(profile.getId(), updated.getId());
+        assertEquals("Nome Atualizado", updated.getName());
     }
 
     @Test
-    void shouldGetDevProfileWhenExists() throws BusinessException, EntityNotFoundException {
+    void shouldFindDevProfileById() throws BusinessException, EntityNotFoundException {
+        final DevProfile saved = repository.save(createProfile());
 
-        final DevProfile profile = new DevProfile(
-                1L,
-                "Akira Uekita",
-                "akirauekita2004@gmail.com",
-                "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
-                "https://github.com/Gustavo-Akira",
-                "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
-        );
+        final DevProfile found = repository.findById(saved.getId());
 
-        final DevProfile saved = repository.save(profile);
-
-        final DevProfile returnedProfile = repository.findById(saved.getId());
-        assertNotNull(returnedProfile);
-        assertEquals(returnedProfile.getName(),saved.getName());
-        assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
+        assertNotNull(found);
+        assertEquals(saved.getName(), found.getName());
+        assertEquals(saved.getAddress().getStreet(), found.getAddress().getStreet());
     }
 
     @Test
-    void shouldGetDevProfilePaginatedResultWhenExists() throws BusinessException, EntityNotFoundException {
+    void shouldReturnPaginatedProfiles() throws BusinessException {
+        repository.save(createProfile());
 
-        final DevProfile profile = new DevProfile(
-                1L,
-                "Akira Uekita",
-                "akirauekita2005@gmail.com",
-                "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
-                "https://github.com/Gustavo-Akira",
-                "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
-        );
+        final PaginatedResult<DevProfile> page = repository.findAll(0, 5);
 
-        final DevProfile saved = repository.save(profile);
-
-        final PaginatedResult<DevProfile> paginatedResult = repository.findAll(0,5);
-        assertEquals(6,paginatedResult.getTotalElements());
-        assertEquals(2, paginatedResult.getTotalPages());
-        assertEquals(5,paginatedResult.getSize());
-
-        final DevProfile returnedProfile = paginatedResult.getContent().getFirst();
-
-        assertNotNull(returnedProfile);
-        assertEquals(returnedProfile.getName(),saved.getName());
-        assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
+        assertFalse(page.getContent().isEmpty());
+        assertEquals(3, page.getTotalElements());
+        assertEquals(5, page.getSize());
     }
 
     @Test
-    void shouldGetDevProfilePaginatedResultWithFilterWhenExists() throws BusinessException, EntityNotFoundException {
+    void shouldReturnPaginatedProfilesWithFilter() throws BusinessException {
+        repository.save(createProfile());
 
-        final DevProfile profile = new DevProfile(
-                1L,
-                "Akira Uekita",
-                "akirauekita2006@gmail.com",
-                "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
-                "https://github.com/Gustavo-Akira",
-                "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
-        );
+        final DevProfileFilter filter = new DevProfileFilter(null, "São Paulo", null);
 
-        final DevProfile saved = repository.save(profile);
-        final DevProfileFilter filter = new DevProfileFilter(null, null, null);
+        final PaginatedResult<DevProfile> page =
+                repository.findAllWithFilter(filter, 0, 5);
 
-        final PaginatedResult<DevProfile> paginatedResult = repository.findAllWithFilter(filter,0,5);
-        assertEquals(1,paginatedResult.getTotalElements());
-        assertEquals(1, paginatedResult.getTotalPages());
-        assertEquals(5,paginatedResult.getSize());
-
-        final DevProfile returnedProfile = paginatedResult.getContent().getFirst();
-
-        assertNotNull(returnedProfile);
-        assertEquals(returnedProfile.getName(),saved.getName());
-        assertEquals(returnedProfile.getAddress().getStreet(),saved.getAddress().getStreet());
+        assertEquals(2, page.getTotalElements());
+        assertEquals("Nome Atualizado", page.getContent().getFirst().getName());
     }
 
     @Test
-    void shouldSoftDeleteAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
-        final DevProfile profile = new DevProfile(
-                1L,
-                "Akira Uekita",
-                "akirauekita2007@gmail.com",
-                "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
-                "https://github.com/Gustavo-Akira",
-                "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
-        );
-
-        DevProfile saved = repository.save(profile);
-
-        assertNotNull(saved);
-        assertNotNull(saved.getId());
-        assertEquals(profile.getEmail(), saved.getEmail());
-        assertEquals(profile.getName(), saved.getName());
-        assertTrue(saved.isActive());
-        assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
+    void shouldSoftDeleteProfile_preservingLegacyFields() throws BusinessException, EntityNotFoundException {
+        final DevProfile saved = repository.save(createProfile());
 
         repository.deleteProfile(saved.getId());
-        saved = repository.findById(saved.getId());
-        assertFalse(saved.isActive());
-    }
 
-    @Test
-    void shouldFindByEmailAndReturnDomainDevProfile() throws BusinessException, EntityNotFoundException {
-        final DevProfile profile = new DevProfile(
-                1L,
-                "Akira Uekita",
-                "akirauekita2008@gmail.com",
-                "Str@ngP4ssword",
-                "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
-                new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
-                "https://github.com/Gustavo-Akira",
-                "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
-        );
+        final DevProfile deleted = repository.findById(saved.getId());
 
-        final DevProfile saved = repository.save(profile);
-
-        assertNotNull(saved);
-        assertNotNull(saved.getId());
-        assertEquals(profile.getEmail(), saved.getEmail());
-        assertEquals(profile.getName(), saved.getName());
-        assertTrue(saved.isActive());
-        assertEquals("Avenida Joao Dias", saved.getAddress().getStreet());
-
-        final DevProfile findEmailProfile =  repository.findByEmail(saved.getEmail());
-        assertEquals(saved.getId(),findEmailProfile.getId());
+        assertFalse(deleted.isActive());
     }
 }

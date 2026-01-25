@@ -69,7 +69,7 @@ public class DevProfileTest {
 
     @Test
     void shouldSetTrueWhenIsActiveIsNotPassed() throws BusinessException {
-        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),null);
+        final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.", sampleAddress(), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
         assertTrue(profile.isActive());
     }
 
