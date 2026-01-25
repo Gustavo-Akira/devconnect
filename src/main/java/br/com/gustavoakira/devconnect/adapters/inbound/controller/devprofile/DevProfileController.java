@@ -50,7 +50,7 @@ public class DevProfileController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDevProfile(@PathVariable Long id) throws EntityNotFoundException {
+    public ResponseEntity<Void> deleteDevProfile(@PathVariable Long id) throws EntityNotFoundException, BusinessException {
         cases.deleteDevProfileUseCase().execute(new DeleteDevProfileCommand(id),getLoggedUserId());
         return ResponseEntity.noContent().build();
     }
