@@ -50,9 +50,9 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldSaveDevProfile_onlyProfileData() throws BusinessException {
-        DevProfile profile = createProfile();
+        final DevProfile profile = createProfile();
 
-        DevProfile saved = repository.save(profile);
+        final DevProfile saved = repository.save(profile);
 
         assertNotNull(saved);
         assertNotNull(saved.getId());
@@ -63,11 +63,11 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldUpdateDevProfileProfileData() throws BusinessException {
-        DevProfile profile = repository.save(createProfile());
+        final DevProfile profile = repository.save(createProfile());
 
         profile.rename("Nome Atualizado");
 
-        DevProfile updated = repository.update(profile);
+        final DevProfile updated = repository.update(profile);
 
         assertEquals(profile.getId(), updated.getId());
         assertEquals("Nome Atualizado", updated.getName());
@@ -75,9 +75,9 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldFindDevProfileById() throws BusinessException, EntityNotFoundException {
-        DevProfile saved = repository.save(createProfile());
+        final DevProfile saved = repository.save(createProfile());
 
-        DevProfile found = repository.findById(saved.getId());
+        final DevProfile found = repository.findById(saved.getId());
 
         assertNotNull(found);
         assertEquals(saved.getName(), found.getName());
@@ -88,7 +88,7 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldReturnPaginatedProfiles() throws BusinessException {
         repository.save(createProfile());
 
-        PaginatedResult<DevProfile> page = repository.findAll(0, 5);
+        final PaginatedResult<DevProfile> page = repository.findAll(0, 5);
 
         assertFalse(page.getContent().isEmpty());
         assertEquals(3, page.getTotalElements());
@@ -99,9 +99,9 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
     void shouldReturnPaginatedProfilesWithFilter() throws BusinessException {
         repository.save(createProfile());
 
-        DevProfileFilter filter = new DevProfileFilter(null, "São Paulo", null);
+        final DevProfileFilter filter = new DevProfileFilter(null, "São Paulo", null);
 
-        PaginatedResult<DevProfile> page =
+        final PaginatedResult<DevProfile> page =
                 repository.findAllWithFilter(filter, 0, 5);
 
         assertEquals(2, page.getTotalElements());
@@ -110,11 +110,11 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
 
     @Test
     void shouldSoftDeleteProfile_preservingLegacyFields() throws BusinessException, EntityNotFoundException {
-        DevProfile saved = repository.save(createProfile());
+        final DevProfile saved = repository.save(createProfile());
 
         repository.deleteProfile(saved.getId());
 
-        DevProfile deleted = repository.findById(saved.getId());
+        final DevProfile deleted = repository.findById(saved.getId());
 
         assertFalse(deleted.isActive());
     }

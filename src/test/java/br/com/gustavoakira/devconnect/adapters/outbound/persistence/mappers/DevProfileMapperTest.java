@@ -24,7 +24,7 @@ class DevProfileMapperTest {
 
     @Test
     void toEntity_shouldMapProfileFields_only() throws BusinessException {
-        Address address = new Address(
+        final Address address = new Address(
                 "Rua A",
                 "São Paulo",
                 "SP",
@@ -32,7 +32,7 @@ class DevProfileMapperTest {
                 "12345-678"
         );
 
-        DevProfile domain = new DevProfile(
+        final DevProfile domain = new DevProfile(
                 1L,
                 10L,
                 "Gustavo Akira",
@@ -46,7 +46,7 @@ class DevProfileMapperTest {
                 true                    // legacy (ignored on write)
         );
 
-        DevProfileEntity entity = mapper.toEntity(domain);
+        final DevProfileEntity entity = mapper.toEntity(domain);
 
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(1L);
@@ -67,14 +67,14 @@ class DevProfileMapperTest {
 
     @Test
     void toDomain_shouldReadLegacyFields_correctly() throws BusinessException {
-        AddressEntity addressEntity = new AddressEntity();
+        final AddressEntity addressEntity = new AddressEntity();
         addressEntity.setStreet("Rua B");
         addressEntity.setCity("Rio de Janeiro");
         addressEntity.setState("RJ");
         addressEntity.setCountry("BR");
         addressEntity.setZipCode("87654-321");
 
-        DevProfileEntity entity = new DevProfileEntity(
+        final DevProfileEntity entity = new DevProfileEntity(
                 2L,
                 20L,
                 "Akira Uekita",
@@ -89,7 +89,7 @@ class DevProfileMapperTest {
         entity.setPassword("secure-hash");
         entity.setIsActive(true);
 
-        DevProfile domain = mapper.toDomain(entity);
+        final DevProfile domain = mapper.toDomain(entity);
 
         assertThat(domain).isNotNull();
         assertThat(domain.getId()).isEqualTo(2L);

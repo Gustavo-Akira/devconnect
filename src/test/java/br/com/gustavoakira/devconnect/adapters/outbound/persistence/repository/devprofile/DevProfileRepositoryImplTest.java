@@ -52,7 +52,7 @@ class DevProfileRepositoryImplTest {
     @Test
     void shouldSaveAndReturnDomainDevProfile() throws BusinessException {
 
-        DevProfile domainProfile = new DevProfile(
+        final DevProfile domainProfile = new DevProfile(
                 1L,
                 10L,
                 "Akira Uekita",
@@ -72,7 +72,7 @@ class DevProfileRepositoryImplTest {
                 true
         );
 
-        DevProfileEntity entity = getEntity();
+        final DevProfileEntity entity = getEntity();
         entity.setId(1L);
         entity.setPassword("Str@ngPassword");
         entity.setEmail("akirauekita2002@gmail.com");
@@ -80,7 +80,7 @@ class DevProfileRepositoryImplTest {
         Mockito.when(springDataPostgresDevProfileRepository.save(Mockito.any()))
                 .thenReturn(entity);
 
-        DevProfile result = repository.save(domainProfile);
+        final DevProfile result = repository.save(domainProfile);
 
         Mockito.verify(springDataPostgresDevProfileRepository)
                 .save(Mockito.any(DevProfileEntity.class));
@@ -95,11 +95,10 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldReturnDevProfileWhenProfileExists() throws EntityNotFoundException, BusinessException {
-            Long id = 1L;
-            DevProfileEntity entity = getEntity();
+            final Long id = 1L;
+            final DevProfileEntity entity = getEntity();
             entity.setId(id);
 
-            // legacy fields (DB state)
             entity.setEmail("akira@email.com");
             entity.setPassword("secure-hash");
             entity.setIsActive(true);
@@ -107,7 +106,7 @@ class DevProfileRepositoryImplTest {
             Mockito.when(springDataPostgresDevProfileRepository.findById(id))
                     .thenReturn(Optional.of(entity));
 
-            DevProfile devProfile = repository.findById(id);
+            final DevProfile devProfile = repository.findById(id);
 
             assertEquals("Akira Uekita", devProfile.getName());
             assertEquals("akira@email.com", devProfile.getEmail());
@@ -131,14 +130,14 @@ class DevProfileRepositoryImplTest {
 
         @Test
         void shouldReturnDevProfileWhenProfileExists() throws EntityNotFoundException, BusinessException {
-            DevProfileEntity entity = getEntity();
+            final DevProfileEntity entity = getEntity();
             entity.setEmail("akira@email.com");
             entity.setPassword("hash");
 
             Mockito.when(springDataPostgresDevProfileRepository.findByEmail("akira@email.com"))
                     .thenReturn(Optional.of(entity));
 
-            DevProfile profile = repository.findByEmail("akira@email.com");
+            final DevProfile profile = repository.findByEmail("akira@email.com");
 
             assertEquals("Akira Uekita", profile.getName());
         }
