@@ -28,9 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TokenGrantUseCaseImplTest {
 
     @Mock
-    private IDevProfileRepository repository;
-
-    @Mock
     private JwtProvider provider;
 
     @Mock
@@ -65,25 +62,13 @@ class TokenGrantUseCaseImplTest {
         @Test
         void shouldThrowEntityNotFoundExceptionWhenEmailIsNotFound() throws BusinessException, EntityNotFoundException {
             Mockito.when(userRepository.findByEmail("notfound@gmail.com")).thenThrow(new EntityNotFoundException("User not found"));
-            Mockito.when(repository.findByEmail("notfound@gmail.com")).thenThrow(new EntityNotFoundException("DevProfile not found"));
 
             final TokenRequest invalidEmail = new TokenRequest("password", "notfound@gmail.com", VALID_PASSWORD);
 
             final EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () ->
                     tokenGrantUseCase.execute(invalidEmail.toCommand()));
 
-            assertEquals("DevProfile not found", exception.getMessage());
-        }
-
-        @Test
-        void shouldCreateUserWhenUserNotFoundButDevProfileIsFound() throws BusinessException, EntityNotFoundException {
-            Mockito.when(userRepository.findByEmail("notfounduser@gmail.com")).thenThrow(new EntityNotFoundException("User not found"));
-            Mockito.when(repository.findByEmail("notfounduser@gmail.com")).thenReturn(mockDevProfile());
-            final TokenRequest invalidEmail = new TokenRequest("password", "notfounduser@gmail.com", VALID_PASSWORD);
-            Mockito.when(userRepository.save(Mockito.any())).thenReturn(new User(1L,"akira uekita",VALID_PASSWORD,"notfounduser@gmail.com",true));
-            Mockito.when(encoder.matches(Mockito.any(),Mockito.any())).thenReturn(true);
-            final var response =tokenGrantUseCase.execute(invalidEmail.toCommand());
-            assertNotNull(response);
+            assertEquals("User not found", exception.getMessage());
         }
     }
 
@@ -129,22 +114,4 @@ class TokenGrantUseCaseImplTest {
         }
     }
 
-    private DevProfile mockDevProfile() {
-        try {
-            return new DevProfile(
-                    1L,
-                    "Akira Uekita",
-                    VALID_EMAIL,
-                    "Str@ngP4ssword",
-                    "someId",
-                    new Address("Avenida Joao", "São Paulo", "São Paulo", "BR", "04724-003"),
-                    "https://github.com/gustavo-Akira/",
-                    "https://www.linkedin.com/in/gustavo-akira-uekita",
-                    new ArrayList<>(),
-                    true
-            );
-        } catch (BusinessException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
