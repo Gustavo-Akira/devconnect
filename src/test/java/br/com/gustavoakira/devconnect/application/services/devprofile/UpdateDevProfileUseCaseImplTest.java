@@ -29,7 +29,7 @@ class UpdateDevProfileUseCaseImplTest {
     @Mock
     private IDevProfileRepository repository;
 
-    final DevProfile profile = new DevProfile(1L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.",  new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+    final DevProfile profile = new DevProfile(1L,2L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.",  new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
 
     UpdateDevProfileUseCaseImplTest() throws BusinessException {
     }
@@ -42,7 +42,7 @@ class UpdateDevProfileUseCaseImplTest {
         void shouldUpdateDevProfileWithSuccess() throws BusinessException, EntityNotFoundException {
             Mockito.when(repository.findById(Mockito.any())).thenReturn(profile);
             Mockito.when(repository.update(Mockito.any())).thenReturn(Mockito.any());
-            assertDoesNotThrow(()->useCase.execute(getMockCommand(),1L));
+            assertDoesNotThrow(()->useCase.execute(getMockCommand(),2L));
         }
     }
 
@@ -52,13 +52,13 @@ class UpdateDevProfileUseCaseImplTest {
         void shouldThrowBusinessExceptionWhenDevProfileWasModifiedDirectlyOnDB() throws BusinessException, EntityNotFoundException {
             Mockito.when(repository.findById(Mockito.any())).thenReturn(profile);
             Mockito.when(repository.update(Mockito.any())).thenThrow(BusinessException.class);
-            assertThrows(BusinessException.class,()->useCase.execute(getMockCommand(),1L));
+            assertThrows(BusinessException.class,()->useCase.execute(getMockCommand(),2L));
         }
 
         @Test
         void shouldThrowForbiddenExceptionWhenDeletedIdIsDifferentFromLoggedUserId() throws BusinessException, EntityNotFoundException {
             Mockito.when(repository.findById(Mockito.any())).thenReturn(profile);
-            assertThrows(ForbiddenException.class,()->useCase.execute(getMockCommand(),2L));
+            assertThrows(ForbiddenException.class,()->useCase.execute(getMockCommand(),3L));
         }
 
         @Test
