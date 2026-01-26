@@ -74,8 +74,6 @@ class DevProfileRepositoryImplTest {
 
         final DevProfileEntity entity = getEntity();
         entity.setId(1L);
-        entity.setPassword("Str@ngPassword");
-        entity.setEmail("akirauekita2002@gmail.com");
 
         Mockito.when(springDataPostgresDevProfileRepository.save(Mockito.any()))
                 .thenReturn(entity);
@@ -99,9 +97,6 @@ class DevProfileRepositoryImplTest {
             final DevProfileEntity entity = getEntity();
             entity.setId(id);
 
-            entity.setEmail("akira@email.com");
-            entity.setPassword("secure-hash");
-            entity.setIsActive(true);
 
             Mockito.when(springDataPostgresDevProfileRepository.findById(id))
                     .thenReturn(Optional.of(entity));
@@ -109,8 +104,6 @@ class DevProfileRepositoryImplTest {
             final DevProfile devProfile = repository.findById(id);
 
             assertEquals("Akira Uekita", devProfile.getName());
-            assertEquals("akira@email.com", devProfile.getEmail());
-            assertEquals("secure-hash", devProfile.getPassword().getValue());
         }
 
         @Test

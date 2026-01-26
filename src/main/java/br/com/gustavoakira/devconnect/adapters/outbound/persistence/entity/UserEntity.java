@@ -2,23 +2,32 @@ package br.com.gustavoakira.devconnect.adapters.outbound.persistence.entity;
 
 import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "users")
-public class UserEntity extends UserSuperEntity {
+@Data
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String password;
+    @Column(unique = true)
+    private String email;
+    private Boolean isActive;
 
     public UserEntity(){
 
     }
 
     public UserEntity(User user){
-        this.setId(user.getId());
-        this.setName(user.getName());
-        this.setEmail(user.getEmail());
-        this.setPassword(user.getPassword().getValue());
-        this.setIsActive(user.isActive());
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.password = user.getPassword().getValue();
+        this.isActive = user.isActive();
     }
 
 
