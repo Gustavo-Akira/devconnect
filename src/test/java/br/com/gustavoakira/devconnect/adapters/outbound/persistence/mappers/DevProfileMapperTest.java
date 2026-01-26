@@ -57,10 +57,6 @@ class DevProfileMapperTest {
         assertThat(entity.getLinkedinLink()).isEqualTo("https://linkedin.com/in/gustavo");
         assertThat(entity.getTechStack()).isEqualTo(domain.getStack());
 
-        assertThat(entity.getEmail()).isNull();
-        assertThat(entity.getPassword()).isNull();
-        assertThat(entity.getIsActive()).isNull();
-
         assertThat(entity.getAddress()).isNotNull();
         assertThat(entity.getAddress().getCity()).isEqualTo("São Paulo");
     }
@@ -84,11 +80,6 @@ class DevProfileMapperTest {
                 "https://linkedin.com/in/akira",
                 Collections.singletonList("Node.js")
         );
-        entity.setIsActive(true);
-        entity.setEmail("akira@email.com");
-        entity.setPassword("secure-hash");
-        entity.setIsActive(true);
-
         final DevProfile domain = mapper.toDomain(entity);
 
         assertThat(domain).isNotNull();
@@ -96,9 +87,9 @@ class DevProfileMapperTest {
         assertThat(domain.getUserId()).isEqualTo(20L);
         assertThat(domain.getName()).isEqualTo("Akira Uekita");
         assertThat(domain.getBio()).isEqualTo("Backend Dev");
-        assertThat(domain.getEmail()).isEqualTo("akira@email.com");
-        assertThat(domain.getPassword().getValue()).isEqualTo("secure-hash");
-        assertThat(domain.isActive()).isTrue();
+        assertThat(domain.getEmail()).isNull();
+        assertThat(domain.getPassword().getValue()).isNull();
+        assertThat(domain.isActive()).isNull();
 
         assertThat(domain.getAddress()).isNotNull();
         assertThat(domain.getAddress().getCity()).isEqualTo("Rio de Janeiro");

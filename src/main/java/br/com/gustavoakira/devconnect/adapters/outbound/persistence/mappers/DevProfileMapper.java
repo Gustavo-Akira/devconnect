@@ -36,7 +36,6 @@ public class DevProfileMapper {
 
         final Address address = toDomain(entity.getAddress());
 
-        final Password password = stringToPassword(entity.getPassword());
 
         final DevProfile devProfile;
         try {
@@ -44,14 +43,14 @@ public class DevProfileMapper {
                     entity.getId(),
                     entity.getUserId(),
                     entity.getName(),
-                    entity.getEmail(),
-                    password != null? password.getValue() : null,
+                    null,
+                    null,
                     entity.getBio(),
                     address,
                     entity.getGithubLink(),
                     entity.getLinkedinLink(),
                     entity.getTechStack(),
-                    entity.getIsActive()
+                    null
             );
         } catch (Exception e) {
             throw new RuntimeException("Erro ao criar DevProfile do domínio: " + e.getMessage(), e);

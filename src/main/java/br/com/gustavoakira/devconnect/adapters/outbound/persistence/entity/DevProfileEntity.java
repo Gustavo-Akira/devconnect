@@ -10,10 +10,13 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class DevProfileEntity extends UserSuperEntity {
+public class DevProfileEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
     private Long userId;
     private String bio;
     @Embedded
@@ -27,11 +30,12 @@ public class DevProfileEntity extends UserSuperEntity {
     private List<String> techStack = new ArrayList<>();
 
     public DevProfileEntity(){
-        super();
+
     }
 
     public DevProfileEntity(Long id,Long userId, String name,String bio, AddressEntity address, String githubLink, String linkedinLink,List<String> techStack) {
-        super(id,name,null,null,null);
+        this.id = id;
+        this.name = name;
         this.bio = bio;
         this.userId = userId;
         this.address = address;
@@ -41,7 +45,7 @@ public class DevProfileEntity extends UserSuperEntity {
     }
 
     public DevProfileEntity(Long userId,String name,String bio, AddressEntity address, String githubLink, String linkedinLink, List<String> techStack) {
-        super(null,name,null,null,null);
+        this.name = name;
         this.bio = bio;
         this.userId = userId;
         this.address = address;
