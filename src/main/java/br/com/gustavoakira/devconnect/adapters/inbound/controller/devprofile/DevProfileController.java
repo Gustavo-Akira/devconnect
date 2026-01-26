@@ -13,7 +13,9 @@ import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.De
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
+import br.com.gustavoakira.devconnect.application.usecases.user.DisableUserUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.user.FindUserByIdUseCase;
+import br.com.gustavoakira.devconnect.application.usecases.user.command.DisableUserCommand;
 import br.com.gustavoakira.devconnect.application.usecases.user.query.FindUserByIdQuery;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class DevProfileController {
     @Autowired
     private FindUserByIdUseCase findUserByIdUseCase;
 
+    @Autowired
+    private DisableUserUseCase disableUserUseCase;
+
     @PostMapping
     public ResponseEntity<DevProfileResponse> saveDevProfile(@RequestBody @Valid SaveDevProfileRequest request) throws BusinessException, EntityNotFoundException {
         final DevProfile profile = cases.saveDevProfileUseCase().execute(request.toCommand());
@@ -48,10 +53,19 @@ public class DevProfileController {
         final User user = findUserByIdUseCase.execute(new FindUserByIdQuery(profile.getUserId()));
         return ResponseEntity.ok().body(DevProfileResponse.fromDomain(profile, user));
     }
-
+    /**
+     * Legacy endpoint kept for backward compatibility.
+     * <p>
+     * This endpoint resolves the DevProfile only to obtain the userId and delegates
+     * the account deactivation to the User domain.
+     * <p>
+     * Will be removed once consumers migrate to DELETE /v1/users/me.
+     */
+    @Deprecated(forRemoval = true)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDevProfile(@PathVariable Long id) throws EntityNotFoundException, BusinessException {
-        cases.deleteDevProfileUseCase().execute(new DeleteDevProfileCommand(id),getLoggedUserId());
+        final DevProfile profile = cases.findDevProfileByIdUseCase().execute(new FindDevProfileByIdQuery(id));
+        disableUserUseCase.execute(new DisableUserCommand(profile.getUserId()),getLoggedUserId());
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/{id}")

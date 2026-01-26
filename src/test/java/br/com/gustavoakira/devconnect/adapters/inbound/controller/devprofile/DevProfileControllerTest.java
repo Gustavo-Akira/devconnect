@@ -14,7 +14,9 @@ import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.De
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
+import br.com.gustavoakira.devconnect.application.usecases.user.DisableUserUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.user.FindUserByIdUseCase;
+import br.com.gustavoakira.devconnect.application.usecases.user.command.DisableUserCommand;
 import br.com.gustavoakira.devconnect.application.usecases.user.query.FindUserByIdQuery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,6 +77,8 @@ class DevProfileControllerTest {
 
     @MockitoBean
     private FindUserByIdUseCase findUserByIdUseCase;
+    @MockitoBean
+    private DisableUserUseCase disableUserUseCase;
 
     @BeforeEach
     void setup() throws BusinessException {
@@ -165,13 +169,29 @@ class DevProfileControllerTest {
     }
 
     @Nested
-    class DeleteDevProfile{
+    class DeleteDevProfile {
+
         @Test
-        void shouldDeleteDevProfile() throws Exception {
+        void shouldDisableUserWhenDeletingDevProfile() throws Exception {
+            final DevProfile profile = createMockDevProfile();
+
+            Mockito.when(
+                    findDevProfileByIdUseCase.execute(
+                            new FindDevProfileByIdQuery(1L)
+                    )
+            ).thenReturn(profile);
+
             mockMvc.perform(delete("/v1/dev-profiles/1"))
                     .andExpect(status().isNoContent());
 
-            Mockito.verify(deleteDevProfileUseCase).execute(new DeleteDevProfileCommand(1L),1L);
+            Mockito.verify(findDevProfileByIdUseCase)
+                    .execute(new FindDevProfileByIdQuery(1L));
+
+            Mockito.verify(disableUserUseCase)
+                    .execute(
+                            new DisableUserCommand(profile.getUserId()),
+                            1L
+                    );
         }
     }
 
