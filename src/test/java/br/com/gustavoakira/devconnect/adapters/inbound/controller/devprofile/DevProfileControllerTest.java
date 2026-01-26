@@ -3,14 +3,12 @@ package br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile;
 import br.com.gustavoakira.devconnect.adapters.config.JwtProvider;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.SaveDevProfileRequest;
 import br.com.gustavoakira.devconnect.adapters.inbound.controller.devprofile.dto.UpdateDevProfileRequest;
-import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.DevProfile;
 import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.shared.PaginatedResult;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.*;
-import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.DeleteDevProfileCommand;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.filters.DevProfileFilter;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.DevProfileFindAllQuery;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.query.FindDevProfileByIdQuery;
@@ -34,7 +32,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,9 +61,6 @@ class DevProfileControllerTest {
     private UpdateDevProfileUseCase updateDevProfileUseCase;
 
     @Mock
-    private DeleteDevProfileUseCase deleteDevProfileUseCase;
-
-    @Mock
     private FindDevProfileByIdUseCase findDevProfileByIdUseCase;
 
     @Mock
@@ -87,7 +81,6 @@ class DevProfileControllerTest {
         SecurityContextHolder.getContext().setAuthentication(auth);
         Mockito.when(useCases.saveDevProfileUseCase()).thenReturn(saveUseCase);
         Mockito.when(useCases.updateDevProfileUseCase()).thenReturn(updateDevProfileUseCase);
-        Mockito.when(useCases.deleteDevProfileUseCase()).thenReturn(deleteDevProfileUseCase);
         Mockito.when(useCases.findDevProfileByIdUseCase()).thenReturn(findDevProfileByIdUseCase);
         Mockito.when(useCases.findAllDevProfileUseCase()).thenReturn(findAllDevProfileUseCase);
         Mockito.when(useCases.findAllDevProfileWithFilterUseCase()).thenReturn(findAllDevProfileWithFilterUseCase);

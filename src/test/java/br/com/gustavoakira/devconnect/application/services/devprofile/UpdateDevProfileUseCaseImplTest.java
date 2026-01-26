@@ -7,7 +7,6 @@ import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessExce
 import br.com.gustavoakira.devconnect.application.domain.exceptions.ForbiddenException;
 import br.com.gustavoakira.devconnect.application.domain.value_object.Address;
 import br.com.gustavoakira.devconnect.application.repository.IDevProfileRepository;
-import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.DeleteDevProfileCommand;
 import br.com.gustavoakira.devconnect.application.usecases.devprofile.command.UpdateDevProfileCommand;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

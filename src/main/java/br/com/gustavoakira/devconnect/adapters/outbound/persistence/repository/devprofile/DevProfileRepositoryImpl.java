@@ -12,7 +12,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -51,13 +50,6 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
     public DevProfile update(DevProfile profile) throws BusinessException {
         final DevProfileEntity entity = mapper.toEntity(profile);
         return mapper.toDomain(springDataPostgresDevProfileRepository.save(entity));
-    }
-
-    @Override
-    public void deleteProfile(Long id) throws EntityNotFoundException {
-        final DevProfileEntity toDelete = springDataPostgresDevProfileRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("DevProfile not found with id: " + id));
-        toDelete.setIsActive(false);
-        springDataPostgresDevProfileRepository.save(toDelete);
     }
 
 
@@ -101,12 +93,6 @@ public class DevProfileRepositoryImpl implements IDevProfileRepository {
         }
         return new PaginatedResult<>(content, page, size, totalElements);
     }
-
-    @Override
-    public DevProfile findByEmail(String email) throws BusinessException, EntityNotFoundException {
-        return mapper.toDomain(springDataPostgresDevProfileRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Invalid Credentials")));
-    }
-
 
     private List<Predicate> buildPredicates(DevProfileFilter filter, CriteriaBuilder cb, Root<DevProfileEntity> root) {
         final List<Predicate> predicates = new ArrayList<>();
