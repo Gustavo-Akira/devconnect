@@ -125,23 +125,6 @@ class DevProfileRepositoryImplTest {
         }
     }
 
-    @Nested
-    class FindDevProfileByEmail {
-
-        @Test
-        void shouldReturnDevProfileWhenProfileExists() throws EntityNotFoundException, BusinessException {
-            final DevProfileEntity entity = getEntity();
-            entity.setEmail("akira@email.com");
-            entity.setPassword("hash");
-
-            Mockito.when(springDataPostgresDevProfileRepository.findByEmail("akira@email.com"))
-                    .thenReturn(Optional.of(entity));
-
-            final DevProfile profile = repository.findByEmail("akira@email.com");
-
-            assertEquals("Akira Uekita", profile.getName());
-        }
-    }
 
     private static DevProfileEntity getEntity() {
         return new DevProfileEntity(

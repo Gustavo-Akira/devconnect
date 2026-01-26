@@ -10,8 +10,6 @@ public interface IDevProfileRepository {
     DevProfile findById(Long id) throws EntityNotFoundException, BusinessException;
     DevProfile save(DevProfile profile) throws BusinessException;
     DevProfile update(DevProfile profile) throws BusinessException;
-    void deleteProfile(Long id) throws EntityNotFoundException;
     PaginatedResult<DevProfile> findAll(int page,int size) throws BusinessException;
     PaginatedResult<DevProfile> findAllWithFilter(DevProfileFilter filter, int page, int size) throws BusinessException;
-    DevProfile findByEmail(String email) throws BusinessException,EntityNotFoundException;
 }

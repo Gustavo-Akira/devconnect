@@ -107,15 +107,4 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         assertEquals(2, page.getTotalElements());
         assertEquals("Nome Atualizado", page.getContent().getFirst().getName());
     }
-
-    @Test
-    void shouldSoftDeleteProfile_preservingLegacyFields() throws BusinessException, EntityNotFoundException {
-        final DevProfile saved = repository.save(createProfile());
-
-        repository.deleteProfile(saved.getId());
-
-        final DevProfile deleted = repository.findById(saved.getId());
-
-        assertFalse(deleted.isActive());
-    }
 }
