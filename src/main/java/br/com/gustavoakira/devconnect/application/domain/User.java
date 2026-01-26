@@ -25,6 +25,11 @@ public class User {
     public Boolean isActive() {
         return isActive;
     }
+
+    public void disable(){
+        this.isActive = false;
+    }
+
     @Deprecated
     public void rename(String name) throws BusinessException {
         validateName(name);
