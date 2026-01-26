@@ -7,9 +7,10 @@ import br.com.gustavoakira.devconnect.application.domain.exceptions.ForbiddenExc
 import br.com.gustavoakira.devconnect.application.repository.IUserRepository;
 import br.com.gustavoakira.devconnect.application.usecases.user.DisableUserUseCase;
 import br.com.gustavoakira.devconnect.application.usecases.user.command.DisableUserCommand;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-
+@Service
 public class DisableUserUseCaseImpl implements DisableUserUseCase {
 
     private final IUserRepository repository;
