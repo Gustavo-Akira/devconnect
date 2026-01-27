@@ -31,8 +31,6 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
         return new DevProfile(
                 1L,
                 "Akira Uekita",
-                "akira.valid@email.com",
-                "Str@ngP4ssword",
                 "Backend Dev",
                 new Address(
                         "Avenida Joao Dias",
@@ -43,8 +41,7 @@ class DevProfileRepositoryImplIntegrationTest extends BasePostgresTest {
                 ),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
+                new ArrayList<>()
         );
     }
 

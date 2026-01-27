@@ -15,14 +15,11 @@ class DevProfileCreatedEventTest {
         final DevProfile devProfile = new DevProfile(
                 1L,
                 "Akira Uekita",
-                "akirauekita2002@gmail.com",
-                "Str@ngP4ssword",
                 "fasfsdfdsfdsafdfdfsdfsdfsdfdfsdsfdsfsdffd",
                 new Address("Avenida Joao Dias", "2048", "São Paulo", "BR", "04724-003"),
                 "https://github.com/Gustavo-Akira",
                 "https://www.linkedin.com/in/gustavo-akira-uekita/",
-                new ArrayList<>(),
-                true
+                new ArrayList<>()
         );
         final DevProfileCreatedEvent event = new DevProfileCreatedEvent(devProfile);
         assertEquals(devProfile.getId(), event.getId());

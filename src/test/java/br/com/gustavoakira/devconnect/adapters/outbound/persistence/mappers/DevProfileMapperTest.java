@@ -36,14 +36,11 @@ class DevProfileMapperTest {
                 1L,
                 10L,
                 "Gustavo Akira",
-                "gustavo@email.com",     // legacy (ignored on write)
-                "encoded-password",     // legacy (ignored on write)
                 "Java Dev",
                 address,
                 "https://github.com/gustavo",
                 "https://linkedin.com/in/gustavo",
-                Collections.singletonList("Java"),
-                true                    // legacy (ignored on write)
+                Collections.singletonList("Java")
         );
 
         final DevProfileEntity entity = mapper.toEntity(domain);
@@ -87,9 +84,6 @@ class DevProfileMapperTest {
         assertThat(domain.getUserId()).isEqualTo(20L);
         assertThat(domain.getName()).isEqualTo("Akira Uekita");
         assertThat(domain.getBio()).isEqualTo("Backend Dev");
-        assertThat(domain.getEmail()).isNull();
-        assertThat(domain.getPassword().getValue()).isNull();
-        assertThat(domain.isActive()).isNull();
 
         assertThat(domain.getAddress()).isNotNull();
         assertThat(domain.getAddress().getCity()).isEqualTo("Rio de Janeiro");
