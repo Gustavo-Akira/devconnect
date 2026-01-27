@@ -41,14 +41,11 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
         final DevProfile devProfile = new DevProfile(
                 user.getId(),
                 command.name(),
-                command.email(),
-                command.password(),
                 command.bio(),
                 address,
                 command.githubLink(),
                 command.linkedinLink(),
-                command.stack(),
-                true
+                command.stack()
         );
         final DevProfile saved = repository.save(devProfile);
         publisher.sendMessage(saved);

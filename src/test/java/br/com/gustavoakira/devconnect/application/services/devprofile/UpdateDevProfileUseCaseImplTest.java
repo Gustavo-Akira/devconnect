@@ -28,7 +28,7 @@ class UpdateDevProfileUseCaseImplTest {
     @Mock
     private IDevProfileRepository repository;
 
-    final DevProfile profile = new DevProfile(1L,2L,"João Silva", "joao@email.com", "Str0ng@Pwd", "Desenvolvedor backend com 10 anos de experiência.",  new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>(),true);
+    final DevProfile profile = new DevProfile(1L,2L,"João Silva","Desenvolvedor backend com 10 anos de experiência.",  new Address("Rua A", "Cidade X", "Estado Y", "BR", "12345-678"), "https://github.com/joaosilva", "https://linkedin.com/in/joaosilva",new ArrayList<>());
 
     UpdateDevProfileUseCaseImplTest() throws BusinessException {
     }
