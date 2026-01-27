@@ -8,8 +8,6 @@ import java.util.List;
 
 public class DevProfile{
     private Long id;
-    private Password password;
-    private String email;
     private String name;
     private String bio;
     private Address address;
@@ -17,13 +15,9 @@ public class DevProfile{
     private String linkedinLink;
     private List<String> stack;
     private Long userId;
-    private Boolean isActive;
 
-    public DevProfile(Long userId,String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink,List<String> stack, Boolean isActive) throws BusinessException {
+    public DevProfile(Long userId,String name, String bio, Address address, String githubLink, String linkedinLink,List<String> stack) throws BusinessException {
         this.name = name;
-        this.email = email;
-        this.password = new Password(password);
-        this.isActive = isActive;
         this.bio = bio;
         this.address = address;
         this.githubLink = githubLink;
@@ -33,8 +27,8 @@ public class DevProfile{
         validate();
     }
 
-    public DevProfile(Long id, Long userId,String name, String email, String password, String bio, Address address, String githubLink, String linkedinLink, List<String> stack, Boolean isActive) throws BusinessException {
-        this(userId,name,email,password,bio,address,githubLink,linkedinLink,stack,isActive);
+    public DevProfile(Long id, Long userId,String name, String bio, Address address, String githubLink, String linkedinLink, List<String> stack) throws BusinessException {
+        this(userId,name,bio,address,githubLink,linkedinLink,stack);
         this.id = id;
     }
 
@@ -42,23 +36,9 @@ public class DevProfile{
         this.id = id;
     }
 
-    @Deprecated
-    public String getEmail() {
-        return this.email;
-    }
-
-    @Deprecated
-    public Password getPassword() {
-        return this.password;
-    }
 
     public Long getId() {
         return id;
-    }
-
-    @Deprecated
-    public void changePassword(String password) throws BusinessException {
-        this.password = new Password(password);
     }
 
     public void rename(String name) throws BusinessException {
@@ -77,12 +57,6 @@ public class DevProfile{
     public String getName(){
         return this.name;
     }
-
-    @Deprecated
-    public Boolean isActive(){
-        return this.isActive;
-    }
-
 
     public Long getUserId() {
         return userId;

@@ -376,14 +376,11 @@ class DevProfileControllerTest {
                 1L,
                 1L,
                 "Gustavo Akira",
-                "gustavo@email.com",
-                "123456",
                 "Java developer",
                 new Address("Rua X", "São Paulo", "SP", "BR",  "01234-567"),
                 "https://github.com/gustavo-akira",
                 "https://linkedin.com/in/gustavo",
-                List.of("Java", "Spring Boot"),
-                true
+                List.of("Java", "Spring Boot")
         );
     }
 }

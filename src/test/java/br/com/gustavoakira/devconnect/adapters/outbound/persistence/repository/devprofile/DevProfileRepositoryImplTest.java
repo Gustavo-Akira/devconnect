@@ -56,8 +56,6 @@ class DevProfileRepositoryImplTest {
                 1L,
                 10L,
                 "Akira Uekita",
-                "akira@email.com",     // legacy (ignored on write)
-                "hashed-pass",         // legacy (ignored on write)
                 "Backend Dev",
                 new Address(
                         "Avenida Joao Dias",
@@ -68,8 +66,7 @@ class DevProfileRepositoryImplTest {
                 ),
                 "https://github.com/akira",
                 "https://linkedin.com/in/akira",
-                new ArrayList<>(),
-                true
+                new ArrayList<>()
         );
 
         final DevProfileEntity entity = getEntity();

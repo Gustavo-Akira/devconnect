@@ -32,8 +32,7 @@ public class DevProfileResponse {
         return new DevProfileResponse(
                 profile.getId(),
                 profile.getName(),
-                // Transitional fallback while User and DevProfile are still coupled
-                user.getEmail() != null? user.getEmail() : profile.getEmail(),
+                user.getEmail(),
                 profile.getBio(),
                 new AddressResponse(
                         profile.getAddress().getStreet(),
@@ -45,8 +44,7 @@ public class DevProfileResponse {
                 profile.getGithubLink(),
                 profile.getLinkedinLink(),
                 profile.getStack(),
-                // Transitional fallback while User and DevProfile are still coupled
-                user.isActive() != null? user.isActive() : profile.isActive()
+                user.isActive()
         );
     }
 }

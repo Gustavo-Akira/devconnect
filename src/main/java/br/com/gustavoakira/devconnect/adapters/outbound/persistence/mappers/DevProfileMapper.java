@@ -43,14 +43,11 @@ public class DevProfileMapper {
                     entity.getId(),
                     entity.getUserId(),
                     entity.getName(),
-                    null,
-                    null,
                     entity.getBio(),
                     address,
                     entity.getGithubLink(),
                     entity.getLinkedinLink(),
-                    entity.getTechStack(),
-                    null
+                    entity.getTechStack()
             );
         } catch (Exception e) {
             throw new RuntimeException("Erro ao criar DevProfile do domínio: " + e.getMessage(), e);
