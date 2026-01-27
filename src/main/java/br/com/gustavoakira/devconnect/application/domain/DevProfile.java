@@ -6,10 +6,6 @@ import br.com.gustavoakira.devconnect.application.domain.value_object.Password;
 
 import java.util.List;
 
-/**
- * @deprecated DevProfile currently extends User only for migration purposes.
- * This inheritance will be removed once all dependencies are migrated.
- */
 public class DevProfile{
     private Long id;
     private Password password;
