@@ -31,8 +31,7 @@ public class User {
     }
 
     @Deprecated
-    public void rename(String name) throws BusinessException {
-        validateName(name);
+    public void rename(String name) {
         this.name = name;
     }
 
@@ -42,7 +41,6 @@ public class User {
     }
 
     private void validate() throws BusinessException {
-        validateName(name);
         if (!this.email.contains("@")){
             throw new BusinessException("Should contain an @ in emaill");
         }
@@ -50,12 +48,6 @@ public class User {
 
     public void changePassword(String password) throws BusinessException {
         this.password = new Password(password);
-    }
-
-    private void validateName(String name) throws BusinessException {
-        if(name.split("\\s+").length < 2){
-            throw new BusinessException("The name cannot be with only one word");
-        }
     }
 
     public Long getId() {

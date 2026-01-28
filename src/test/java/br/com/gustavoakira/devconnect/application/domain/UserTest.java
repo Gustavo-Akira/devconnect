@@ -56,12 +56,12 @@ class UserTest {
                 () -> new User(
                         "Gustavo",
                         "StrongPassword123",
-                        "gustavo@email.com",
+                        "gustavo",
                         true
                 )
         );
 
-        assertEquals("The name cannot be with only one word", exception.getMessage());
+        assertEquals("Should contain an @ in emaill", exception.getMessage());
     }
 
     @Test
