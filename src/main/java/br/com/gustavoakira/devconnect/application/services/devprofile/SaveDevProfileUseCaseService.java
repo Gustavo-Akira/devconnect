@@ -36,7 +36,7 @@ public class SaveDevProfileUseCaseService implements SaveDevProfileUseCase {
                 command.country(),
                 command.zipCode()
         );
-        final User user = userRepository.save(new User(command.name(), command.password(), command.email(), true));
+        final User user = userRepository.save(new User(command.password(), command.email(), true));
 
         final DevProfile devProfile = new DevProfile(
                 user.getId(),
