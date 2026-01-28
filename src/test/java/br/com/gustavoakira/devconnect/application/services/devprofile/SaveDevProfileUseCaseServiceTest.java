@@ -38,7 +38,7 @@ class SaveDevProfileUseCaseServiceTest {
     void shouldSaveDevProfileWhenInformationIsValid() throws BusinessException {
         final SaveDevProfileCommand command = new SaveDevProfileCommand("Akira Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
         Mockito.when(repository.save(Mockito.any())).thenReturn(new DevProfile(1L,"Akira Uekita", "gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg", new Address("Avenida Joao","São Paulo","São Paulo","BR","04724-003") ,"https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita",new ArrayList<>()));
-        Mockito.when(userRepository.save(Mockito.any())).thenReturn(new User(1L,"Akira Uekita","password", "akirauekita2002@gmail.com", true));
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(new User(1L,"password", "akirauekita2002@gmail.com", true));
         Mockito.doNothing().when(publisher).sendMessage(Mockito.any());
         final DevProfile profile = saveDevProfileUseCaseService.execute(command);
         assertEquals("Akira Uekita",profile.getName());
