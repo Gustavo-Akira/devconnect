@@ -46,8 +46,8 @@ class SaveDevProfileUseCaseServiceTest {
 
     @Test
     void shouldThrowBusinessExceptionWhenAnyInformationIsInvalid() throws BusinessException {
-        final SaveDevProfileCommand command = new SaveDevProfileCommand("Uekita","akirauekita2002@gmail.com","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
+        final SaveDevProfileCommand command = new SaveDevProfileCommand("Uekita","akirauekita2002","Str@ngP4ssword","Avenida Joao","São Paulo","São Paulo","04724-003","BR","https://github.com/gustavo-Akira/","https://www.linkedin.com/in/gustavo-akira-uekita","gadsgdsdsgdggadsgadsgdsgddasgdasggdasgadsgadsgadgaddasgadsgdasdasgdasg",new ArrayList<>());
         final BusinessException exception = assertThrows(BusinessException.class,()->saveDevProfileUseCaseService.execute(command));
-        assertEquals("The name cannot be with only one word",exception.getMessage());
+        assertEquals("Should contain an @ in emaill",exception.getMessage());
     }
 }

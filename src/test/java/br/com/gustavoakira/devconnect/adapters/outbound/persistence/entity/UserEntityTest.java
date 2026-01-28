@@ -25,7 +25,7 @@ class UserEntityTest {
     @Test
     void shouldThrowBusinessExceptionWhenDomainIsViolatedByCorruptedData(){
         final var entity = new UserEntity();
-        entity.setName("");
+        entity.setEmail("");
         assertThrows(BusinessException.class, entity::toDomain);
     }
 }

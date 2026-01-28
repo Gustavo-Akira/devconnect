@@ -23,6 +23,35 @@ class UserTest {
     }
 
     @Test
+    void shouldCreateUserWithValidDataButWithoutName() throws BusinessException {
+        final User user = new User(
+                "StrongPassword123",
+                "gustavo@email.com",
+                true
+        );
+
+        assertNotNull(user);
+        assertEquals("gustavo@email.com", user.getEmail());
+        assertTrue(user.isActive());
+        assertNotNull(user.getPassword());
+    }
+
+    @Test
+    void shouldCreateUserWithValidDataButWithoutNameWithId() throws BusinessException {
+        final User user = new User(
+                1L,
+                "StrongPassword123",
+                "gustavo@email.com",
+                true
+        );
+
+        assertNotNull(user);
+        assertEquals("gustavo@email.com", user.getEmail());
+        assertTrue(user.isActive());
+        assertNotNull(user.getPassword());
+    }
+
+    @Test
     void shouldCreateUserAsActiveWhenIsActiveIsNull() throws BusinessException {
         final User user = new User(
                 "Gustavo Akira",
@@ -56,12 +85,12 @@ class UserTest {
                 () -> new User(
                         "Gustavo",
                         "StrongPassword123",
-                        "gustavo@email.com",
+                        "gustavo",
                         true
                 )
         );
 
-        assertEquals("The name cannot be with only one word", exception.getMessage());
+        assertEquals("Should contain an @ in emaill", exception.getMessage());
     }
 
     @Test
