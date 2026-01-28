@@ -21,6 +21,21 @@ public class User {
         validate();
     }
 
+    public User(String password,String email, Boolean isActive) throws BusinessException {
+        this.password = new Password(password);
+        this.email = email;
+        this.isActive = isActive == null || isActive;
+        validate();
+    }
+
+    public User(Long id, String password,String email, Boolean isActive) throws BusinessException {
+        this.id = id;
+        this.password = new Password(password);
+        this.email = email;
+        this.isActive = isActive == null || isActive;
+        validate();
+    }
+
 
     public Boolean isActive() {
         return isActive;

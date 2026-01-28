@@ -23,6 +23,20 @@ class UserTest {
     }
 
     @Test
+    void shouldCreateUserWithValidDataButWithoutName() throws BusinessException {
+        final User user = new User(
+                "StrongPassword123",
+                "gustavo@email.com",
+                true
+        );
+
+        assertNotNull(user);
+        assertEquals("gustavo@email.com", user.getEmail());
+        assertTrue(user.isActive());
+        assertNotNull(user.getPassword());
+    }
+
+    @Test
     void shouldCreateUserAsActiveWhenIsActiveIsNull() throws BusinessException {
         final User user = new User(
                 "Gustavo Akira",
