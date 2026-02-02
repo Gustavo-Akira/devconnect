@@ -12,7 +12,6 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private String password;
     @Column(unique = true)
     private String email;
@@ -24,7 +23,6 @@ public class UserEntity {
 
     public UserEntity(User user){
         this.id = user.getId();
-        this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword().getValue();
         this.isActive = user.isActive();
@@ -34,7 +32,6 @@ public class UserEntity {
     public User toDomain() throws BusinessException {
         return new User(
                 this.getId(),
-                this.getName(),
                 this.getPassword(),
                 this.getEmail(),
                 this.getIsActive()
