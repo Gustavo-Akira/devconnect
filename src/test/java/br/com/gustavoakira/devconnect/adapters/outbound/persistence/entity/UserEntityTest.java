@@ -13,7 +13,6 @@ class UserEntityTest {
         entity.setId(1L);
         entity.setIsActive(true);
         entity.setPassword("afsfa");
-        entity.setName("akira aasfaafa");
         entity.setEmail("akirauekita@gmail.com");
         final User user = entity.toDomain();
         assertEquals(entity.getEmail(), user.getEmail());

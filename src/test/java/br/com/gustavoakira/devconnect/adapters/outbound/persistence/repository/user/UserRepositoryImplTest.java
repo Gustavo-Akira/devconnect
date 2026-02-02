@@ -102,7 +102,6 @@ class UserRepositoryImplTest {
     @Test
     void shouldSaveAndReturnUserWhenUserInfoIsValid() throws BusinessException {
         final UserEntity entity = new UserEntity();
-        entity.setName("alora nol");
         entity.setEmail("alora@gmail.com");
         entity.setPassword("password");
         entity.setIsActive(true);
@@ -118,13 +117,11 @@ class UserRepositoryImplTest {
     @Test
     void shouldThrowBusinessExceptionWhenUserInfoIsInvalid() throws BusinessException {
         final UserEntity entity = new UserEntity();
-        entity.setName("alora nol");
         entity.setEmail("alora@gmail.com");
         entity.setPassword("password");
         entity.setIsActive(true);
         final User domainUser =entity.toDomain();
         final UserEntity result = new UserEntity();
-        result.setName("akira a");
         result.setEmail("akira ");
         when(springRepository.save(any())).thenReturn(result);
         assertThrows(BusinessException.class,()-> userRepository.save(domainUser));
