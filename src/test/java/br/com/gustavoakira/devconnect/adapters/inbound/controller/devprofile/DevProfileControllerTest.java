@@ -89,7 +89,6 @@ class DevProfileControllerTest {
     private User createMockUser() throws BusinessException {
         return new User(
                 1L,
-                "Gustavo Akira",
                 "123456",
                 "gustavo@email.com",
                 true

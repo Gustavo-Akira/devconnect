@@ -23,7 +23,6 @@ class JwtProviderTest {
     void shouldGenerateValidToken() throws BusinessException {
         final User user = new User(
                 1L,
-                "Gustavo Akira",
                 "password123",
                 "gustavo@email.com",
                 true
@@ -39,7 +38,6 @@ class JwtProviderTest {
     void shouldExtractSubjectFromToken() throws BusinessException {
         final User user = new User(
                 42L,
-                "Gustavo Akira",
                 "password123",
                 "gustavo@email.com",
                 true
@@ -56,7 +54,6 @@ class JwtProviderTest {
     void shouldInvalidateExpiredToken() throws BusinessException, InterruptedException {
         final User user = new User(
                 1L,
-                "Gustavo Akira",
                 "password123",
                 "gustavo@email.com",
                 true
@@ -79,7 +76,6 @@ class JwtProviderTest {
     void shouldGenerateTokenWithoutNameClaim() throws BusinessException {
         final User user = new User(
                 1L,
-                "Gustavo Akira",
                 "password123",
                 "gustavo@email.com",
                 true
