@@ -73,7 +73,7 @@ class TokenGrantUseCaseImplTest {
 
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
-            Mockito.when(userRepository.findByEmail(VALID_EMAIL)).thenReturn(new User(1L,"akira uekita","Str@ngP4ssword",VALID_EMAIL,true));
+            Mockito.when(userRepository.findByEmail(VALID_EMAIL)).thenReturn(new User(1L,"Str@ngP4ssword",VALID_EMAIL,true));
         }
 
         @Test
@@ -94,7 +94,7 @@ class TokenGrantUseCaseImplTest {
 
         @BeforeEach
         void setup() throws BusinessException, EntityNotFoundException {
-            Mockito.when(userRepository.findByEmail(VALID_EMAIL)).thenReturn(new User(1L,"akira uekita","Str@ngP4ssword",VALID_EMAIL,true));
+            Mockito.when(userRepository.findByEmail(VALID_EMAIL)).thenReturn(new User(1L,"Str@ngP4ssword",VALID_EMAIL,true));
             Mockito.when(encoder.matches(VALID_PASSWORD, "Str@ngP4ssword")).thenReturn(true);
             Mockito.when(provider.generateToken(Mockito.any(), Mockito.any(Long.class))).thenReturn("mocked-token");
         }

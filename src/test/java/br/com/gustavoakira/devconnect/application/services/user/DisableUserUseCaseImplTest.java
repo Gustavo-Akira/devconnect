@@ -32,7 +32,6 @@ class DisableUserUseCaseImplTest {
     void setup() throws BusinessException {
         user = new User(
                 1L,
-                "Gustavo Akira",
                 "encoded-password",
                 "gustavo@email.com",
                 true

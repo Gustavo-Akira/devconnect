@@ -24,7 +24,7 @@ class FindUserByIdUseCaseImplTest {
 
     @Test
     void shouldReturnUserWhenRepositoryReturnsIt() throws BusinessException, EntityNotFoundException {
-        Mockito.when(repository.findById(1L)).thenReturn(new User(1L,"Gustavo Akira","password","akirauekita2002@gmail.com",true));
+        Mockito.when(repository.findById(1L)).thenReturn(new User(1L,"password","akirauekita2002@gmail.com",true));
         final User result = useCase.execute(new FindUserByIdQuery(1L));
         assertEquals(1L, result.getId());
         assertEquals("password", result.getPassword().getValue());

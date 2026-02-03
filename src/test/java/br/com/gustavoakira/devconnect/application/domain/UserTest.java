@@ -10,7 +10,6 @@ class UserTest {
     @Test
     void shouldCreateUserWithValidData() throws BusinessException {
         final User user = new User(
-                "Gustavo Akira",
                 "StrongPassword123",
                 "gustavo@email.com",
                 true
@@ -54,7 +53,6 @@ class UserTest {
     @Test
     void shouldCreateUserAsActiveWhenIsActiveIsNull() throws BusinessException {
         final User user = new User(
-                "Gustavo Akira",
                 "StrongPassword123",
                 "gustavo@email.com",
                 null
@@ -68,7 +66,6 @@ class UserTest {
         final BusinessException exception = assertThrows(
                 BusinessException.class,
                 () -> new User(
-                        "Gustavo Akira",
                         "StrongPassword123",
                         "invalid-email",
                         true
@@ -83,7 +80,6 @@ class UserTest {
         final BusinessException exception = assertThrows(
                 BusinessException.class,
                 () -> new User(
-                        "Gustavo",
                         "StrongPassword123",
                         "gustavo",
                         true
@@ -96,7 +92,6 @@ class UserTest {
     @Test
     void shouldDisableUser() throws BusinessException {
         final User user = new User(
-                "Gustavo Akira",
                 "StrongPassword123",
                 "gustavo@email.com",
                 true
@@ -110,7 +105,6 @@ class UserTest {
     @Test
     void shouldChangePassword() throws BusinessException {
         final User user = new User(
-                "Gustavo Akira",
                 "OldPassword123",
                 "gustavo@email.com",
                 true
@@ -124,7 +118,6 @@ class UserTest {
     @Test
     void shouldSetIdAfterCreation() throws BusinessException {
         final User user = new User(
-                "Gustavo Akira",
                 "StrongPassword123",
                 "gustavo@email.com",
                 true
@@ -139,7 +132,6 @@ class UserTest {
     void shouldCreateUserWithIdConstructor() throws BusinessException {
         final User user = new User(
                 1L,
-                "Gustavo Akira",
                 "StrongPassword123",
                 "gustavo@email.com",
                 true
