@@ -15,7 +15,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldCreatePasswordRecoverySuccessfully() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         assertNotNull(recovery);
@@ -46,7 +46,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnTrueWhenExpired() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, past);
 
         assertTrue(recovery.isExpired(now));
@@ -54,7 +54,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnFalseWhenNotExpired() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         assertFalse(recovery.isExpired(now));
@@ -62,7 +62,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnFalseWhenNotUsed() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         assertFalse(recovery.isUsed());
@@ -70,7 +70,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnTrueWhenUsed() throws BusinessException {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         recovery.markAsUsed(now);
@@ -81,7 +81,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnValidWhenNotExpiredAndNotUsed() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         assertTrue(recovery.isValid(now));
@@ -89,7 +89,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnInvalidWhenExpired() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, past);
 
         assertFalse(recovery.isValid(now));
@@ -97,7 +97,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldReturnInvalidWhenUsed() throws BusinessException {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         recovery.markAsUsed(now);
@@ -107,7 +107,7 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldMarkAsUsedSuccessfully() throws BusinessException {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         recovery.markAsUsed(now);
@@ -118,12 +118,12 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldThrowExceptionWhenMarkAsUsedTwice() throws BusinessException {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, future);
 
         recovery.markAsUsed(now);
 
-        BusinessException exception =
+        final BusinessException exception =
                 assertThrows(BusinessException.class,
                         () -> recovery.markAsUsed(now));
 
@@ -132,10 +132,10 @@ class PasswordRecoveryTest {
 
     @Test
     void shouldThrowExceptionWhenMarkAsUsedExpiredToken() {
-        PasswordRecovery recovery =
+        final PasswordRecovery recovery =
                 new PasswordRecovery(1L, "token123", 10L, past);
 
-        BusinessException exception =
+        final BusinessException exception =
                 assertThrows(BusinessException.class,
                         () -> recovery.markAsUsed(now));
 
