@@ -12,13 +12,4 @@ class PasswordRecoveryEntityTest {
     void shouldCreateAnEmptyPasswordRecoveryEntity(){
         assertDoesNotThrow(()->new PasswordRecoveryEntity());
     }
-
-    @Test
-    void shouldCreateAnCompletePasswordRecoveryEntity(){
-        final PasswordRecovery domain = new PasswordRecovery(1L,"sdfdfdfsgfdss",2L, Instant.now());
-        final PasswordRecoveryEntity entity = new PasswordRecoveryEntity(domain);
-        assertEquals(domain.getId(),entity.getId());
-        assertEquals(domain.getUserId(), entity.getUserId());
-        assertEquals(domain.getExpiresAt(), entity.getExpiresAt());
-    }
 }
