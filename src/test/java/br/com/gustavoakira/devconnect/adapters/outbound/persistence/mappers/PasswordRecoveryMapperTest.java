@@ -21,16 +21,16 @@ class PasswordRecoveryMapperTest {
 
     @Test
     void shouldMapDomainToEntity() {
-        Instant expiresAt = Instant.now().plusSeconds(3600);
+        final Instant expiresAt = Instant.now().plusSeconds(3600);
 
-        PasswordRecovery domain = new PasswordRecovery(
+        final PasswordRecovery domain = new PasswordRecovery(
                 1L,
                 "token-123",
                 10L,
                 expiresAt
         );
 
-        PasswordRecoveryEntity entity = mapper.toEntity(domain);
+        final PasswordRecoveryEntity entity = mapper.toEntity(domain);
 
         assertNotNull(entity);
         assertEquals(domain.getId(), entity.getId());
@@ -42,16 +42,16 @@ class PasswordRecoveryMapperTest {
 
     @Test
     void shouldMapEntityToDomain_whenNotUsed() throws BusinessException {
-        Instant expiresAt = Instant.now().plusSeconds(3600);
+        final Instant expiresAt = Instant.now().plusSeconds(3600);
 
-        PasswordRecoveryEntity entity = new PasswordRecoveryEntity();
+        final PasswordRecoveryEntity entity = new PasswordRecoveryEntity();
         entity.setId(2L);
         entity.setToken("token-abc");
         entity.setUserId(20L);
         entity.setExpiresAt(expiresAt);
         entity.setUsedAt(null);
 
-        PasswordRecovery domain = mapper.toDomain(entity);
+        final PasswordRecovery domain = mapper.toDomain(entity);
 
         assertNotNull(domain);
         assertEquals(entity.getId(), domain.getId());
@@ -63,17 +63,17 @@ class PasswordRecoveryMapperTest {
 
     @Test
     void shouldMapEntityToDomain_whenUsed() throws BusinessException {
-        Instant expiresAt = Instant.now().plusSeconds(3600);
-        Instant usedAt = Instant.now();
+        final Instant expiresAt = Instant.now().plusSeconds(3600);
+        final Instant usedAt = Instant.now();
 
-        PasswordRecoveryEntity entity = new PasswordRecoveryEntity();
+        final PasswordRecoveryEntity entity = new PasswordRecoveryEntity();
         entity.setId(3L);
         entity.setToken("token-used");
         entity.setUserId(30L);
         entity.setExpiresAt(expiresAt);
         entity.setUsedAt(usedAt);
 
-        PasswordRecovery domain = mapper.toDomain(entity);
+        final PasswordRecovery domain = mapper.toDomain(entity);
 
         assertNotNull(domain);
         assertTrue(domain.isUsed());
@@ -82,13 +82,13 @@ class PasswordRecoveryMapperTest {
 
     @Test
     void shouldReturnNullWhenEntityIsNull() throws BusinessException {
-        PasswordRecovery result = mapper.toDomain(null);
+        final PasswordRecovery result = mapper.toDomain(null);
         assertNull(result);
     }
 
     @Test
     void shouldReturnNullWhenDomainIsNull() {
-        PasswordRecoveryEntity result = mapper.toEntity(null);
+        final PasswordRecoveryEntity result = mapper.toEntity(null);
         assertNull(result);
     }
 }

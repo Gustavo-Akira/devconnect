@@ -10,6 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class PasswordRecoveryEntityTest {
     @Test
     void shouldCreateAnEmptyPasswordRecoveryEntity(){
-        assertDoesNotThrow(()->new PasswordRecoveryEntity());
+        assertDoesNotThrow(PasswordRecoveryEntity::new);
     }
 }
