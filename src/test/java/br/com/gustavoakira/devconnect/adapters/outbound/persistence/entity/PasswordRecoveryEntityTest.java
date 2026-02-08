@@ -15,8 +15,8 @@ class PasswordRecoveryEntityTest {
 
     @Test
     void shouldCreateAnCompletePasswordRecoveryEntity(){
-        PasswordRecovery domain = new PasswordRecovery(1L,"sdfdfdfsgfdss",2L, Instant.now());
-        PasswordRecoveryEntity entity = new PasswordRecoveryEntity(domain);
+        final PasswordRecovery domain = new PasswordRecovery(1L,"sdfdfdfsgfdss",2L, Instant.now());
+        final PasswordRecoveryEntity entity = new PasswordRecoveryEntity(domain);
         assertEquals(domain.getId(),entity.getId());
         assertEquals(domain.getUserId(), entity.getUserId());
         assertEquals(domain.getExpiresAt(), entity.getExpiresAt());
