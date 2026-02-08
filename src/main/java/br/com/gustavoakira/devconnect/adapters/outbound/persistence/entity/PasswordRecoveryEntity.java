@@ -23,12 +23,4 @@ public class PasswordRecoveryEntity {
     public PasswordRecoveryEntity(){
 
     }
-
-    public PasswordRecoveryEntity(PasswordRecovery recovery){
-        this.id = recovery.getId();
-        this.token = recovery.getToken();
-        this.expiresAt = recovery.getExpiresAt();
-        this.usedAt = recovery.getUsedAt();
-        this.userId = recovery.getUserId();
-    }
 }
