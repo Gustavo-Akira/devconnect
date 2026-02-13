@@ -23,7 +23,7 @@ public class PasswordRecoveryRepositoryImpl implements IPasswordRecoveryReposito
 
     @Override
     public PasswordRecovery findByToken(String token) throws BusinessException {
-        PasswordRecoveryEntity entity = repository.findByToken(token).orElseThrow();
+        final PasswordRecoveryEntity entity = repository.findByToken(token).orElseThrow();
         return mapper.toDomain(entity);
     }
 
