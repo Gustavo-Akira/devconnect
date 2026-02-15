@@ -32,12 +32,11 @@ jobs:
         run: ./gradlew checkstyleMain checkstyleTest
 
       - name: Run tests and generate coverage report
-        run: ./gradlew clean test jacocoTestReport -Dtestcontainers.ryuk.disabled=true -Dorg.slf4j.simpleLogger.defaultLogLevel=debug
+        run: ./gradlew clean test jacocoTestReport -Dtestcontainers.ryuk.disabled=true -Dtestcontainers.host.override=true -Dorg.slf4j.simpleLogger.defaultLogLevel=debug --stacktrace -Ddocker.host=localhost
         env:
           TESTCONTAINERS_RYUK_DISABLED: true
           TESTCONTAINERS_CHECKS_DISABLE: true
           TESTCONTAINERS_LOG_LEVEL: DEBUG
-          DOCKER_HOST: unix:///var/run/docker.sock
 
       - name: Install diff-cover
         run: pip install diff-cover
