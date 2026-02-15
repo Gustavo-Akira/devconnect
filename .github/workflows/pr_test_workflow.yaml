@@ -25,6 +25,9 @@ jobs:
       - name: Grant execute permission for Gradle
         run: chmod +x gradlew
 
+      - name: Check Docker socket
+        run: ls -lah /var/run/docker.sock
+
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest
 
