@@ -29,7 +29,9 @@ jobs:
         run: ./gradlew checkstyleMain checkstyleTest
 
       - name: Run tests and generate coverage report
-        run: ./gradlew clean test jacocoTestReport --stacktrace
+        run: ./gradlew clean test jacocoTestReport \
+          -Dtestcontainers.ryuk.disabled=true \
+          -Dorg.slf4j.simpleLogger.defaultLogLevel=debug
         env:
           TESTCONTAINERS_RYUK_DISABLED: true
           TESTCONTAINERS_CHECKS_DISABLE: true
