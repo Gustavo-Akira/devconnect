@@ -37,6 +37,7 @@ jobs:
           TESTCONTAINERS_RYUK_DISABLED: true
           TESTCONTAINERS_CHECKS_DISABLE: true
           TESTCONTAINERS_LOG_LEVEL: DEBUG
+          DOCKER_HOST: unix:///var/run/docker.sock
 
       - name: Install diff-cover
         run: pip install diff-cover
