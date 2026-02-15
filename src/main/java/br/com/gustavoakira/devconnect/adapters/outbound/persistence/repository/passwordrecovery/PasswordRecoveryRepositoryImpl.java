@@ -5,7 +5,9 @@ import br.com.gustavoakira.devconnect.adapters.outbound.persistence.mappers.Pass
 import br.com.gustavoakira.devconnect.application.domain.PasswordRecovery;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
 import br.com.gustavoakira.devconnect.application.repository.IPasswordRecoveryRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class PasswordRecoveryRepositoryImpl implements IPasswordRecoveryRepository {
 
     private final SpringDataPostgresPasswordRecoveryRepository repository;
