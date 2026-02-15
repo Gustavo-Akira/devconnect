@@ -10,6 +10,7 @@ jobs:
     env:
       TESTCONTAINERS_RYUK_DISABLED: true
       TESTCONTAINERS_CHECKS_DISABLE: true
+      TESTCONTAINERS_LOG_LEVEL: DEBUG
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
