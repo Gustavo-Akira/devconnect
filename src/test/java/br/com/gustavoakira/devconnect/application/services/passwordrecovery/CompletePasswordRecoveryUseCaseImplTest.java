@@ -50,17 +50,17 @@ class CompletePasswordRecoveryUseCaseImplTest {
     @Test
     void shouldCompletePasswordRecoverySuccessfully() throws Exception {
 
-        PasswordRecovery recovery = createValidRecovery();
-        User user = createUser();
+        final PasswordRecovery recovery = createValidRecovery();
+        final User user = createUser();
 
         when(recoveryRepository.findByToken("token123")).thenReturn(recovery);
         when(userRepository.findById(10L)).thenReturn(user);
         when(recoveryRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
-        CompletePasswordRecoveryCommand command =
+        final CompletePasswordRecoveryCommand command =
                 new CompletePasswordRecoveryCommand( "newPassword","token123");
 
-        PasswordRecovery result = useCase.execute(command);
+        final PasswordRecovery result = useCase.execute(command);
 
         assertNotNull(result);
         assertTrue(result.isUsed());
@@ -72,12 +72,12 @@ class CompletePasswordRecoveryUseCaseImplTest {
     @Test
     void shouldThrowWhenTokenAlreadyUsed() throws Exception {
 
-        PasswordRecovery recovery = createValidRecovery();
+        final PasswordRecovery recovery = createValidRecovery();
         recovery.markAsUsed(Instant.now());
 
         when(recoveryRepository.findByToken("token123")).thenReturn(recovery);
         when(userRepository.findById(any())).thenReturn(createUser());
-        CompletePasswordRecoveryCommand command =
+        final CompletePasswordRecoveryCommand command =
                 new CompletePasswordRecoveryCommand("newPassword","token123");
 
         assertThrows(BusinessException.class,
@@ -90,7 +90,7 @@ class CompletePasswordRecoveryUseCaseImplTest {
     @Test
     void shouldThrowWhenTokenExpired() throws Exception {
 
-        PasswordRecovery recovery = new PasswordRecovery(
+        final PasswordRecovery recovery = new PasswordRecovery(
                 1L,
                 "token123",
                 10L,
@@ -100,7 +100,7 @@ class CompletePasswordRecoveryUseCaseImplTest {
         when(recoveryRepository.findByToken("token123")).thenReturn(recovery);
         when(userRepository.findById(10L)).thenReturn(createUser());
 
-        CompletePasswordRecoveryCommand command =
+        final CompletePasswordRecoveryCommand command =
                 new CompletePasswordRecoveryCommand( "newPassword","token123");
 
         assertThrows(BusinessException.class,
