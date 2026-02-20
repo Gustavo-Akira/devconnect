@@ -23,8 +23,8 @@ public class CompletePasswordRecoveryUseCaseImpl implements CompletePasswordReco
 
     @Override
     public PasswordRecovery execute(CompletePasswordRecoveryCommand command) throws BusinessException, EntityNotFoundException {
-        PasswordRecovery recovery = repository.findByToken(command.token());
-        User user = userRepository.findById(recovery.getUserId());
+        final PasswordRecovery recovery = repository.findByToken(command.token());
+        final User user = userRepository.findById(recovery.getUserId());
         user.changePassword(command.newPassword());
         recovery.markAsUsed(Instant.now());
         userRepository.save(user);

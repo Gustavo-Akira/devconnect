@@ -1,6 +1,5 @@
 package br.com.gustavoakira.devconnect.application.services.passwordrecovery;
 
-import br.com.gustavoakira.devconnect.adapters.outbound.exceptions.EntityNotFoundException;
 import br.com.gustavoakira.devconnect.application.domain.PasswordRecovery;
 import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.domain.exceptions.BusinessException;
