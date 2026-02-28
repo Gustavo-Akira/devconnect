@@ -17,3 +17,9 @@ app:
         retention-ms: 604800000
         cleanup-policy: delete
         create-dlt: true
+      - name: auth.password-recovery.requested.v1
+        partitions: 3
+        replicas: 1
+        retention-ms: 604800000
+        cleanup-policy: delete
+        create-dlt: true

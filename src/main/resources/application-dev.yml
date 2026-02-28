@@ -8,6 +8,8 @@ spring:
     hibernate:
       ddl-auto: update
 app:
+  auth:
+    recovery_link_base_url: http://localhost:5173
   kafka:
     server: localhost:9092
     client_id: devconnect-service
