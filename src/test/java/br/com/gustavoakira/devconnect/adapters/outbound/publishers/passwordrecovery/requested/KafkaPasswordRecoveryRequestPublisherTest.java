@@ -48,11 +48,11 @@ class KafkaPasswordRecoveryRequestPublisherTest {
 
         publisher.send(recovery, user);
 
-        ArgumentCaptor<Object> eventCaptor = ArgumentCaptor.forClass(Object.class);
+        final ArgumentCaptor<Object> eventCaptor = ArgumentCaptor.forClass(Object.class);
 
         verify(kafkaTemplate).send(eq("recovery-topic"), eventCaptor.capture());
 
-        Object capturedEvent = eventCaptor.getValue();
+        final Object capturedEvent = eventCaptor.getValue();
         assertThat(capturedEvent).isNotNull();
     }
 
