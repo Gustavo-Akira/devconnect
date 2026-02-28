@@ -23,7 +23,7 @@ Designed with **Java (Spring Boot)** using **hexagonal architecture**, **DDD**, 
 
 ## 🛠️ Technologies
 
-- **Java 24+**, Spring Boot 3.x
+- **Java 25+**, Spring Boot 3.x
 - JPA (in `adapters/persistence`)
 - Docker
 - PostgreSQL
@@ -62,7 +62,7 @@ But first of all you have to:
 
 ### Without Docker
 If you want to run without Docker you have to have:
-- Java 24
+- Java 25
 - PostgreSQL running on port `5432`
 - Kafka
 And run on the root of the project this command: 

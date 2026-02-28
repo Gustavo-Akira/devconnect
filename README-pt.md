@@ -21,7 +21,7 @@ Projetado com **Java (Spring Boot)** usando **arquitetura hexagonal**, **DDD**, 
 
 ## 🛠️ Tecnologias
 
-- **Java 24+**, Spring Boot 3.x
+- **Java 25+**, Spring Boot 3.x
 - JPA (em adapters/persistence)
 - Docker
 - PostgresSQL
@@ -55,7 +55,7 @@ Para rodar localmente o projeto se tem duas opções:
 - Com Docker
 ### Sem Docker
 Se voce quiser rodar esse projeto sem docker, precisa ter instalado:
-- Java 24
+- Java 25
 - PostgreSQL running on port `5432`
 - Kafka
  E executar esse comando na raiz do projeto:

@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM gradle:8.14.3-jdk24-ubi-minimal AS build
+FROM gradle:8.14.3-jdk25-ubi-minimal AS build
 WORKDIR /app
 COPY . .
 RUN gradle clean build -x test
