@@ -7,6 +7,7 @@ import br.com.gustavoakira.devconnect.application.domain.User;
 import br.com.gustavoakira.devconnect.application.publishers.PasswordRecoveryRequestPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ public class KafkaPasswordRecoveryRequestPublisher implements PasswordRecoveryRe
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final TopicProperties topicProperties;
 
+    @Value("${app.auth.recovery_link_base_url}")
+    private String baseUrl;
+
     public KafkaPasswordRecoveryRequestPublisher(KafkaTemplate<String, Object> kafkaTemplate, TopicProperties topicProperties) {
         this.kafkaTemplate = kafkaTemplate;
         this.topicProperties = topicProperties;
@@ -25,7 +29,7 @@ public class KafkaPasswordRecoveryRequestPublisher implements PasswordRecoveryRe
 
     @Override
     public void send(PasswordRecovery recovery, User user) {
-        final PasswordRecoveryRequestEvent event = new PasswordRecoveryRequestEvent(recovery.getUserId(), "http://localhost:8090"+recovery.getToken(), user.getEmail(), recovery.getExpiresAt());
+        final PasswordRecoveryRequestEvent event = new PasswordRecoveryRequestEvent(recovery.getUserId(), baseUrl+"/"+recovery.getToken(), user.getEmail(), recovery.getExpiresAt());
         this.kafkaTemplate.send(topicProperties.getTopicName("auth.password-recovery.requested"), event).whenComplete(((_, ex) -> {
             if (ex != null) {
                 logger.error("Failed to publish event for {}: {}", event.email(), ex.getMessage());
