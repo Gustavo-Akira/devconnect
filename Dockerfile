@@ -1,11 +1,11 @@
 # Stage 1: Build
-FROM gradle:8.14.3-jdk24-ubi-minimal AS build
+FROM gradle:9.1.0-jdk25-ubi-minimal AS build
 WORKDIR /app
 COPY . .
 RUN gradle clean build -x test
 
 # Stage 2: Run
-FROM eclipse-temurin:24-jdk
+FROM eclipse-temurin:25-jdk
 WORKDIR /app
 
 COPY --from=build /app/build/libs/devconnect-*.jar app.jar

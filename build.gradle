@@ -11,7 +11,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(24)
+		languageVersion = JavaLanguageVersion.of(25)
 	}
 }
 
@@ -79,7 +79,7 @@ tasks.withType(Checkstyle) {
 	reports {
 		xml.required = false
 		html.required = true
-		html.destination = layout.buildDirectory.dir("reports/checkstyle.html").get().asFile
+		html.outputLocation = layout.buildDirectory.dir("reports/checkstyle.html").get().asFile
 	}
 }
 
